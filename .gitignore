@@ -36,3 +36,6 @@ yarn-error.log*
 # JetBrains
 .idea
 *.iml
+
+# graphql codegen
+generated

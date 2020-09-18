@@ -2,7 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "lib": [
-      "es2020"
+      "es2020",
+      "dom"
     ],
     "target": "es2020",
     "esModuleInterop": true,
@@ -11,22 +12,23 @@
     "outDir": "build",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "skipLibCheck": true,
     "strict": false,
     "noImplicitAny": true,
+    "jsx": "preserve",
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve"
+    "isolatedModules": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "generated/**/*.*"
   ],
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ]
 }

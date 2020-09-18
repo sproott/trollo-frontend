@@ -1,8 +1,22 @@
 import "../../styles/globals.css"
 import React from "react"
+import { useApollo } from "../lib/apolloClient"
+import App, { AppProps } from "next/app"
+import { ApolloProvider } from "@apollo/client"
 
-function MyApp({ Component, pageProps }: { Component: React.ComponentClass; pageProps: any }) {
-  return <Component {...pageProps} />
+export default function MyApp({ Component, pageProps }: AppProps) {
+  const apolloClient = useApollo(pageProps.initialApolloState)
+
+  return (
+    <ApolloProvider client={apolloClient}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  )
 }
 
-export default MyApp
+MyApp.getInitialProps = async (appContext: any) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext)
+
+  return { ...appProps }
+}
