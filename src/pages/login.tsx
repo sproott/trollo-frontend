@@ -3,6 +3,7 @@ import LoginForm from "../components/login/LoginForm"
 import { Layout } from "antd"
 import { H1 } from "../components/common/Text"
 import { blue } from "@ant-design/colors"
+import { LoginContent } from "../components/common/login.styled"
 
 const { Header, Footer, Sider, Content } = Layout
 
@@ -14,20 +15,12 @@ const Login = () => {
           Login page
         </H1>
       </Header>
-      <Content
-        style={{
-          backgroundColor: "white",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "20px",
-        }}
-      >
+      <LoginContent>
         <H1 textAlign="center" style={{ marginBottom: "50px" }}>
           Login to the app
         </H1>
         <LoginForm />
-      </Content>
+      </LoginContent>
     </Layout>
   )
 }

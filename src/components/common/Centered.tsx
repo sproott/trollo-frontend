@@ -1,7 +1,7 @@
 import React, { ReactChild } from "react"
 import Box from "./Box"
 
-function Centered({ children }: { children: ReactChild }) {
+const Centered = ({ children }: { children: ReactChild }) => {
   return (
     <Box flex justifyContent="center">
       {children}

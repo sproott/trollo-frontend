@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-type TextProps = {
+export type TextProps = {
   color?: string
   textAlign?: "center" | "left" | "right" | "justify"
 }

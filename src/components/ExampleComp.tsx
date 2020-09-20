@@ -1,7 +1,7 @@
 import { useLoginMutation } from "../../generated/graphql"
 import React, { useEffect } from "react"
 
-export default function ExampleComp() {
+const ExampleComp = () => {
   const [login, { loading, error, data }] = useLoginMutation()
 
   useEffect(() => {
@@ -28,3 +28,5 @@ export default function ExampleComp() {
     </div>
   )
 }
+
+export default ExampleComp

@@ -34,6 +34,7 @@
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "antd-dayjs-webpack-plugin": "^1.0.1",
+    "babel-plugin-styled-components": "^1.11.1",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -45,6 +46,7 @@
   "resolutions": {
     "dayjs": "^1.8.36",
     "subscriptions-transport-ws": "^0.9.18",
-    "react-is": "^16.8.0"
+    "react-is": "^16.8.0",
+    "babel-plugin-styled-components": "^1.11.1"
   }
 }
