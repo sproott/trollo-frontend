@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 type TextProps = {
   color?: string
-  textAlign: "center" | "left" | "right" | "justify"
+  textAlign?: "center" | "left" | "right" | "justify"
 }
 
 const styledWithTextProps = (tagName: any) => {
