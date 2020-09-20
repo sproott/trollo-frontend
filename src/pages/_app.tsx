@@ -3,8 +3,9 @@ import React from "react"
 import { useApollo } from "../lib/apolloClient"
 import App, { AppProps } from "next/app"
 import { ApolloProvider } from "@apollo/client"
+import "antd/dist/antd.css"
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   const apolloClient = useApollo(pageProps.initialApolloState)
 
   return (
@@ -20,3 +21,5 @@ MyApp.getInitialProps = async (appContext: any) => {
 
   return { ...appProps }
 }
+
+export default MyApp

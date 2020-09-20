@@ -1,7 +1,7 @@
 import { useLoginMutation } from "../../generated/graphql"
 import React, { useEffect } from "react"
 
-export default function LoginComp() {
+export default function ExampleComp() {
   const [login, { loading, error, data }] = useLoginMutation()
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function LoginComp() {
     })
   }, [])
 
-  if (error) return <div>Error loading posts.</div>
+  if (error) return <div>Error while loading.</div>
   if (loading || !data) return <div>loading...</div>
 
   const { id, username, email } = data.login
