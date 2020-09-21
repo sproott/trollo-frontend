@@ -1,10 +1,10 @@
 import React from "react"
 import { Button, Form } from "antd"
 
-const SubmitButton = ({ label }: { label: string }) => {
+const SubmitButton = ({ label, loading = false }: { label: string; loading: boolean }) => {
   return (
     <Form.Item>
-      <Button type="primary" htmlType="submit">
+      <Button loading={loading} type="primary" htmlType="submit">
         {label}
       </Button>
     </Form.Item>

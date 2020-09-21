@@ -1,5 +1,5 @@
 import { Control, Controller } from "react-hook-form"
-import React, { ReactChildren, ReactNode } from "react"
+import React, { ReactChild, ReactChildren, ReactNode } from "react"
 import { Form } from "antd"
 
 export type ControlledInputProps = {
@@ -9,7 +9,7 @@ export type ControlledInputProps = {
 }
 
 interface ControlledInputWithChildrenProps extends ControlledInputProps {
-  children: ReactNode
+  children: ReactChild
 }
 
 const ControlledFormItem = ({

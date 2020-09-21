@@ -2,21 +2,35 @@ import { useMemo } from "react"
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client"
 import { isBrowser } from "./util"
 
+export type Options = {
+  cookie?: string
+}
+
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
-function createApolloClient() {
+function createLink(cookie: string) {
+  if (!isBrowser()) {
+  } else {
+    return new HttpLink({
+      uri: "http://localhost:4000/graphql",
+      credentials: "include",
+      headers: {
+        cookie: cookie ?? "",
+      },
+    })
+  }
+}
+
+function createApolloClient({ cookie }: Options) {
   return new ApolloClient({
     ssrMode: !isBrowser(),
-    link: new HttpLink({
-      uri: "http://localhost:4000/graphql", // Server URL (must be absolute)
-      credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
-    }),
+    link: createLink(cookie),
     cache: new InMemoryCache(),
   })
 }
 
-export function initializeApollo(initialState: any = null) {
-  const _apolloClient = apolloClient ?? createApolloClient()
+export function initializeApollo(initialState: any = null, { cookie }: Options) {
+  const _apolloClient = apolloClient ?? createApolloClient({ cookie })
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -35,10 +49,10 @@ export function initializeApollo(initialState: any = null) {
   return _apolloClient
 }
 
-export function useApollo(initialState: any) {
-  return useMemo(() => initializeApollo(initialState), [initialState])
+export function useApollo(initialState: any, { cookie }: Options = {}) {
+  return useMemo(() => initializeApollo(initialState, { cookie }), [initialState])
 }
 
-export const getApolloClient = (ctx?: any, initialState?: NormalizedCacheObject) => {
-  return initializeApollo(initialState)
+export const getApolloClient = (ctx: any, initialState?: NormalizedCacheObject) => {
+  return initializeApollo(initialState, { cookie: ctx?.req?.headers?.cookie })
 }
