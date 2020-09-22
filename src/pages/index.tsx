@@ -9,10 +9,13 @@ import { withApollo } from "../lib/withApollo"
 import { useRecoilState } from "recoil"
 import { userState } from "../state/user.state"
 
-const Home: PageCurrentUserComp = (props) => {
-  const { data } = props
+const Home: PageCurrentUserComp = ({ data }) => {
   const [user, setUser] = useRecoilState(userState)
-  useEffect(() => setUser(data?.currentUser), [data])
+  useEffect(() => {
+    if (!user) {
+      setUser(data?.currentUser)
+    }
+  }, [data])
 
   return (
     <Layout style={{ minHeight: "100%" }}>

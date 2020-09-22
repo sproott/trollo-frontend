@@ -9,6 +9,7 @@ const styledWithTextProps = (tagName: any) => {
   return styled(tagName)<TextProps>`
     color: ${({ color }) => color ?? "black"};
     text-align: ${({ textAlign }) => textAlign ?? "left"};
+    margin-bottom: 0;
   `
 }
 

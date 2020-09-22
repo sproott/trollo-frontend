@@ -11,6 +11,7 @@ import { H1, H4 } from "../common/Text"
 import { useRecoilState } from "recoil"
 import { userState } from "../../state/user.state"
 import redirect from "../../lib/redirect"
+import { useRouter } from "next/router"
 
 const layout = {
   layout: "vertical",
@@ -25,6 +26,7 @@ const LoginForm = () => {
   const [login, { loading, error: gqlError, data }] = useLoginMutation()
   const [user, setUser] = useRecoilState(userState)
   const [submitted, setSubmitted] = useState(false)
+  const router = useRouter()
 
   const { control, handleSubmit, errors } = useForm<FormData>({
     defaultValues: {
@@ -33,8 +35,6 @@ const LoginForm = () => {
     },
   })
   const onSubmit = useCallback((formData) => {
-    console.log(formData)
-    setSubmitted(true)
     login({
       variables: {
         input: formData,
@@ -42,7 +42,7 @@ const LoginForm = () => {
     })
       .then(({ data: { login: user } }) => {
         setUser(user)
-        redirect("/")
+        router.push("/")
       })
       .catch((error) => {
         console.log(error)
@@ -51,15 +51,6 @@ const LoginForm = () => {
 
   return (
     <>
-      <Modal
-        visible={submitted && !loading && !!data?.login}
-        title="Login success"
-        okText="OK"
-        onOk={() => setSubmitted(false)}
-        onCancel={() => setSubmitted(false)}
-      >
-        <H1>Successfully logged in as {data?.login?.username}</H1>
-      </Modal>
       <Form {...layout} onSubmitCapture={handleSubmit(onSubmit)}>
         <Row justify="center">
           <Col xs={16} sm={12} md={10} lg={8} xl={6}>

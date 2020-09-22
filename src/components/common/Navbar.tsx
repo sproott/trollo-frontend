@@ -1,7 +1,7 @@
 import { blue } from "@ant-design/colors"
 import { H1 } from "./Text"
 import React from "react"
-import { Layout } from "antd"
+import { Button, Layout } from "antd"
 import Box from "./Box"
 import { userNameState } from "../../state/user.state"
 import { useRecoilValue } from "recoil"
@@ -18,13 +18,17 @@ const Navbar = ({ showLogin = false }: NavbarProps) => {
 
   return (
     <Header style={{ backgroundColor: blue.primary }}>
-      <Box flex justifyContent="space-between">
-        <H1 textAlign="center" color="white">
-          Trollo
-        </H1>
+      <Box
+        style={{ maxHeight: "100%" }}
+        flex
+        fullWidth
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <H1 color="white">Trollo</H1>
         {showLogin && !userName ? (
           <Link href="/login">
-            <a>Login</a>
+            <Button>Login</Button>
           </Link>
         ) : (
           <H1 textAlign="right" color="white">

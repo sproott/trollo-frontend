@@ -10,8 +10,7 @@ import { useRecoilState } from "recoil"
 import { userState } from "../state/user.state"
 import { withApollo } from "../lib/withApollo"
 
-const Login: PageCurrentUserComp = (props) => {
-  const { data } = props
+const Login: PageCurrentUserComp = ({ data }) => {
   const [user, setUser] = useRecoilState(userState)
   useEffect(() => setUser(data?.currentUser), [data])
 
