@@ -6,11 +6,8 @@ import PasswordInput from "../common/form/PasswordInput"
 import { FormProps } from "antd/es/form"
 import SubmitButton from "../common/form/SubmitButton"
 import Centered from "../common/Centered"
-import { useLoginMutation } from "../../../generated/graphql"
+import { useCurrentUserQuery, useLoginMutation } from "../../../generated/graphql"
 import { H1, H4 } from "../common/Text"
-import { useRecoilState } from "recoil"
-import { userState } from "../../state/user.state"
-import redirect from "../../lib/redirect"
 import { useRouter } from "next/router"
 
 const layout = {
@@ -24,7 +21,7 @@ type FormData = {
 
 const LoginForm = () => {
   const [login, { loading, error: gqlError, data }] = useLoginMutation()
-  const [user, setUser] = useRecoilState(userState)
+  const { refetch } = useCurrentUserQuery()
   const [submitted, setSubmitted] = useState(false)
   const router = useRouter()
 
@@ -35,13 +32,14 @@ const LoginForm = () => {
     },
   })
   const onSubmit = useCallback((formData) => {
+    setSubmitted(true)
     login({
       variables: {
         input: formData,
       },
     })
       .then(({ data: { login: user } }) => {
-        setUser(user)
+        refetch()
         router.push("/")
       })
       .catch((error) => {
