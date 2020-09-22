@@ -3,7 +3,7 @@ import LoginForm from "../components/login/LoginForm"
 import { H1 } from "../components/common/Text"
 import { LoginContent } from "../components/login/login.styled"
 import Navbar from "../components/common/Navbar"
-import withCurrentUser, { ProcessDataFn } from "../lib/withCurrentUser"
+import withCurrentUserFn, { ProcessDataFn } from "../lib/withCurrentUserFn"
 import { Layout } from "../components/common/page.styled"
 
 const Login = () => {
@@ -28,4 +28,4 @@ const redirectIfLoggedIn: ProcessDataFn = (data, router) => {
   return { redirecting: false }
 }
 
-export default withCurrentUser(Login, redirectIfLoggedIn)
+export default withCurrentUserFn(Login, redirectIfLoggedIn)

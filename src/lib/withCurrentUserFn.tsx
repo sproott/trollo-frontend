@@ -16,7 +16,7 @@ export type ProcessDataFnReturnType = {
   redirecting?: boolean
 }
 
-const withCurrentUserInner = (Comp: FC, processDataFn?: ProcessDataFn) => () => {
+const withCurrentUserFnInner = (Comp: FC, processDataFn?: ProcessDataFn) => () => {
   const { data, loading } = useCurrentUserQuery()
   const [redirecting, setRedirecting] = useState(false)
   const [calledProcessFn, setCalledProcessFn] = useState(false)
@@ -31,8 +31,8 @@ const withCurrentUserInner = (Comp: FC, processDataFn?: ProcessDataFn) => () => 
   return !!data && !redirecting ? <Comp /> : <LoadingPage />
 }
 
-const withCurrentUser = (Comp: FC, processDataFn?: ProcessDataFn) => {
-  return withApollo(withCurrentUserInner(Comp, processDataFn))
+const withCurrentUserFn = (Comp: FC, processDataFn: ProcessDataFn) => {
+  return withApollo(withCurrentUserFnInner(Comp, processDataFn))
 }
 
-export default withCurrentUser
+export default withCurrentUserFn

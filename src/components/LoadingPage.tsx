@@ -1,15 +1,13 @@
 import React from "react"
-import { Header, Layout } from "./common/page.styled"
+import { Layout } from "./common/page.styled"
 import { Spin } from "antd"
 import Box from "./common/Box"
-import Logo from "./common/Logo"
+import Navbar from "./common/Navbar"
 
 const LoadingPage = () => {
   return (
     <Layout style={{ minHeight: "100%", display: "flex", flexDirection: "column" }}>
-      <Header>
-        <Logo />
-      </Header>
+      <Navbar hideUserInfo />
       <Box
         style={{ backgroundColor: "white", flexGrow: 1 }}
         flex

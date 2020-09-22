@@ -8,13 +8,27 @@ import { Header } from "./page.styled"
 import Logo from "./Logo"
 
 type NavbarProps = {
-  showLogin?: boolean
+  showLoginButton?: boolean
+  hideUserInfo?: boolean
 }
 
-const Navbar = ({ showLogin = false }: NavbarProps) => {
-  const { data, loading } = useCurrentUserQuery()
+const UserInfo = ({ showLoginButton }: NavbarProps) => {
+  const { data } = useCurrentUserQuery()
   const userName = data?.currentUser?.username
+  return userName ? (
+    <H1 textAlign="right" color="white">
+      {userName}
+    </H1>
+  ) : (
+    showLoginButton && (
+      <Link href="/login">
+        <Button>Login</Button>
+      </Link>
+    )
+  )
+}
 
+const Navbar = ({ showLoginButton = false, hideUserInfo = false }: NavbarProps) => {
   return (
     <Header>
       <Box
@@ -25,15 +39,7 @@ const Navbar = ({ showLogin = false }: NavbarProps) => {
         alignItems="center"
       >
         <Logo />
-        {showLogin && !loading && !userName ? (
-          <Link href="/login">
-            <Button>Login</Button>
-          </Link>
-        ) : (
-          <H1 textAlign="right" color="white">
-            {userName}
-          </H1>
-        )}
+        {!hideUserInfo && <UserInfo showLoginButton={showLoginButton} />}
       </Box>
     </Header>
   )
