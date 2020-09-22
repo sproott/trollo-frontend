@@ -1,10 +1,11 @@
 import { H1 } from "./Text"
 import React from "react"
-import { Button, Layout } from "antd"
+import { Button } from "antd"
 import Box from "./Box"
 import Link from "next/link"
 import { useCurrentUserQuery } from "../../../generated/graphql"
 import { Header } from "./page.styled"
+import Logo from "./Logo"
 
 type NavbarProps = {
   showLogin?: boolean
@@ -23,7 +24,7 @@ const Navbar = ({ showLogin = false }: NavbarProps) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <H1 color="white">Trollo</H1>
+        <Logo />
         {showLogin && !loading && !userName ? (
           <Link href="/login">
             <Button>Login</Button>

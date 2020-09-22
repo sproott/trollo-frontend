@@ -2,13 +2,13 @@ import React from "react"
 import { Header, Layout } from "./common/page.styled"
 import { Spin } from "antd"
 import Box from "./common/Box"
-import { H1 } from "./common/Text"
+import Logo from "./common/Logo"
 
 const LoadingPage = () => {
   return (
     <Layout style={{ minHeight: "100%", display: "flex", flexDirection: "column" }}>
       <Header>
-        <H1 color="white">Trollo</H1>
+        <Logo />
       </Header>
       <Box
         style={{ backgroundColor: "white", flexGrow: 1 }}
