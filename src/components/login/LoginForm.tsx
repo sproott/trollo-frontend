@@ -50,22 +50,20 @@ const LoginForm = () => {
   }, [])
 
   return (
-    <>
-      <Form {...layout} onSubmitCapture={handleSubmit(onSubmit)}>
-        <Row justify="center">
-          <Col xs={16} sm={12} md={10} lg={8} xl={6}>
-            <div style={{ minHeight: "30px" }}>
-              {gqlError && <H4 color="red">Wrong username or password</H4>}
-            </div>
-            <TextInput label="Username or e-mail" name="usernameOrEmail" control={control} />
-            <PasswordInput label="Password" name="password" control={control} />
-            <Centered>
-              <SubmitButton label="Login" loading={submitted && !data?.login && !gqlError} />
-            </Centered>
-          </Col>
-        </Row>
-      </Form>
-    </>
+    <Form {...layout} onSubmitCapture={handleSubmit(onSubmit)}>
+      <Row justify="center">
+        <Col xs={16} sm={12} md={10} lg={8} xl={6}>
+          <div style={{ minHeight: "30px" }}>
+            {gqlError && <H4 color="red">Wrong username or password</H4>}
+          </div>
+          <TextInput label="Username or e-mail" name="usernameOrEmail" control={control} />
+          <PasswordInput label="Password" name="password" control={control} />
+          <Centered>
+            <SubmitButton label="Login" loading={submitted && !data?.login && !gqlError} />
+          </Centered>
+        </Col>
+      </Row>
+    </Form>
   )
 }
 

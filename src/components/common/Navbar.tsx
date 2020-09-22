@@ -1,23 +1,21 @@
-import { blue } from "@ant-design/colors"
 import { H1 } from "./Text"
 import React from "react"
 import { Button, Layout } from "antd"
 import Box from "./Box"
-import { userNameState } from "../../state/user.state"
-import { useRecoilValue } from "recoil"
 import Link from "next/link"
-
-const { Header } = Layout
+import { useCurrentUserQuery } from "../../../generated/graphql"
+import { Header } from "./page.styled"
 
 type NavbarProps = {
   showLogin?: boolean
 }
 
 const Navbar = ({ showLogin = false }: NavbarProps) => {
-  const userName = useRecoilValue(userNameState)
+  const { data, loading } = useCurrentUserQuery()
+  const userName = data?.currentUser?.username
 
   return (
-    <Header style={{ backgroundColor: blue.primary }}>
+    <Header>
       <Box
         style={{ maxHeight: "100%" }}
         flex
@@ -26,7 +24,7 @@ const Navbar = ({ showLogin = false }: NavbarProps) => {
         alignItems="center"
       >
         <H1 color="white">Trollo</H1>
-        {showLogin && !userName ? (
+        {showLogin && !loading && !userName ? (
           <Link href="/login">
             <Button>Login</Button>
           </Link>

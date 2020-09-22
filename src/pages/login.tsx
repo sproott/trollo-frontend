@@ -1,21 +1,14 @@
 import React, { useEffect } from "react"
 import LoginForm from "../components/login/LoginForm"
-import { Layout } from "antd"
 import { H1 } from "../components/common/Text"
-import { LoginContent } from "../components/common/login.styled"
+import { LoginContent } from "../components/login/login.styled"
 import Navbar from "../components/common/Navbar"
-import { GetServerSideProps } from "next"
-import { PageCurrentUserComp, ssrCurrentUser } from "../../generated/page"
-import { useRecoilState } from "recoil"
-import { userState } from "../state/user.state"
-import { withApollo } from "../lib/withApollo"
+import withCurrentUser, { ProcessDataFn } from "../lib/withCurrentUser"
+import { Layout } from "../components/common/page.styled"
 
-const Login: PageCurrentUserComp = ({ data }) => {
-  const [user, setUser] = useRecoilState(userState)
-  useEffect(() => setUser(data?.currentUser), [data])
-
+const Login = () => {
   return (
-    <Layout style={{ minHeight: "100%" }}>
+    <Layout>
       <Navbar />
       <LoginContent>
         <H1 textAlign="center" style={{ marginBottom: "50px" }}>
@@ -27,12 +20,12 @@ const Login: PageCurrentUserComp = ({ data }) => {
   )
 }
 
-// Login.getInitialProps = async (ctx) => {
-//   return { cookie: cookies(ctx) }
-// }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return await ssrCurrentUser.getServerPage({}, context)
+const redirectIfLoggedIn: ProcessDataFn = (data, router) => {
+  if (!!data.currentUser) {
+    router.push("/")
+    return { redirecting: true }
+  }
+  return { redirecting: false }
 }
 
-export default withApollo(ssrCurrentUser.withPage(() => ({}))(Login))
+export default withCurrentUser(Login, redirectIfLoggedIn)

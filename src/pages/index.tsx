@@ -1,24 +1,14 @@
-import React, { useEffect } from "react"
+import React from "react"
 import Navbar from "../components/common/Navbar"
-import { LoginContent } from "../components/common/login.styled"
+import { LoginContent } from "../components/login/login.styled"
 import { H1 } from "../components/common/Text"
-import { Layout } from "antd"
+import withCurrentUser from "../lib/withCurrentUser"
 import { GetServerSideProps } from "next"
-import { PageCurrentUserComp, ssrCurrentUser } from "../../generated/page"
-import { withApollo } from "../lib/withApollo"
-import { useRecoilState } from "recoil"
-import { userState } from "../state/user.state"
+import { Layout } from "../components/common/page.styled"
 
-const Home: PageCurrentUserComp = ({ data }) => {
-  const [user, setUser] = useRecoilState(userState)
-  useEffect(() => {
-    if (!user) {
-      setUser(data?.currentUser)
-    }
-  }, [data])
-
+const Home = () => {
   return (
-    <Layout style={{ minHeight: "100%" }}>
+    <Layout>
       <Navbar showLogin />
       <LoginContent>
         <H1 textAlign="center" style={{ marginBottom: "50px" }}>
@@ -29,8 +19,4 @@ const Home: PageCurrentUserComp = ({ data }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return await ssrCurrentUser.getServerPage({}, context)
-}
-
-export default withApollo(ssrCurrentUser.withPage(() => ({}))(Home))
+export default withCurrentUser(Home)
