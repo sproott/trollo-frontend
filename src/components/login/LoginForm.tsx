@@ -6,9 +6,15 @@ import PasswordInput from "../common/form/PasswordInput"
 import { FormProps } from "antd/es/form"
 import SubmitButton from "../common/form/SubmitButton"
 import Centered from "../common/Centered"
-import { useCurrentUserQuery, useLoginMutation } from "../../../generated/graphql"
+import {
+  CurrentUserDocument,
+  CurrentUserQuery,
+  useCurrentUserQuery,
+  useLoginMutation,
+} from "../../../generated/graphql"
 import { H1, H4 } from "../common/Text"
 import { useRouter } from "next/router"
+import { rejects } from "assert"
 
 const layout = {
   layout: "vertical",
@@ -21,7 +27,6 @@ type FormData = {
 
 const LoginForm = () => {
   const [login, { loading, error: gqlError, data }] = useLoginMutation()
-  const { refetch } = useCurrentUserQuery()
   const [submitted, setSubmitted] = useState(false)
   const router = useRouter()
 
@@ -31,20 +36,28 @@ const LoginForm = () => {
       password: "",
     },
   })
-  const onSubmit = useCallback((formData) => {
+  const onSubmit = useCallback(async (formData) => {
     setSubmitted(true)
-    login({
-      variables: {
-        input: formData,
-      },
-    })
-      .then(({ data: { login: user } }) => {
-        refetch()
-        router.push("/")
+    try {
+      await login({
+        variables: {
+          input: formData,
+        },
+        update: (store, { data }) => {
+          store.writeQuery<CurrentUserQuery>({
+            query: CurrentUserDocument,
+            data: {
+              currentUser: data?.login,
+            },
+          })
+        },
       })
-      .catch((error) => {
-        console.log(error)
-      })
+    } catch (error) {
+      setSubmitted(false)
+      return
+    }
+
+    router.replace("/")
   }, [])
 
   return (
@@ -57,7 +70,7 @@ const LoginForm = () => {
           <TextInput label="Username or e-mail" name="usernameOrEmail" control={control} />
           <PasswordInput label="Password" name="password" control={control} />
           <Centered>
-            <SubmitButton label="Login" loading={submitted && !data?.login && !gqlError} />
+            <SubmitButton label="Login" loading={submitted} />
           </Centered>
         </Col>
       </Row>

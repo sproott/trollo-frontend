@@ -3,7 +3,6 @@ import Navbar from "../components/common/Navbar"
 import { LoginContent } from "../components/login/login.styled"
 import { H1 } from "../components/common/Text"
 import withCurrentUser from "../lib/withCurrentUser"
-import { GetServerSideProps } from "next"
 import { Layout } from "../components/common/page.styled"
 
 const Home = () => {

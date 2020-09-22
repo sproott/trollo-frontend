@@ -20,9 +20,9 @@ const withCurrentUserInner = (Comp: FC, processDataFn?: ProcessDataFn) => () => 
   const { data, loading } = useCurrentUserQuery()
   const [redirecting, setRedirecting] = useState(false)
   const [calledProcessFn, setCalledProcessFn] = useState(false)
+  const router = useRouter()
 
   if (!!processDataFn && isBrowser() && !calledProcessFn && !loading && !!data) {
-    const router = useRouter()
     const { redirecting } = processDataFn(data, router)
     !!redirecting && setRedirecting(true)
     setCalledProcessFn(true)
