@@ -1240,7 +1240,7 @@
     "@graphql-codegen/visitor-plugin-common" "^1.17.13"
     tslib "~2.0.0"
 
-"@graphql-codegen/plugin-helpers@^1.17.0", "@graphql-codegen/plugin-helpers@^1.17.8":
+"@graphql-codegen/plugin-helpers@^1.17.8":
   version "1.17.8"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-1.17.8.tgz#d47e8bd6b425b38cfc4e2d670b31183b8e9a91e8"
   integrity sha512-Ck1E4QC4yrhX5zUtMlc/uloly6TWSpJDA7+aJrdMOY+MEUgrrM7wJsLV9azNae2OmrhZAQopSuGezjHNbsqSdA==
@@ -1280,7 +1280,7 @@
     pascal-case "^3.1.1"
     tslib "~2.0.0"
 
-"@graphql-codegen/typescript@^1.17.8":
+"@graphql-codegen/typescript@^1.17.8", "@graphql-codegen/typescript@^1.17.9":
   version "1.17.9"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript/-/typescript-1.17.9.tgz#9f96f39c3b59c13f52db8955fff3aa5889bb7827"
   integrity sha512-r6bPSJIeQoMicMEru2pxwAtw5DaY4KCnCd8R2xoQ8aZpkpxqhzd5fmdhh8oXLE4CAZhUCuV0Uad7Ps17Lr5jaw==
@@ -1290,7 +1290,7 @@
     auto-bind "~4.0.0"
     tslib "~2.0.1"
 
-"@graphql-codegen/visitor-plugin-common@^1.17.0", "@graphql-codegen/visitor-plugin-common@^1.17.13", "@graphql-codegen/visitor-plugin-common@^1.17.14":
+"@graphql-codegen/visitor-plugin-common@^1.17.13", "@graphql-codegen/visitor-plugin-common@^1.17.14":
   version "1.17.14"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-1.17.14.tgz#dfd15932a2d9f2a0be3ce945206a173609908769"
   integrity sha512-tHVkMqQcWuq5xuXm7q8JKcKUVdEYaT61Hnz1OZNgYCBQIOCKUljZcmPuy3F8aJU29XHyZ2vwF2hNG6q4CE3fcQ==
@@ -4250,15 +4250,6 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
   integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
-
-graphql-codegen-apollo-next-ssr@^0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/graphql-codegen-apollo-next-ssr/-/graphql-codegen-apollo-next-ssr-0.0.15.tgz#ef69600f675c88ab1cf9c71d3116689e44b9fa11"
-  integrity sha512-3fflW3siWNo3kIwK/3X7EoQZUy5Ht4b2vjtCMDn7+I6KH1wBZwSbAe8QA3bpZQ4hGLhAXxe678mChMMxfnR/OQ==
-  dependencies:
-    "@graphql-codegen/plugin-helpers" "^1.17.0"
-    "@graphql-codegen/visitor-plugin-common" "^1.17.0"
-    auto-bind "~4.0.0"
 
 graphql-config@^3.0.2:
   version "3.0.3"
