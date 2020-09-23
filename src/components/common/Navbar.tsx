@@ -1,6 +1,6 @@
 import { H1 } from "./Text"
 import React from "react"
-import { Button } from "antd"
+import { Button, Space } from "antd"
 import Box from "./Box"
 import Link from "next/link"
 import { useCurrentUserQuery } from "../../../generated/graphql"
@@ -8,27 +8,31 @@ import { Header } from "./page.styled"
 import Logo from "./Logo"
 
 type NavbarProps = {
-  showLoginButton?: boolean
   hideUserInfo?: boolean
 }
 
-const UserInfo = ({ showLoginButton }: NavbarProps) => {
-  const { data } = useCurrentUserQuery()
+const UserInfo = () => {
+  const { data, loading } = useCurrentUserQuery()
   const userName = data?.currentUser?.username
   return userName ? (
     <H1 textAlign="right" color="white">
       {userName}
     </H1>
   ) : (
-    showLoginButton && (
-      <Link href="/login">
-        <Button>Login</Button>
-      </Link>
+    !loading && (
+      <Space size="large">
+        <Link href="/login">
+          <Button>Login</Button>
+        </Link>
+        <Link href="/register">
+          <Button>Register</Button>
+        </Link>
+      </Space>
     )
   )
 }
 
-const Navbar = ({ showLoginButton = false, hideUserInfo = false }: NavbarProps) => {
+const Navbar = ({ hideUserInfo = false }: NavbarProps) => {
   return (
     <Header>
       <Box
@@ -39,7 +43,7 @@ const Navbar = ({ showLoginButton = false, hideUserInfo = false }: NavbarProps) 
         alignItems="center"
       >
         <Logo />
-        {!hideUserInfo && <UserInfo showLoginButton={showLoginButton} />}
+        {!hideUserInfo && <UserInfo />}
       </Box>
     </Header>
   )

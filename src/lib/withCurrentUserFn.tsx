@@ -1,4 +1,3 @@
-import { ssrCurrentUser } from "../../generated/page"
 import React, { FC, useState } from "react"
 import * as Types from "../../generated/graphql"
 import { NextRouter, useRouter } from "next/router"

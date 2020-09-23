@@ -5,6 +5,7 @@ import { Form } from "antd"
 export type ControlledInputProps = {
   name: string
   label?: string
+  error?: string
   control: Control
 }
 
@@ -16,11 +17,16 @@ const ControlledFormItem = ({
   name,
   label,
   control,
+  error,
   children,
 }: ControlledInputWithChildrenProps) => {
   return (
     <Controller
-      as={<Form.Item label={label}>{children}</Form.Item>}
+      as={
+        <Form.Item label={label} validateStatus={!!error && "error"} help={error}>
+          {children}
+        </Form.Item>
+      }
       control={control}
       name={name}
     />

@@ -15,3 +15,9 @@ export const Header = styled(_Header)`
 export const Content = styled(_Content)`
   background-color: #ffffff;
 `
+
+export const CenteredContent = styled(Content)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`

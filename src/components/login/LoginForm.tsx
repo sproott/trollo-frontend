@@ -9,34 +9,28 @@ import Centered from "../common/Centered"
 import {
   CurrentUserDocument,
   CurrentUserQuery,
-  useCurrentUserQuery,
+  LoginInput,
   useLoginMutation,
 } from "../../../generated/graphql"
 import { H1, H4 } from "../common/Text"
 import { useRouter } from "next/router"
-import { rejects } from "assert"
 
 const layout = {
   layout: "vertical",
 } as FormProps
-
-type FormData = {
-  usernameOrEmail: string
-  password: string
-}
 
 const LoginForm = () => {
   const [login, { loading, error: gqlError, data }] = useLoginMutation()
   const [submitted, setSubmitted] = useState(false)
   const router = useRouter()
 
-  const { control, handleSubmit, errors } = useForm<FormData>({
+  const { control, handleSubmit, errors } = useForm<LoginInput>({
     defaultValues: {
       usernameOrEmail: "",
       password: "",
     },
   })
-  const onSubmit = useCallback(async (formData) => {
+  const onSubmit = async (formData: LoginInput) => {
     setSubmitted(true)
     try {
       await login({
@@ -58,7 +52,7 @@ const LoginForm = () => {
     }
 
     router.replace("/")
-  }, [])
+  }
 
   return (
     <Form {...layout} onSubmitCapture={handleSubmit(onSubmit)}>
