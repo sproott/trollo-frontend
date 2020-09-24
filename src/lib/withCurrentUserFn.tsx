@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react"
 import * as Types from "../../generated/graphql"
+import { useCurrentUserQuery } from "../../generated/graphql"
 import { NextRouter, useRouter } from "next/router"
 import { isBrowser } from "./util"
-import { useCurrentUserQuery } from "../../generated/graphql"
 import { withApollo } from "./withApollo"
 import LoadingPage from "../components/LoadingPage"
 

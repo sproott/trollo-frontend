@@ -1,6 +1,6 @@
 import "../../styles/globals.css"
 import React from "react"
-import App, { AppContext, AppProps } from "next/app"
+import { AppProps } from "next/app"
 import "antd/dist/antd.compact.css"
 import { RecoilRoot } from "recoil"
 

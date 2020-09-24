@@ -1,7 +1,7 @@
 import React from "react"
 import { H1 } from "../components/common/Text"
 import Navbar from "../components/common/Navbar"
-import withCurrentUserFn, { ProcessDataFn } from "../lib/withCurrentUserFn"
+import withCurrentUserFn from "../lib/withCurrentUserFn"
 import { CenteredContent, Layout } from "../components/common/page.styled"
 import { redirectIfLoggedIn } from "../lib/processDataFn"
 import RegisterForm from "../components/register/RegisterForm"

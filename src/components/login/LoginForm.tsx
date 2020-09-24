@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Col, Form, Modal, Row } from "antd"
+import { Col, Form, Row } from "antd"
 import TextInput from "../common/form/TextInput"
 import PasswordInput from "../common/form/PasswordInput"
 import { FormProps } from "antd/es/form"
@@ -12,7 +12,7 @@ import {
   LoginInput,
   useLoginMutation,
 } from "../../../generated/graphql"
-import { H1, H4 } from "../common/Text"
+import { H4 } from "../common/Text"
 import { useRouter } from "next/router"
 
 const layout = {
