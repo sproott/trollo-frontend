@@ -14,10 +14,22 @@ import {
 } from "../../../generated/graphql"
 import { H1, H4 } from "../common/Text"
 import { useRouter } from "next/router"
+import { yupResolver } from "@hookform/resolvers"
+import * as yup from "yup"
+import Box from "../common/Box"
 
 const layout = {
   layout: "vertical",
 } as FormProps
+
+const schema = yup.object().shape({
+  username: yup.string().required("Username is required"),
+  email: yup.string().required("Email is required").email("Email is invalid"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters"),
+})
 
 const RegisterForm = () => {
   const [register, { loading, error: gqlError, data }] = useRegisterMutation()
@@ -31,9 +43,12 @@ const RegisterForm = () => {
       email: "",
       password: "",
     },
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+    resolver: yupResolver(schema),
   })
+  const fieldProps = [control]
   const onSubmit = async (formData: RegisterInput) => {
-    console.log(formData)
     setSubmitted(true)
     try {
       await register({
@@ -95,9 +110,11 @@ const RegisterForm = () => {
             error={errors.password?.message}
             control={control}
           />
-          <Centered>
-            <SubmitButton label="Register" loading={submitted} />
-          </Centered>
+          <Box padding="20px 0 0 0">
+            <Centered>
+              <SubmitButton label="Register" loading={submitted} />
+            </Centered>
+          </Box>
         </Col>
       </Row>
     </Form>

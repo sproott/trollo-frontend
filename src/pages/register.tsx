@@ -11,7 +11,7 @@ const Login = () => {
     <Layout>
       <Navbar />
       <CenteredContent>
-        <H1 textAlign="center" style={{ marginBottom: "50px" }}>
+        <H1 textAlign="center" style={{ marginBottom: "30px" }}>
           Create a new account
         </H1>
         <RegisterForm />
