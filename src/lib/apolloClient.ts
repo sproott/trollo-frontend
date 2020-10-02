@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client"
-import { isBrowser } from "./util"
+import { isBrowser, isProduction } from "./util"
 
 export type Options = {
   cookie?: string
@@ -12,7 +12,7 @@ function createLink(cookie: string) {
   if (!isBrowser()) {
   } else {
     return new HttpLink({
-      uri: "http://localhost:4000/graphql",
+      uri: process.env.API_PATH ?? "http://localhost:4000/graphql",
       credentials: "include",
       headers: {
         cookie: cookie ?? "",
