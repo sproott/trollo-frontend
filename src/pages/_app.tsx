@@ -3,12 +3,23 @@ import React from "react"
 import { AppProps } from "next/app"
 import "antd/dist/antd.compact.css"
 import { RecoilRoot } from "recoil"
+import { Helmet } from "react-helmet"
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <RecoilRoot>
-      <Component {...pageProps} />
-    </RecoilRoot>
+    <>
+      <Helmet>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+          rel="stylesheet"
+        />
+        <title>Trollo</title>
+      </Helmet>
+
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
+    </>
   )
 }
 

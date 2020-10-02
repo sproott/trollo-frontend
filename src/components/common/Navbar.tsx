@@ -1,4 +1,3 @@
-import { H1 } from "./Text"
 import React from "react"
 import { Button, Space } from "antd"
 import Box from "./Box"
@@ -6,6 +5,7 @@ import Link from "next/link"
 import { useCurrentUserQuery } from "../../../generated/graphql"
 import { Header } from "./page.styled"
 import Logo from "./Logo"
+import Avatar from "./Avatar"
 
 type NavbarProps = {
   hideUserInfo?: boolean
@@ -13,19 +13,16 @@ type NavbarProps = {
 
 const UserInfo = () => {
   const { data, loading } = useCurrentUserQuery()
-  const userName = data?.currentUser?.username
-  return userName ? (
-    <H1 textAlign="right" color="white">
-      {userName}
-    </H1>
+  return data?.currentUser?.username ? (
+    <Avatar />
   ) : (
     !loading && (
       <Space size="large">
         <Link href="/login">
-          <Button>Login</Button>
+          <Button ghost>Login</Button>
         </Link>
         <Link href="/register">
-          <Button>Register</Button>
+          <Button ghost>Register</Button>
         </Link>
       </Space>
     )
