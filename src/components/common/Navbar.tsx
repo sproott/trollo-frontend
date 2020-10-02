@@ -13,10 +13,11 @@ type NavbarProps = {
 
 const UserInfo = () => {
   const { data, loading } = useCurrentUserQuery()
-  return data?.currentUser?.username ? (
-    <Avatar />
-  ) : (
-    !loading && (
+  return (
+    !loading &&
+    (data?.currentUser?.username ? (
+      <Avatar />
+    ) : (
       <Space size="large">
         <Link href="/login">
           <Button ghost>Login</Button>
@@ -25,7 +26,7 @@ const UserInfo = () => {
           <Button ghost>Register</Button>
         </Link>
       </Space>
-    )
+    ))
   )
 }
 
