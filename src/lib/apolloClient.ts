@@ -9,8 +9,8 @@ export type Options = {
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 function createLink(cookie: string) {
-  if (!isBrowser()) {
-  } else {
+  if (isBrowser()) {
+    console.log(JSON.stringify(process.env))
     return new HttpLink({
       uri: process.env.API_PATH ?? "http://localhost:4000/graphql",
       credentials: "include",
