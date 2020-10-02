@@ -1,11 +1,11 @@
 import React from "react"
-import { H1 } from "./Text"
+import Link from "next/link"
 
 const Logo = () => {
   return (
-    <H1 color="white" style={{ fontSize: 36, fontFamily: "Pacifico" }}>
-      Trollo
-    </H1>
+    <Link href="/">
+      <a style={{ fontSize: 36, fontFamily: "Pacifico", color: "white" }}>Trollo</a>
+    </Link>
   )
 }
 
