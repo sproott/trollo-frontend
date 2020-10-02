@@ -7,10 +7,6 @@ import { Header } from "./page.styled"
 import Logo from "./Logo"
 import Avatar from "./Avatar"
 
-type NavbarProps = {
-  hideUserInfo?: boolean
-}
-
 const UserInfo = () => {
   const { data, loading } = useCurrentUserQuery()
 
@@ -31,7 +27,7 @@ const UserInfo = () => {
   )
 }
 
-const Navbar = ({ hideUserInfo = false }: NavbarProps) => {
+const Navbar = () => {
   return (
     <Header>
       <Box
@@ -42,7 +38,7 @@ const Navbar = ({ hideUserInfo = false }: NavbarProps) => {
         alignItems="center"
       >
         <Logo />
-        {!hideUserInfo && <UserInfo />}
+        <UserInfo />
       </Box>
     </Header>
   )

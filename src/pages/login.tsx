@@ -9,7 +9,7 @@ import { redirectIfLoggedIn } from "../lib/processDataFn"
 const Login = () => {
   return (
     <Layout>
-      <Navbar hideUserInfo />
+      <Navbar />
       <CenteredContent>
         <H1 textAlign="center" style={{ marginBottom: "50px" }}>
           Login to the app
