@@ -7,4 +7,7 @@ module.exports = {
     // Important: return the modified config
     return config
   },
+  publicConfig: {
+    API_URL: process.env.API_URL,
+  },
 }

@@ -1,6 +1,10 @@
 import { useMemo } from "react"
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client"
 import { isBrowser, isProduction } from "./util"
+import getConfig from "next/config"
+
+const { publicConfig } = getConfig()
+const { API_URL } = publicConfig
 
 export type Options = {
   cookie?: string
@@ -10,9 +14,8 @@ let apolloClient: ApolloClient<NormalizedCacheObject>
 
 function createLink(cookie: string) {
   if (isBrowser()) {
-    console.log(JSON.stringify(process.env))
     return new HttpLink({
-      uri: process.env.API_PATH ?? "http://localhost:4000/graphql",
+      uri: (API_URL as string) ?? "http://localhost:4000/graphql",
       credentials: "include",
       headers: {
         cookie: cookie ?? "",
