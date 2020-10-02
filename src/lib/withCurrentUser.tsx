@@ -30,8 +30,8 @@ const withCurrentUserFnInner = (Comp: FC, processDataFn?: ProcessDataFn) => () =
   return !!data && !redirecting ? <Comp /> : <LoadingPage />
 }
 
-const withCurrentUserFn = (Comp: FC, processDataFn: ProcessDataFn) => {
+const withCurrentUser = (Comp: FC, processDataFn?: ProcessDataFn) => {
   return withApollo(withCurrentUserFnInner(Comp, processDataFn))
 }
 
-export default withCurrentUserFn
+export default withCurrentUser

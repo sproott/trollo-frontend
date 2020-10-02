@@ -13,6 +13,7 @@ type NavbarProps = {
 
 const UserInfo = () => {
   const { data, loading } = useCurrentUserQuery()
+
   return (
     !loading &&
     (data?.currentUser?.username ? (

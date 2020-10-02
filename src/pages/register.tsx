@@ -1,7 +1,7 @@
 import React from "react"
 import { H1 } from "../components/common/Text"
 import Navbar from "../components/common/Navbar"
-import withCurrentUserFn from "../lib/withCurrentUserFn"
+import withCurrentUser from "../lib/withCurrentUser"
 import { CenteredContent, Layout } from "../components/common/page.styled"
 import { redirectIfLoggedIn } from "../lib/processDataFn"
 import RegisterForm from "../components/register/RegisterForm"
@@ -20,4 +20,4 @@ const Login = () => {
   )
 }
 
-export default withCurrentUserFn(Login, redirectIfLoggedIn)
+export default withCurrentUser(Login, redirectIfLoggedIn)

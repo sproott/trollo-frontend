@@ -1,19 +1,23 @@
 import styled from "styled-components"
 
-const Box = styled.div<{
+export type BoxProps = {
   flex?: boolean
   alignItems?: AlignItems
   justifyContent?: JustifyContent
   flexDirection?: FlexDirection
+  flexWrap?: FlexWrap
   padding?: string
   fullWidth?: boolean
-}>`
+}
+
+const Box = styled.div<BoxProps>`
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   display: ${({ flex }) => (flex ? "flex" : "block")};
   align-items: ${({ alignItems }) => alignItems};
   justify-content: ${({ justifyContent }) => justifyContent};
   flex-direction: ${({ flexDirection }) => flexDirection};
   padding: ${({ padding }) => padding};
+  flex-wrap: ${({ flexWrap }) => flexWrap};
 `
 
 export type AlignItems = "stretch" | "center" | "flex-start" | "flex-end"
@@ -27,5 +31,7 @@ export type JustifyContent =
   | "space-evenly"
 
 export type FlexDirection = "row" | "row-reverse" | "column" | "column-reverse"
+
+export type FlexWrap = "nowrap" | "wrap" | "wrap-reverse"
 
 export default Box

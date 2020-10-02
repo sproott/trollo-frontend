@@ -1,18 +1,19 @@
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Col, Form, Modal, Row } from "antd"
+import { Col, Form, Row } from "antd"
 import TextInput from "../common/form/TextInput"
 import PasswordInput from "../common/form/PasswordInput"
 import { FormProps } from "antd/es/form"
 import SubmitButton from "../common/form/SubmitButton"
 import Centered from "../common/Centered"
 import {
+  BoardsDocument,
   CurrentUserDocument,
   CurrentUserQuery,
   RegisterInput,
   useRegisterMutation,
 } from "../../../generated/graphql"
-import { H1, H4 } from "../common/Text"
+import { H4 } from "../common/Text"
 import { useRouter } from "next/router"
 import { yupResolver } from "@hookform/resolvers"
 import * as yup from "yup"
@@ -47,7 +48,7 @@ const RegisterForm = () => {
     reValidateMode: "onBlur",
     resolver: yupResolver(schema),
   })
-  const fieldProps = [control]
+
   const onSubmit = async (formData: RegisterInput) => {
     setSubmitted(true)
     try {
@@ -55,6 +56,7 @@ const RegisterForm = () => {
         variables: {
           input: formData,
         },
+        refetchQueries: [{ query: BoardsDocument }],
         update: (store, { data }) => {
           store.writeQuery<CurrentUserQuery>({
             query: CurrentUserDocument,

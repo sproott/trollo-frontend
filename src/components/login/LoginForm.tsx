@@ -7,6 +7,7 @@ import { FormProps } from "antd/es/form"
 import SubmitButton from "../common/form/SubmitButton"
 import Centered from "../common/Centered"
 import {
+  BoardsDocument,
   CurrentUserDocument,
   CurrentUserQuery,
   LoginInput,
@@ -37,6 +38,7 @@ const LoginForm = () => {
         variables: {
           input: formData,
         },
+        refetchQueries: [{ query: BoardsDocument }],
         update: (store, { data }) => {
           store.writeQuery<CurrentUserQuery>({
             query: CurrentUserDocument,
@@ -51,7 +53,7 @@ const LoginForm = () => {
       return
     }
 
-    router.replace("/")
+    await router.replace("/")
   }
 
   return (

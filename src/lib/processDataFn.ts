@@ -1,4 +1,4 @@
-import { ProcessDataFn } from "./withCurrentUserFn"
+import { ProcessDataFn } from "./withCurrentUser"
 
 export const redirectIfLoggedIn: ProcessDataFn = (data, router) => {
   if (!!data.currentUser) {

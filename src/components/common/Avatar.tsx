@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Avatar as AntdAvatar, Popover } from "antd"
 import {
   CurrentUserDocument,
@@ -17,8 +17,13 @@ const abbreviateUsername = (username: string): string => {
 }
 
 const Avatar = () => {
-  const { data } = useCurrentUserQuery()
+  const { data, startPolling, stopPolling } = useCurrentUserQuery()
   const [logout] = useLogoutMutation()
+
+  useEffect(() => {
+    startPolling(10000)
+    return stopPolling
+  }, [])
 
   const onLogout = async () => {
     try {
@@ -39,13 +44,15 @@ const Avatar = () => {
     }
   }
 
+  const username = data.currentUser?.username
+
   return (
     <Popover
       placement="bottom"
       content={
         <div>
           <H3 color="grey" style={{ cursor: "default", marginBottom: "10px" }}>
-            {data.currentUser?.username}
+            {username}
           </H3>
           <H3 style={{ textAlign: "center", width: "100%", cursor: "pointer" }} onClick={onLogout}>
             Logout
@@ -54,7 +61,7 @@ const Avatar = () => {
       }
     >
       <AntdAvatar size={40} style={{ cursor: "pointer", color: "black", backgroundColor: "white" }}>
-        {abbreviateUsername(data.currentUser?.username)}
+        {username && abbreviateUsername(username)}
       </AntdAvatar>
     </Popover>
   )

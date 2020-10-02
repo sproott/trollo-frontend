@@ -5,7 +5,6 @@ export const currentUserQuery = gql`
     currentUser {
       id
       username
-      email
     }
   }
 `
