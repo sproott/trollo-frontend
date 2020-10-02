@@ -3,8 +3,8 @@ import { H1 } from "../common/Text"
 import { Content } from "../common/page.styled"
 import { useBoardsQuery } from "../../../generated/graphql"
 import { Col, Divider, Row, Skeleton } from "antd"
-import TeamsInfo from "./TeamsInfo"
 import { BoardGrid } from "./Boards.styled"
+import TeamsInfo from "./TeamsInfo"
 
 const SkeletonButton = () => <Skeleton.Button active style={{ width: "100px", height: "80px" }} />
 
@@ -38,11 +38,15 @@ const Boards = () => {
     <Content style={{ padding: "50px" }}>
       <Row justify="center">
         <Col xs={24} sm={22} md={20} lg={16} xl={12}>
-          <H1>Your teams</H1>
-          {data && !loading && <TeamsInfo teams={data.currentUser.ownTeams} />}
-          <Divider />
-          <H1>Teams you participate in</H1>
-          {data && !loading && <TeamsInfo teams={data.currentUser.teams} />}
+          {data?.currentUser && !loading && (
+            <>
+              <H1>Your teams</H1>
+              <TeamsInfo teams={data.currentUser.ownTeams} />
+              <Divider />
+              <H1>Teams you participate in</H1>
+              <TeamsInfo teams={data.currentUser?.teams} />
+            </>
+          )}
         </Col>
       </Row>
     </Content>
