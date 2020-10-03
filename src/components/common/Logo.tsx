@@ -1,10 +1,11 @@
 import React from "react"
 import Link from "next/link"
+import { LogoStyled } from "./Logo.styled"
 
 const Logo = () => {
   return (
     <Link href="/">
-      <a style={{ fontSize: 36, fontFamily: "Pacifico", color: "white" }}>Trollo</a>
+      <LogoStyled>Trollo</LogoStyled>
     </Link>
   )
 }
