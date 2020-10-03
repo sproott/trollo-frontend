@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import theme from "../../style/theme"
 
 export const LogoStyled = styled.a`
   font-size: 36px;
@@ -7,7 +8,7 @@ export const LogoStyled = styled.a`
   user-select: none !important;
 
   :hover {
-    color: #e6f6ff;
+    color: ${theme.blue[0]};
   }
 
   :not(:hover) {

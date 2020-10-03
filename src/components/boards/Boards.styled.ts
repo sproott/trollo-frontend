@@ -1,7 +1,8 @@
 import styled from "styled-components"
+import theme from "../../style/theme"
 
 export const BoardButton = styled.a`
-  background-color: #1890ff;
+  background-color: ${theme.blue.primary};
   color: white;
   font-size: small;
   text-decoration: none;
@@ -12,7 +13,7 @@ export const BoardButton = styled.a`
 
   :hover {
     color: white;
-    background-color: #0070f3;
+    background-color: ${theme.blue[6]};
   }
 `
 
