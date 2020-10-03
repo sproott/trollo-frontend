@@ -6,11 +6,11 @@ export const LogoStyled = styled.a`
   color: white;
   user-select: none !important;
 
-  :not(:hover) {
-    color: white;
+  :hover {
+    color: #e6f6ff;
   }
 
-  :hover {
+  :not(:hover) {
     color: white;
   }
 `

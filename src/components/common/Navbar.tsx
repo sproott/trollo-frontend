@@ -1,11 +1,12 @@
 import React from "react"
-import { Button, Space } from "antd"
+import { Space } from "antd"
 import Box from "./Box"
 import Link from "next/link"
 import { useCurrentUserQuery } from "../../../generated/graphql"
 import { Header } from "./page.styled"
 import Logo from "./Logo"
 import Avatar from "./Avatar"
+import { Button } from "./Navbar.styled"
 
 type NavbarProps = {
   hideUserInfo?: boolean
