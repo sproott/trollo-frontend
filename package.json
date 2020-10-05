@@ -16,7 +16,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.0",
     "@hookform/resolvers": "^0.1.1",
-    "antd": "^4.6.5",
+    "antd": "^4.6.6",
     "dayjs": "^1.8.36",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
