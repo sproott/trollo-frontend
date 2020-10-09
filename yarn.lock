@@ -2061,7 +2061,7 @@ antd-dayjs-webpack-plugin@^1.0.1:
   resolved "https://registry.yarnpkg.com/antd-dayjs-webpack-plugin/-/antd-dayjs-webpack-plugin-1.0.1.tgz#cc31cc05c9bd69652a4bddab19eb49726bebe0d5"
   integrity sha512-1UWGAnv856s5r/2bi6KJvWMeevDEHwFFdHaymZElW5kbH06A/xP7JcZ75UdYoxqny3scD22DWErbGg+vQ9RNdg==
 
-antd@^4.6.5:
+antd@^4.6.6:
   version "4.6.6"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.6.6.tgz#79b3e22ba6ddefaa2948d00d86d2c6130b3562fb"
   integrity sha512-ruqzFFyohjEEp+Qg5VzBzFgDjqdj0FoPt3V/bGtLjeuQXPqFrPs+y4WWWmqi3ydGmN4VPIGBwd3CybQDrZAN3g==
