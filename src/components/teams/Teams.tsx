@@ -26,7 +26,7 @@ const LoadingComp = () => (
   </>
 )
 
-const Boards = () => {
+const Teams = () => {
   const { data, loading, startPolling, stopPolling } = useBoardsQuery()
 
   useEffect(() => {
@@ -53,4 +53,4 @@ const Boards = () => {
   )
 }
 
-export default Boards
+export default Teams
