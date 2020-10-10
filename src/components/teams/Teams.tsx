@@ -5,6 +5,8 @@ import { useBoardsQuery } from "../../../generated/graphql"
 import { Col, Divider, Row, Skeleton } from "antd"
 import { BoardGrid } from "./Boards.styled"
 import TeamsInfo from "./TeamsInfo"
+import Box from "../common/Box"
+import NewTeamButton from "./NewTeamButton"
 
 const SkeletonButton = () => <Skeleton.Button active style={{ width: "100px", height: "80px" }} />
 
@@ -40,7 +42,10 @@ const Teams = () => {
         <Col xs={24} sm={22} md={20} lg={16} xl={12}>
           {data?.currentUser && !loading && (
             <>
-              <H1>Your teams</H1>
+              <Box flex justifyContent="space-between">
+                <H1>Your teams</H1>
+                <NewTeamButton />
+              </Box>
               <TeamsInfo teams={data.currentUser.ownTeams} />
               <Divider />
               <H1>Teams you participate in</H1>

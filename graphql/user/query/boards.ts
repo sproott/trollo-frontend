@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-export const currentUserQuery = gql`
+export const boardsQuery = gql`
   fragment TeamInfo on Team {
     id
     name
