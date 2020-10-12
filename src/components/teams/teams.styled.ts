@@ -18,8 +18,7 @@ export const BoardButton = styled.a`
 `
 
 export const CreateBoardButton = styled.a`
-  background-color: ${theme.blue[4]};
-  color: white;
+  background-color: white;
   font-size: small;
   text-decoration: none;
   border-radius: 5px;
@@ -29,8 +28,7 @@ export const CreateBoardButton = styled.a`
   transition: 0.3s;
 
   :hover {
-    color: white;
-    background-color: ${theme.blue[5]};
+    background-color: ${theme.blue[0]};
   }
 `
 
