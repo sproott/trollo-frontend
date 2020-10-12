@@ -17,6 +17,23 @@ export const BoardButton = styled.a`
   }
 `
 
+export const CreateBoardButton = styled.a`
+  background-color: ${theme.blue[4]};
+  color: white;
+  font-size: small;
+  text-decoration: none;
+  border-radius: 5px;
+  border: 3px dashed ${theme.blue[3]};
+  height: 80px;
+  padding: 15px;
+  transition: 0.3s;
+
+  :hover {
+    color: white;
+    background-color: ${theme.blue[5]};
+  }
+`
+
 export const BoardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));

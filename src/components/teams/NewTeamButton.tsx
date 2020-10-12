@@ -6,10 +6,12 @@ import { yupResolver } from "@hookform/resolvers"
 import * as yup from "yup"
 import TextInput from "../common/form/TextInput"
 import {
+  BoardsDocument,
   BoardsQuery,
   MutationCreateTeamArgs,
   useCreateTeamMutation,
 } from "../../../generated/graphql"
+import produce from "immer"
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -32,9 +34,19 @@ const NewTeamButton = () => {
     setSubmitted(true)
     await createTeam({
       variables: formData,
-      // update: (store, { data }) => {
-      //   store.writeQuery<BoardsQuery>() // TODO finish this
-      // },
+      update: (store, { data }) => {
+        if (!data.createTeam.exists) {
+          const boards = store.readQuery<BoardsQuery>({ query: BoardsDocument })
+          const ownTeams = boards.currentUser.ownTeams
+
+          store.writeQuery<BoardsQuery>({
+            query: BoardsDocument,
+            data: produce(boards, (x) => {
+              x.currentUser.ownTeams.push(data.createTeam.team)
+            }),
+          })
+        }
+      },
     })
   }
 

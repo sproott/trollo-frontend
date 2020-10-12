@@ -1,5 +1,5 @@
 import React from "react"
-import { BoardButton, BoardTitle } from "./Boards.styled"
+import { BoardButton, BoardTitle } from "./teams.styled"
 import { Tooltip } from "antd"
 
 const BoardInfo = ({ name }: { name: string }) => {

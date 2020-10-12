@@ -9,6 +9,18 @@ export type Options = {
   cookie?: string
 }
 
+const typePolicies = {
+  User: {
+    fields: {
+      ownTeams: {
+        merge(existing: any, incoming: any) {
+          return incoming
+        },
+      },
+    },
+  },
+}
+
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 function createLink(cookie: string) {
@@ -27,7 +39,7 @@ function createApolloClient({ cookie }: Options) {
   return new ApolloClient({
     ssrMode: !isBrowser(),
     link: createLink(cookie),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ typePolicies }),
   })
 }
 

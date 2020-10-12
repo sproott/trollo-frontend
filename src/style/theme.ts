@@ -1,3 +1,5 @@
+import { grey } from "@ant-design/colors"
+
 const theme: Theme = {
   blue: [
     "#e6f7ff",
@@ -11,12 +13,14 @@ const theme: Theme = {
     "#003a8c",
     "#002766",
   ],
+  grey,
 }
 
 theme.blue.primary = theme.blue[5]
 
 export type Theme = {
   blue: string[] & { primary?: string }
+  grey: string[] & { primary?: string }
 }
 
 export default theme

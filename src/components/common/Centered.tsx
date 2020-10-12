@@ -1,12 +1,23 @@
-import React, { ReactChild } from "react"
+import React, { CSSProperties, ReactChild } from "react"
 import Box, { BoxProps } from "./Box"
 
-const Centered = ({ children, ...boxProps }: { children: ReactChild; boxProps?: BoxProps }) => {
+interface CenteredProps extends BoxProps {
+  children: React.ReactNode
+  style?: CSSProperties
+}
+
+export const HorizontallyCentered = ({ children, ...other }: CenteredProps) => {
   return (
-    <Box {...boxProps} flex justifyContent="center">
+    <Box {...other} flex justifyContent="center">
       {children}
     </Box>
   )
 }
 
-export default Centered
+export const Centered = ({ children, ...other }: CenteredProps) => {
+  return (
+    <Box {...other} flex justifyContent="center" alignItems="center">
+      {children}
+    </Box>
+  )
+}

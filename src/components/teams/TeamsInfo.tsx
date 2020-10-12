@@ -2,7 +2,8 @@ import React from "react"
 import { TeamInfoFragment } from "../../../generated/graphql"
 import { Card } from "antd"
 import BoardInfo from "./BoardInfo"
-import { BoardGrid } from "./Boards.styled"
+import { BoardGrid } from "./teams.styled"
+import NewBoardButton from "./NewBoardButton"
 
 const TeamsInfo = ({ teams }: { teams: Array<{ __typename?: "Team" } & TeamInfoFragment> }) => {
   return (
@@ -15,6 +16,7 @@ const TeamsInfo = ({ teams }: { teams: Array<{ __typename?: "Team" } & TeamInfoF
                 {team.boards.map((board) => {
                   return <BoardInfo name={board.name} key={board.id} />
                 })}
+                <NewBoardButton />
               </BoardGrid>
             ) : (
               <div>empty</div>

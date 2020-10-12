@@ -5,7 +5,7 @@ import TextInput from "../common/form/TextInput"
 import PasswordInput from "../common/form/PasswordInput"
 import { FormProps } from "antd/es/form"
 import SubmitButton from "../common/form/SubmitButton"
-import Centered from "../common/Centered"
+import { HorizontallyCentered } from "../common/Centered"
 import {
   BoardsDocument,
   CurrentUserDocument,
@@ -113,9 +113,9 @@ const RegisterForm = () => {
             control={control}
           />
           <Box padding="20px 0 0 0">
-            <Centered>
+            <HorizontallyCentered>
               <SubmitButton label="Register" loading={submitted} />
-            </Centered>
+            </HorizontallyCentered>
           </Box>
         </Col>
       </Row>
