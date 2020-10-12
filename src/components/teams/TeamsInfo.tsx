@@ -11,16 +11,12 @@ const TeamsInfo = ({ teams }: { teams: Array<{ __typename?: "Team" } & TeamInfoF
       {teams.map((team) => {
         return (
           <Card title={team.name} key={team.id} style={{ marginBottom: "10px" }}>
-            {team.boards ? (
-              <BoardGrid style={{ padding: "10px 10px 0 10px" }}>
-                {team.boards.map((board) => {
-                  return <BoardInfo name={board.name} key={board.id} />
-                })}
-                <NewBoardButton />
-              </BoardGrid>
-            ) : (
-              <div>empty</div>
-            )}
+            <BoardGrid style={{ padding: "10px 10px 0 10px" }}>
+              {team.boards?.map((board) => {
+                return <BoardInfo name={board.name} key={board.id} />
+              })}
+              <NewBoardButton />
+            </BoardGrid>
           </Card>
         )
       })}

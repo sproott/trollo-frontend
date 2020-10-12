@@ -1,15 +1,19 @@
 import styled from "styled-components"
 import theme from "../../style/theme"
 
-export const BoardButton = styled.a`
-  background-color: ${theme.blue.primary};
-  color: white;
+const BoardButtonBase = styled.a`
   font-size: small;
   text-decoration: none;
   border-radius: 5px;
   height: 80px;
   padding: 15px;
   transition: 0.3s;
+`
+
+export const BoardButton = styled(BoardButtonBase)`
+  background-color: ${theme.blue.primary};
+  color: white;
+  font-size: small;
 
   :hover {
     color: white;
@@ -17,18 +21,15 @@ export const BoardButton = styled.a`
   }
 `
 
-export const CreateBoardButton = styled.a`
+export const CreateBoardButton = styled(BoardButtonBase)`
   background-color: white;
-  font-size: small;
-  text-decoration: none;
-  border-radius: 5px;
+  font-size: medium;
+  color: ${theme.blue[3]};
   border: 3px dashed ${theme.blue[3]};
-  height: 80px;
-  padding: 15px;
-  transition: 0.3s;
 
   :hover {
     background-color: ${theme.blue[0]};
+    color: ${theme.blue[3]};
   }
 `
 
