@@ -1,5 +1,5 @@
-import { gql } from "@apollo/client"
 import * as Apollo from "@apollo/client"
+import { gql } from "@apollo/client"
 
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -55,6 +55,12 @@ export type HelloWorld = {
   greeting: Scalars["String"]
 }
 
+export type CreateBoardResponse = {
+  __typename?: "CreateBoardResponse"
+  board?: Maybe<Board>
+  exists?: Maybe<Scalars["Boolean"]>
+}
+
 export type CreateTeamResponse = {
   __typename?: "CreateTeamResponse"
   team?: Maybe<Team>
@@ -102,12 +108,23 @@ export type QueryUserArgs = {
 
 export type Mutation = {
   __typename?: "Mutation"
+  createBoard: CreateBoardResponse
+  deleteBoard?: Maybe<Scalars["Boolean"]>
   createTeam: CreateTeamResponse
   deleteTeam?: Maybe<Scalars["Boolean"]>
   login: User
   logout?: Maybe<Scalars["Boolean"]>
   register: RegisterResponse
   makeAdmin: Scalars["Boolean"]
+}
+
+export type MutationCreateBoardArgs = {
+  name: Scalars["String"]
+  teamId: Scalars["String"]
+}
+
+export type MutationDeleteBoardArgs = {
+  id: Scalars["String"]
 }
 
 export type MutationCreateTeamArgs = {
