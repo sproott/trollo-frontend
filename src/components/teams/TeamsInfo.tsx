@@ -5,7 +5,13 @@ import BoardInfo from "./BoardInfo"
 import { BoardGrid } from "./teams.styled"
 import NewBoardButton from "./NewBoardButton"
 
-const TeamsInfo = ({ teams }: { teams: Array<{ __typename?: "Team" } & TeamInfoFragment> }) => {
+const TeamsInfo = ({
+  teams,
+  isOwn,
+}: {
+  teams: Array<{ __typename?: "Team" } & TeamInfoFragment>
+  isOwn?: boolean
+}) => {
   return (
     <div style={{ paddingTop: "10px" }}>
       {teams.map((team) => {
@@ -15,7 +21,7 @@ const TeamsInfo = ({ teams }: { teams: Array<{ __typename?: "Team" } & TeamInfoF
               {team.boards?.map((board) => {
                 return <BoardInfo name={board.name} key={board.id} />
               })}
-              <NewBoardButton />
+              {isOwn && <NewBoardButton />}
             </BoardGrid>
           </Card>
         )

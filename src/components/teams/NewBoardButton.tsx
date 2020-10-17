@@ -1,5 +1,5 @@
 import React from "react"
-import { BoardButton, CreateBoardButton } from "./teams.styled"
+import { CreateBoardButton } from "./teams.styled"
 import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
 

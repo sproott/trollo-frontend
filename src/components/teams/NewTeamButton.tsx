@@ -1,8 +1,6 @@
-import React, { useState } from "react"
-import { Button, Form, Modal } from "antd"
+import React from "react"
+import { Button } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers"
 import * as yup from "yup"
 import TextInput from "../common/form/TextInput"
 import {
@@ -12,26 +10,16 @@ import {
   useCreateTeamMutation,
 } from "../../../generated/graphql"
 import produce from "immer"
+import ModalForm from "../common/form/ModalForm"
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
 })
 
 const NewTeamButton = () => {
-  const [modalVisible, setModalVisible] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
   const [createTeam, { loading, data }] = useCreateTeamMutation()
-  const { control, handleSubmit, errors, reset: resetForm } = useForm<MutationCreateTeamArgs>({
-    defaultValues: {
-      name: "",
-    },
-    mode: "onBlur",
-    reValidateMode: "onBlur",
-    resolver: yupResolver(schema),
-  })
 
   const onSubmit = async (formData: MutationCreateTeamArgs) => {
-    setSubmitted(true)
     await createTeam({
       variables: formData,
       update: (store, { data }) => {
@@ -50,42 +38,34 @@ const NewTeamButton = () => {
     })
   }
 
-  const showModal = () => {
-    resetForm()
-    setModalVisible(true)
-  }
-  const closeModal = () => setModalVisible(false)
-
-  if (submitted && !loading && !!data?.createTeam && !data.createTeam.exists) {
-    setSubmitted(false)
-    setModalVisible(false)
-  }
-
   return (
-    <>
-      <Modal
-        title="Create new team"
-        visible={modalVisible}
-        onCancel={closeModal}
-        onOk={handleSubmit(onSubmit)}
-        confirmLoading={submitted}
-      >
-        <Form onSubmitCapture={handleSubmit(onSubmit)}>
-          <TextInput
-            label="Name"
-            name="name"
-            error={
-              errors.name?.message ||
-              (data?.createTeam.exists && "Team with this name already exists")
-            }
-            control={control}
-          />
-        </Form>
-      </Modal>
-      <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>
-        New team
-      </Button>
-    </>
+    <ModalForm
+      title="Create new team"
+      defaultValues={{
+        name: "",
+      }}
+      schema={schema}
+      onSubmit={onSubmit}
+      loading={loading}
+      data={data}
+      customSuccessCondition={(data) => !!data?.createTeam && !data.createTeam.exists}
+      renderForm={(control, errors) => (
+        <TextInput
+          label="Name"
+          name="name"
+          error={
+            errors.name?.message ||
+            (data?.createTeam.exists && "Team with this name already exists")
+          }
+          control={control}
+        />
+      )}
+      renderButton={(showModal) => (
+        <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>
+          New team
+        </Button>
+      )}
+    />
   )
 }
 

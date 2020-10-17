@@ -46,7 +46,7 @@ const Teams = () => {
                 <H1>Your teams</H1>
                 <NewTeamButton />
               </Box>
-              <TeamsInfo teams={data.currentUser.ownTeams} />
+              <TeamsInfo teams={data.currentUser.ownTeams} isOwn />
               <Divider />
               <H1>Teams you participate in</H1>
               <TeamsInfo teams={data.currentUser?.teams} />
