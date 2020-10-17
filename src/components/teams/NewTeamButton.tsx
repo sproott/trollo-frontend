@@ -39,7 +39,7 @@ const NewTeamButton = () => {
 
   return (
     <ModalForm
-      title="Create new team"
+      title="Create a new team"
       defaultValues={{
         name: "",
       }}

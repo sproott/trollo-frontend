@@ -21,7 +21,7 @@ const TeamsInfo = ({
               {team.boards?.map((board) => {
                 return <BoardInfo name={board.name} key={board.id} />
               })}
-              {isOwn && <NewBoardButton />}
+              {isOwn && <NewBoardButton team={team} />}
             </BoardGrid>
           </Card>
         )

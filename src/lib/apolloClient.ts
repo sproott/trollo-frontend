@@ -1,24 +1,13 @@
 import { useMemo } from "react"
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client"
-import { isBrowser, isProduction } from "./util"
+import { isBrowser } from "./util"
 import getConfig from "next/config"
+import typePolicies from "./typePolicies"
 
 const API_URL = getConfig()?.publicRuntimeConfig?.API_URL as string
 
 export type Options = {
   cookie?: string
-}
-
-const typePolicies = {
-  User: {
-    fields: {
-      ownTeams: {
-        merge(existing: any, incoming: any) {
-          return incoming
-        },
-      },
-    },
-  },
 }
 
 let apolloClient: ApolloClient<NormalizedCacheObject>

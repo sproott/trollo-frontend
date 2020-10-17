@@ -13,27 +13,30 @@ export type Scalars = {
 }
 
 export type Card = {
-  __typename?: 'Card';"Card" Scalars['ID'];
-"ID"me: Scalars['String"String"export type List = {
-  __typename?: 'List';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  cards?: Maybe<Array<Card>>;
-};
+  __typename?: "Card"
+  id: Scalars["ID"]
+  name: Scalars["String"]
+}
+
+export type List = {
+  __typename?: "List"
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  cards?: Maybe<Array<Card>>
+}
 
 export type Board = {
-  __typename?: "Board";
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  lists?: Maybe<Array<List>>;
-};
+  __typename?: "Board"
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  lists?: Maybe<Array<List>>
+}
 
 export type Team = {
-  __typename?: "Team";
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  admin: User;
-  boards?: Maybe<Array<Board>>;
+  __typename?: 'Team';
+  id: Scalars"Team";
+  name: Scalar"ID"tring'];
+  admin: U"String"oards?: Maybe<Array<Board>>;
 };
 
 export type User = {
@@ -451,7 +454,7 @@ export const RegisterDocument = gql`
             }
         }
     }
-`
+`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -490,7 +493,7 @@ export const BoardsDocument = gql`
             }
         }
     }
-${TeamInfoFragmentDoc}`
+${TeamInfoFragmentDoc}`;
 
 /**
  * __useBoardsQuery__
