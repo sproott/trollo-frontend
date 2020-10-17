@@ -1949,9 +1949,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-10-17T15:10:04.758Z",
-      "endTime": "2020-10-17T15:10:04.763Z",
-      "duration": 5558700,
+      "startTime": "2020-10-17T15:25:23.732Z",
+      "endTime": "2020-10-17T15:25:23.758Z",
+      "duration": 26147000,
       "execution": {
         "resolvers": []
       }
