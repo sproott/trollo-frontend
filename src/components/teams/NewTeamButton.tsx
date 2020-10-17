@@ -25,7 +25,6 @@ const NewTeamButton = () => {
       update: (store, { data }) => {
         if (!data.createTeam.exists) {
           const boards = store.readQuery<BoardsQuery>({ query: BoardsDocument })
-          const ownTeams = boards.currentUser.ownTeams
 
           store.writeQuery<BoardsQuery>({
             query: BoardsDocument,
