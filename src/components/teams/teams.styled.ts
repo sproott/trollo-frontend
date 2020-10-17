@@ -24,12 +24,12 @@ export const BoardButton = styled(BoardButtonBase)`
 export const CreateBoardButton = styled(BoardButtonBase)`
   background-color: white;
   font-size: medium;
-  color: ${theme.blue[3]};
-  border: 3px dashed ${theme.blue[3]};
+  color: ${theme.blue.primary};
+  border: 3px dashed ${theme.blue.primary};
 
   :hover {
     background-color: ${theme.blue[0]};
-    color: ${theme.blue[3]};
+    color: ${theme.blue.primary};
   }
 `
 
