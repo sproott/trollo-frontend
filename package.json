@@ -11,7 +11,7 @@
     "dev": "set NODE_OPTIONS='--inspect'&& next dev",
     "build": "next build",
     "start": "next start",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "fetch-graphql-schema http://localhost:4000/graphql -o schema.json && graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@ant-design/colors": "^4.0.5",

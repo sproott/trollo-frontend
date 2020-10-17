@@ -13,219 +13,340 @@ export type Scalars = {
 }
 
 export type Card = {
-  __typename?: "Card"
-  id: Scalars["ID"]
-  name: Scalars["String"]
-}
-
-export type List = {
-  __typename?: "List"
-  id: Scalars["ID"]
-  name: Scalars["String"]
-  cards?: Maybe<Array<Card>>
-}
+  __typename?: 'Card';"Card" Scalars['ID'];
+"ID"me: Scalars['String"String"export type List = {
+  __typename?: 'List';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  cards?: Maybe<Array<Card>>;
+};
 
 export type Board = {
-  __typename?: "Board"
-  id: Scalars["ID"]
-  name: Scalars["String"]
-  lists?: Maybe<Array<List>>
-}
+  __typename?: "Board";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  lists?: Maybe<Array<List>>;
+};
 
 export type Team = {
-  __typename?: "Team"
-  id: Scalars["ID"]
-  name: Scalars["String"]
-  admin: User
-  boards?: Maybe<Array<Board>>
-}
+  __typename?: "Team";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  admin: User;
+  boards?: Maybe<Array<Board>>;
+};
 
 export type User = {
-  __typename?: "User"
-  id: Scalars["ID"]
-  username: Scalars["String"]
-  email: Scalars["String"]
-  ownTeams?: Maybe<Array<Team>>
-  teams?: Maybe<Array<Team>>
-  isAdmin: Scalars["Boolean"]
-}
+  __typename?: "User";
+  id: Scalars["ID"];
+  username: Scalars["String"];
+  email: Scalars["String"];
+  ownTeams?: Maybe<Array<Team>>;
+  teams?: Maybe<Array<Team>>;
+  isAdmin: Scalars["Boolean"];
+};
 
 export type HelloWorld = {
-  __typename?: "HelloWorld"
-  greeting: Scalars["String"]
-}
+  __typename?: "HelloWorld";
+  greeting: Scalars["String"];
+};
 
 export type CreateBoardResponse = {
-  __typename?: "CreateBoardResponse"
-  board?: Maybe<Board>
-  exists?: Maybe<Scalars["Boolean"]>
-}
+  __typename?: "CreateBoardResponse";
+  board?: Maybe<Board>;
+  exists?: Maybe<Scalars["Boolean"]>;
+};
 
 export type CreateTeamResponse = {
-  __typename?: "CreateTeamResponse"
-  team?: Maybe<Team>
-  exists?: Maybe<Scalars["Boolean"]>
-}
+  __typename?: "CreateTeamResponse";
+  team?: Maybe<Team>;
+  exists?: Maybe<Scalars["Boolean"]>;
+};
 
 export type RegisterError = {
-  __typename?: "RegisterError"
-  email?: Maybe<Scalars["Boolean"]>
-  username?: Maybe<Scalars["Boolean"]>
-}
+  __typename?: "RegisterError";
+  email?: Maybe<Scalars["Boolean"]>;
+  username?: Maybe<Scalars["Boolean"]>;
+};
 
 export type RegisterResponse = {
-  __typename?: "RegisterResponse"
-  user?: Maybe<User>
-  error?: Maybe<RegisterError>
-}
+  __typename?: "RegisterResponse";
+  user?: Maybe<User>;
+  error?: Maybe<RegisterError>;
+};
 
 export type RegisterInput = {
-  username: Scalars["String"]
-  email: Scalars["String"]
-  password: Scalars["String"]
-}
+  username: Scalars["String"];
+  email: Scalars["String"];
+  password: Scalars["String"];
+};
 
 export type LoginInput = {
-  usernameOrEmail: Scalars["String"]
-  password: Scalars["String"]
-}
+  usernameOrEmail: Scalars["String"];
+  password: Scalars["String"];
+};
 
 export type Query = {
-  __typename?: "Query"
-  greeting: HelloWorld
-  user: User
-  currentUser?: Maybe<User>
-  users: Array<User>
-}
+  __typename?: "Query";
+  greeting: HelloWorld;
+  user: User;
+  currentUser?: Maybe<User>;
+  users: Array<User>;
+};
+
 
 export type QueryGreetingArgs = {
-  name?: Maybe<Scalars["String"]>
-}
+  name?: Maybe<Scalars["String"]>;
+};
+
 
 export type QueryUserArgs = {
-  id: Scalars["String"]
-}
+  id: Scalars["String"];
+};
 
 export type Mutation = {
-  __typename?: "Mutation"
-  createBoard: CreateBoardResponse
-  deleteBoard?: Maybe<Scalars["Boolean"]>
-  createTeam: CreateTeamResponse
-  deleteTeam?: Maybe<Scalars["Boolean"]>
-  login: User
-  logout?: Maybe<Scalars["Boolean"]>
-  register: RegisterResponse
-  makeAdmin: Scalars["Boolean"]
-}
+  __typename?: "Mutation";
+  createBoard: CreateBoardResponse;
+  deleteBoard?: Maybe<Scalars["Boolean"]>;
+  createTeam: CreateTeamResponse;
+  deleteTeam?: Maybe<Scalars["Boolean"]>;
+  login: User;
+  logout?: Maybe<Scalars["Boolean"]>;
+  register: RegisterResponse;
+  makeAdmin: Scalars["Boolean"];
+};
+
 
 export type MutationCreateBoardArgs = {
-  name: Scalars["String"]
-  teamId: Scalars["String"]
-}
+  name: Scalars["String"];
+  teamId: Scalars["String"];
+};
+
 
 export type MutationDeleteBoardArgs = {
-  id: Scalars["String"]
-}
+  id: Scalars["String"];
+};
+
 
 export type MutationCreateTeamArgs = {
-  name: Scalars["String"]
-}
+  name: Scalars["String"];
+};
+
 
 export type MutationDeleteTeamArgs = {
-  id: Scalars["String"]
-}
+  id: Scalars["String"];
+};
+
 
 export type MutationLoginArgs = {
-  input: LoginInput
-}
+  input: LoginInput;
+};
+
 
 export type MutationRegisterArgs = {
-  input: RegisterInput
-}
+  input: RegisterInput;
+};
+
 
 export type MutationMakeAdminArgs = {
-  username: Scalars["String"]
+  username: Scalars["String"];
+};
+
+export type CreateBoardMutationVariables = Exact<{
+  teamId: Scalars["String"];
+  name: Scalars["String"];
+}>;
+
+
+export type CreateBoardMutation = (
+  { __typename?: "Mutation" }
+  & {
+  createBoard: (
+    { __typename?: "CreateBoardResponse" }
+    & Pick<CreateBoardResponse, "exists">
+    & {
+    board?: Maybe<(
+      { __typename?: "Board" }
+      & Pick<Board, "id" | "name">
+      )>
+  }
+    )
 }
+  );
 
 export type CreateTeamMutationVariables = Exact<{
-  name: Scalars["String"]
-}>
+  name: Scalars["String"];
+}>;
 
-export type CreateTeamMutation = { __typename?: "Mutation" } & {
-  createTeam: { __typename?: "CreateTeamResponse" } & Pick<CreateTeamResponse, "exists"> & {
-      team?: Maybe<{ __typename?: "Team" } & Pick<Team, "id" | "name">>
-    }
+
+export type CreateTeamMutation = (
+  { __typename?: "Mutation" }
+  & {
+  createTeam: (
+    { __typename?: "CreateTeamResponse" }
+    & Pick<CreateTeamResponse, "exists">
+    & {
+    team?: Maybe<(
+      { __typename?: "Team" }
+      & Pick<Team, "id" | "name">
+      )>
+  }
+    )
 }
+  );
 
 export type LoginMutationVariables = Exact<{
-  input: LoginInput
-}>
+  input: LoginInput;
+}>;
 
-export type LoginMutation = { __typename?: "Mutation" } & {
-  login: { __typename?: "User" } & Pick<User, "id" | "username" | "email">
+
+export type LoginMutation = (
+  { __typename?: "Mutation" }
+  & {
+  login: (
+    { __typename?: "User" }
+    & Pick<User, "id" | "username" | "email">
+    )
 }
+  );
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never }>
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
-export type LogoutMutation = { __typename?: "Mutation" } & Pick<Mutation, "logout">
+
+export type LogoutMutation = (
+  { __typename?: "Mutation" }
+  & Pick<Mutation, "logout">
+  );
 
 export type RegisterMutationVariables = Exact<{
-  input: RegisterInput
-}>
+  input: RegisterInput;
+}>;
 
-export type RegisterMutation = { __typename?: "Mutation" } & {
-  register: { __typename?: "RegisterResponse" } & {
-    user?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username" | "email">>
-    error?: Maybe<{ __typename?: "RegisterError" } & Pick<RegisterError, "username" | "email">>
+
+export type RegisterMutation = (
+  { __typename?: "Mutation" }
+  & {
+  register: (
+    { __typename?: "RegisterResponse" }
+    & {
+    user?: Maybe<(
+      { __typename?: "User" }
+      & Pick<User, "id" | "username" | "email">
+      )>, error?: Maybe<(
+      { __typename?: "RegisterError" }
+      & Pick<RegisterError, "username" | "email">
+      )>
   }
+    )
 }
+  );
 
-export type TeamInfoFragment = { __typename?: "Team" } & Pick<Team, "id" | "name"> & {
-    boards?: Maybe<Array<{ __typename?: "Board" } & Pick<Board, "id" | "name">>>
+export type TeamInfoFragment = (
+  { __typename?: "Team" }
+  & Pick<Team, "id" | "name">
+  & {
+  boards?: Maybe<Array<(
+    { __typename?: "Board" }
+    & Pick<Board, "id" | "name">
+    )>>
+}
+  );
+
+export type BoardsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BoardsQuery = (
+  { __typename?: "Query" }
+  & {
+  currentUser?: Maybe<(
+    { __typename?: "User" }
+    & Pick<User, "id">
+    & {
+    ownTeams?: Maybe<Array<(
+      { __typename?: "Team" }
+      & TeamInfoFragment
+      )>>, teams?: Maybe<Array<(
+      { __typename?: "Team" }
+      & TeamInfoFragment
+      )>>
   }
-
-export type BoardsQueryVariables = Exact<{ [key: string]: never }>
-
-export type BoardsQuery = { __typename?: "Query" } & {
-  currentUser?: Maybe<
-    { __typename?: "User" } & Pick<User, "id"> & {
-        ownTeams?: Maybe<Array<{ __typename?: "Team" } & TeamInfoFragment>>
-        teams?: Maybe<Array<{ __typename?: "Team" } & TeamInfoFragment>>
-      }
-  >
+    )>
 }
+  );
 
-export type CurrentUserQueryVariables = Exact<{ [key: string]: never }>
+export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type CurrentUserQuery = { __typename?: "Query" } & {
-  currentUser?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
+
+export type CurrentUserQuery = (
+  { __typename?: "Query" }
+  & {
+  currentUser?: Maybe<(
+    { __typename?: "User" }
+    & Pick<User, "id" | "username">
+    )>
 }
+  );
 
 export const TeamInfoFragmentDoc = gql`
-  fragment TeamInfo on Team {
-    id
-    name
-    boards {
-      id
-      name
-    }
-  }
-`
-export const CreateTeamDocument = gql`
-  mutation CreateTeam($name: String!) {
-    createTeam(name: $name) {
-      team {
+    fragment TeamInfo on Team {
         id
         name
-      }
-      exists
+        boards {
+            id
+            name
+        }
     }
-  }
 `
-export type CreateTeamMutationFn = Apollo.MutationFunction<
-  CreateTeamMutation,
-  CreateTeamMutationVariables
->
+export const CreateBoardDocument = gql`
+    mutation CreateBoard($teamId: String!, $name: String!) {
+        createBoard(teamId: $teamId, name: $name) {
+            board {
+                id
+                name
+            }
+            exists
+        }
+    }
+`
+export type CreateBoardMutationFn = Apollo.MutationFunction<CreateBoardMutation, CreateBoardMutationVariables>;
+
+/**
+ * __useCreateBoardMutation__
+ *
+ * To run a mutation, you first call `useCreateBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBoardMutation, { data, loading, error }] = useCreateBoardMutation({
+ *   variables: {
+ *      teamId: // value for 'teamId'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateBoardMutation(baseOptions?: Apollo.MutationHookOptions<CreateBoardMutation, CreateBoardMutationVariables>) {
+  return Apollo.useMutation<CreateBoardMutation, CreateBoardMutationVariables>(CreateBoardDocument, baseOptions)
+}
+
+export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMutation>;
+export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
+export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation, CreateBoardMutationVariables>;
+export const CreateTeamDocument = gql`
+    mutation CreateTeam($name: String!) {
+        createTeam(name: $name) {
+            team {
+                id
+                name
+            }
+            exists
+        }
+    }
+`
+export type CreateTeamMutationFn = Apollo.MutationFunction<CreateTeamMutation, CreateTeamMutationVariables>;
 
 /**
  * __useCreateTeamMutation__
@@ -244,31 +365,23 @@ export type CreateTeamMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateTeamMutation(
-  baseOptions?: Apollo.MutationHookOptions<CreateTeamMutation, CreateTeamMutationVariables>
-) {
-  return Apollo.useMutation<CreateTeamMutation, CreateTeamMutationVariables>(
-    CreateTeamDocument,
-    baseOptions
-  )
+export function useCreateTeamMutation(baseOptions?: Apollo.MutationHookOptions<CreateTeamMutation, CreateTeamMutationVariables>) {
+  return Apollo.useMutation<CreateTeamMutation, CreateTeamMutationVariables>(CreateTeamDocument, baseOptions)
 }
 
-export type CreateTeamMutationHookResult = ReturnType<typeof useCreateTeamMutation>
-export type CreateTeamMutationResult = Apollo.MutationResult<CreateTeamMutation>
-export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<
-  CreateTeamMutation,
-  CreateTeamMutationVariables
->
+export type CreateTeamMutationHookResult = ReturnType<typeof useCreateTeamMutation>;
+export type CreateTeamMutationResult = Apollo.MutationResult<CreateTeamMutation>;
+export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<CreateTeamMutation, CreateTeamMutationVariables>;
 export const LoginDocument = gql`
-  mutation Login($input: LoginInput!) {
-    login(input: $input) {
-      id
-      username
-      email
+    mutation Login($input: LoginInput!) {
+        login(input: $input) {
+            id
+            username
+            email
+        }
     }
-  }
 `
-export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
  * __useLoginMutation__
@@ -287,21 +400,19 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  *   },
  * });
  */
-export function useLoginMutation(
-  baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>
-) {
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
   return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions)
 }
 
-export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>
-export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
-export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = gql`
-  mutation Logout {
-    logout
-  }
+    mutation Logout {
+        logout
+    }
 `
-export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
  * __useLogoutMutation__
@@ -319,37 +430,29 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  *   },
  * });
  */
-export function useLogoutMutation(
-  baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>
-) {
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
   return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions)
 }
 
-export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>
-export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<
-  LogoutMutation,
-  LogoutMutationVariables
->
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const RegisterDocument = gql`
-  mutation Register($input: RegisterInput!) {
-    register(input: $input) {
-      user {
-        id
-        username
-        email
-      }
-      error {
-        username
-        email
-      }
+    mutation Register($input: RegisterInput!) {
+        register(input: $input) {
+            user {
+                id
+                username
+                email
+            }
+            error {
+                username
+                email
+            }
+        }
     }
-  }
 `
-export type RegisterMutationFn = Apollo.MutationFunction<
-  RegisterMutation,
-  RegisterMutationVariables
->
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
  * __useRegisterMutation__
@@ -368,35 +471,26 @@ export type RegisterMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useRegisterMutation(
-  baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>
-) {
-  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
-    RegisterDocument,
-    baseOptions
-  )
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions)
 }
 
-export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>
-export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<
-  RegisterMutation,
-  RegisterMutationVariables
->
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const BoardsDocument = gql`
-  query Boards {
-    currentUser {
-      id
-      ownTeams {
-        ...TeamInfo
-      }
-      teams {
-        ...TeamInfo
-      }
+    query Boards {
+        currentUser {
+            id
+            ownTeams {
+                ...TeamInfo
+            }
+            teams {
+                ...TeamInfo
+            }
+        }
     }
-  }
-  ${TeamInfoFragmentDoc}
-`
+${TeamInfoFragmentDoc}`
 
 /**
  * __useBoardsQuery__
@@ -413,28 +507,24 @@ export const BoardsDocument = gql`
  *   },
  * });
  */
-export function useBoardsQuery(
-  baseOptions?: Apollo.QueryHookOptions<BoardsQuery, BoardsQueryVariables>
-) {
+export function useBoardsQuery(baseOptions?: Apollo.QueryHookOptions<BoardsQuery, BoardsQueryVariables>) {
   return Apollo.useQuery<BoardsQuery, BoardsQueryVariables>(BoardsDocument, baseOptions)
 }
 
-export function useBoardsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<BoardsQuery, BoardsQueryVariables>
-) {
+export function useBoardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BoardsQuery, BoardsQueryVariables>) {
   return Apollo.useLazyQuery<BoardsQuery, BoardsQueryVariables>(BoardsDocument, baseOptions)
 }
 
-export type BoardsQueryHookResult = ReturnType<typeof useBoardsQuery>
-export type BoardsLazyQueryHookResult = ReturnType<typeof useBoardsLazyQuery>
-export type BoardsQueryResult = Apollo.QueryResult<BoardsQuery, BoardsQueryVariables>
+export type BoardsQueryHookResult = ReturnType<typeof useBoardsQuery>;
+export type BoardsLazyQueryHookResult = ReturnType<typeof useBoardsLazyQuery>;
+export type BoardsQueryResult = Apollo.QueryResult<BoardsQuery, BoardsQueryVariables>;
 export const CurrentUserDocument = gql`
-  query CurrentUser {
-    currentUser {
-      id
-      username
+    query CurrentUser {
+        currentUser {
+            id
+            username
+        }
     }
-  }
 `
 
 /**
@@ -452,24 +542,14 @@ export const CurrentUserDocument = gql`
  *   },
  * });
  */
-export function useCurrentUserQuery(
-  baseOptions?: Apollo.QueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>
-) {
-  return Apollo.useQuery<CurrentUserQuery, CurrentUserQueryVariables>(
-    CurrentUserDocument,
-    baseOptions
-  )
+export function useCurrentUserQuery(baseOptions?: Apollo.QueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>) {
+  return Apollo.useQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, baseOptions)
 }
 
-export function useCurrentUserLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>
-) {
-  return Apollo.useLazyQuery<CurrentUserQuery, CurrentUserQueryVariables>(
-    CurrentUserDocument,
-    baseOptions
-  )
+export function useCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>) {
+  return Apollo.useLazyQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, baseOptions)
 }
 
-export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>
-export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>
-export type CurrentUserQueryResult = Apollo.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>
+export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
+export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
+export type CurrentUserQueryResult = Apollo.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
