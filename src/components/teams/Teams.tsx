@@ -46,10 +46,10 @@ const Teams = () => {
                 <H1>Your teams</H1>
                 <NewTeamButton />
               </Box>
-              <TeamsInfo teams={data.currentUser.ownTeams} isOwn />
+              <TeamsInfo teams={data.currentUser.owns.map((p) => p.team)} isOwn />
               <Divider />
               <H1>Teams you participate in</H1>
-              <TeamsInfo teams={data.currentUser?.teams} />
+              <TeamsInfo teams={data.currentUser.participatesIn.map((p) => p.team)} />
             </>
           )}
         </Col>

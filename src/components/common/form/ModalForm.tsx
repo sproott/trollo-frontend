@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Form, Modal } from "antd"
 import { DeepPartial, UnpackNestedValue, useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers"
+import { yupResolver } from "@hookform/resolvers/yup"
 import { Lazy, ObjectSchema } from "yup"
 import { FieldErrors } from "react-hook-form/dist/types/errors"
 import { Control } from "react-hook-form/dist/types/form"
@@ -9,7 +9,7 @@ import { Control } from "react-hook-form/dist/types/form"
 export type ModalFormProps<TInput, TData> = {
   title: string
   defaultValues: UnpackNestedValue<DeepPartial<TInput>>
-  schema: ObjectSchema<object, object> | Lazy
+  schema: ObjectSchema<object> | Lazy
   onSubmit: (formData: TInput) => void
   loading: boolean
   data: TData

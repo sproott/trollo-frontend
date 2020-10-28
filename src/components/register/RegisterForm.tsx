@@ -15,7 +15,7 @@ import {
 } from "../../../generated/graphql"
 import { H4 } from "../common/Text"
 import { useRouter } from "next/router"
-import { yupResolver } from "@hookform/resolvers"
+import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import Box from "../common/Box"
 

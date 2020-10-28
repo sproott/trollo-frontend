@@ -236,7 +236,38 @@
               "deprecationReason": null
             },
             {
-              "name": "admin",
+              "name": "boards",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Board",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Participant",
+          "description": null,
+          "fields": [
+            {
+              "name": "user",
               "description": null,
               "args": [],
               "type": {
@@ -252,20 +283,16 @@
               "deprecationReason": null
             },
             {
-              "name": "boards",
+              "name": "team",
               "description": null,
               "args": [],
               "type": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Board",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Team",
+                  "ofType": null
                 }
               },
               "isDeprecated": false,
@@ -331,19 +358,23 @@
               "deprecationReason": null
             },
             {
-              "name": "ownTeams",
+              "name": "participatesIn",
               "description": null,
               "args": [],
               "type": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
+                  "kind": "LIST",
                   "name": null,
                   "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Team",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "Participant",
+                      "ofType": null
+                    }
                   }
                 }
               },
@@ -351,19 +382,23 @@
               "deprecationReason": null
             },
             {
-              "name": "teams",
+              "name": "owns",
               "description": null,
               "args": [],
               "type": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
+                  "kind": "LIST",
                   "name": null,
                   "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Team",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "Participant",
+                      "ofType": null
+                    }
                   }
                 }
               },
@@ -371,7 +406,7 @@
               "deprecationReason": null
             },
             {
-              "name": "isAdmin",
+              "name": "is_admin",
               "description": null,
               "args": [],
               "type": {
@@ -687,6 +722,37 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "HelloWorld",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "board",
+              "description": null,
+              "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Board",
                   "ofType": null
                 }
               },
@@ -1949,9 +2015,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-10-17T15:25:23.732Z",
-      "endTime": "2020-10-17T15:25:23.758Z",
-      "duration": 26147000,
+      "startTime": "2020-10-26T10:36:13.110Z",
+      "endTime": "2020-10-26T10:36:13.118Z",
+      "duration": 7813800,
       "execution": {
         "resolvers": []
       }

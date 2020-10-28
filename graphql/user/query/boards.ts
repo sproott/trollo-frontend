@@ -13,11 +13,15 @@ export const boardsQuery = gql`
   query Boards {
     currentUser {
       id
-      ownTeams {
-        ...TeamInfo
+      owns {
+        team {
+          ...TeamInfo
+        }
       }
-      teams {
-        ...TeamInfo
+      participatesIn {
+        team {
+          ...TeamInfo
+        }
       }
     }
   }

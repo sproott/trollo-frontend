@@ -38,9 +38,9 @@ const NewBoardButton = ({
           store.writeQuery<BoardsQuery>({
             query: BoardsDocument,
             data: produce(boards, (x) => {
-              x.currentUser.ownTeams
-                .find((team) => team.id == teamId)
-                .boards.push(data.createBoard.board)
+              x.currentUser.owns
+                .find((p) => p.team.id == teamId)
+                .team.boards.push(data.createBoard.board)
             }),
           })
         }

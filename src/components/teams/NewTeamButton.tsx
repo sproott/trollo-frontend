@@ -29,7 +29,7 @@ const NewTeamButton = () => {
           store.writeQuery<BoardsQuery>({
             query: BoardsDocument,
             data: produce(boards, (x) => {
-              x.currentUser.ownTeams.push(data.createTeam.team)
+              x.currentUser.owns.push({ team: data.createTeam.team })
             }),
           })
         }

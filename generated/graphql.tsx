@@ -36,8 +36,13 @@ export type Team = {
   __typename?: "Team"
   id: Scalars["ID"]
   name: Scalars["String"]
-  admin: User
   boards?: Maybe<Array<Board>>
+}
+
+export type Participant = {
+  __typename?: "Participant"
+  user: User
+  team: Team
 }
 
 export type User = {
@@ -45,9 +50,9 @@ export type User = {
   id: Scalars["ID"]
   username: Scalars["String"]
   email: Scalars["String"]
-  ownTeams?: Maybe<Array<Team>>
-  teams?: Maybe<Array<Team>>
-  isAdmin: Scalars["Boolean"]
+  participatesIn: Array<Participant>
+  owns: Array<Participant>
+  is_admin: Scalars["Boolean"]
 }
 
 export type HelloWorld = {
@@ -93,6 +98,7 @@ export type LoginInput = {
 export type Query = {
   __typename?: "Query"
   greeting: HelloWorld
+  board: Board
   user: User
   currentUser?: Maybe<User>
   users: Array<User>
@@ -100,6 +106,10 @@ export type Query = {
 
 export type QueryGreetingArgs = {
   name?: Maybe<Scalars["String"]>
+}
+
+export type QueryBoardArgs = {
+  id: Scalars["String"]
 }
 
 export type QueryUserArgs = {
@@ -200,8 +210,16 @@ export type BoardsQueryVariables = Exact<{ [key: string]: never }>
 export type BoardsQuery = { __typename?: "Query" } & {
   currentUser?: Maybe<
     { __typename?: "User" } & Pick<User, "id"> & {
-        ownTeams?: Maybe<Array<{ __typename?: "Team" } & TeamInfoFragment>>
-        teams?: Maybe<Array<{ __typename?: "Team" } & TeamInfoFragment>>
+        owns: Array<
+          { __typename?: "Participant" } & {
+            team: { __typename?: "Team" } & TeamInfoFragment
+          }
+        >
+        participatesIn: Array<
+          { __typename?: "Participant" } & {
+            team: { __typename?: "Team" } & TeamInfoFragment
+          }
+        >
       }
   >
 }
@@ -447,11 +465,15 @@ export const BoardsDocument = gql`
   query Boards {
     currentUser {
       id
-      ownTeams {
-        ...TeamInfo
+      owns {
+        team {
+          ...TeamInfo
+        }
       }
-      teams {
-        ...TeamInfo
+      participatesIn {
+        team {
+          ...TeamInfo
+        }
       }
     }
   }
