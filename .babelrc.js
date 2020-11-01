@@ -4,7 +4,7 @@ module.exports = {
     [
       "import",
       {
-        libraryName: "@ant-design",
+        libraryName: "antd",
         style: true,
       },
     ],
