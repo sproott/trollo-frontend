@@ -7,10 +7,10 @@ import { FormProps } from "antd/es/form"
 import SubmitButton from "../common/form/SubmitButton"
 import { HorizontallyCentered } from "../common/Centered"
 import {
-  BoardsDocument,
   CurrentUserDocument,
   CurrentUserQuery,
   RegisterInput,
+  TeamsDocument,
   useRegisterMutation,
 } from "../../../generated/graphql"
 import { H4 } from "../common/Text"
@@ -56,7 +56,6 @@ const RegisterForm = () => {
         variables: {
           input: formData,
         },
-        refetchQueries: [{ query: BoardsDocument }],
         update: (store, { data }) => {
           store.writeQuery<CurrentUserQuery>({
             query: CurrentUserDocument,

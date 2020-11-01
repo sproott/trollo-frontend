@@ -6,6 +6,8 @@ const { Header: _Header, Content: _Content } = _Layout
 
 export const Layout = styled(_Layout)`
   min-height: 100%;
+  display: flex;
+  flex-direction: column;
 `
 
 export const Header = styled(_Header)`
@@ -14,6 +16,9 @@ export const Header = styled(_Header)`
 
 export const Content = styled(_Content)`
   background-color: white;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
 `
 
 export const CenteredContent = styled(Content)`

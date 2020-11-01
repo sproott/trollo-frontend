@@ -3,9 +3,9 @@ import { CreateBoardButton } from "./teams.styled"
 import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
 import {
-  BoardsDocument,
-  BoardsQuery,
   TeamInfoFragment,
+  TeamsDocument,
+  TeamsQuery,
   useCreateBoardMutation,
 } from "../../../generated/graphql"
 import produce from "immer"
@@ -33,10 +33,10 @@ const NewBoardButton = ({
       variables: { teamId, ...formData },
       update: (store, { data }) => {
         if (!data.createBoard.exists) {
-          const boards = store.readQuery<BoardsQuery>({ query: BoardsDocument })
+          const boards = store.readQuery<TeamsQuery>({ query: TeamsDocument })
 
-          store.writeQuery<BoardsQuery>({
-            query: BoardsDocument,
+          store.writeQuery<TeamsQuery>({
+            query: TeamsDocument,
             data: produce(boards, (x) => {
               x.currentUser.owns
                 .find((p) => p.team.id == teamId)
@@ -65,7 +65,7 @@ const NewBoardButton = ({
           name="name"
           error={
             errors.name?.message ||
-            (data?.createBoard.exists && "Board with this name already exists")
+            (data?.createBoard.exists && "board with this name already exists")
           }
           control={control}
         />

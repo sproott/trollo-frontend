@@ -29,6 +29,7 @@ const Avatar = () => {
     try {
       await logout({
         update: (store, { data }) => {
+          console.log("logout")
           if (!!data.logout) {
             store.writeQuery<CurrentUserQuery>({
               query: CurrentUserDocument,

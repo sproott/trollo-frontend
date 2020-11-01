@@ -19,7 +19,7 @@ const TeamsInfo = ({
           <Card title={team.name} key={team.id} style={{ marginBottom: "10px" }}>
             <BoardGrid style={{ padding: "10px 10px 0 10px" }}>
               {team.boards?.map((board) => {
-                return <BoardInfo name={board.name} key={board.id} />
+                return <BoardInfo name={board.name} id={board.id} key={board.id} />
               })}
               {isOwn && <NewBoardButton team={team} />}
             </BoardGrid>

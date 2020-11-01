@@ -1,10 +1,10 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import * as Types from "../../generated/graphql"
 import { useCurrentUserQuery } from "../../generated/graphql"
 import { NextRouter, useRouter } from "next/router"
 import { isBrowser } from "./util"
 import { withApollo } from "./withApollo"
-import LoadingPage from "../components/LoadingPage"
+import LoadingPage from "../components/loading/LoadingPage"
 
 export type ProcessDataFn = (
   data: Types.CurrentUserQuery,
@@ -18,14 +18,14 @@ export type ProcessDataFnReturnType = {
 const withCurrentUserFnInner = (Comp: FC, processDataFn?: ProcessDataFn) => () => {
   const { data, loading } = useCurrentUserQuery()
   const [redirecting, setRedirecting] = useState(false)
-  const [calledProcessFn, setCalledProcessFn] = useState(false)
   const router = useRouter()
 
-  if (!!processDataFn && isBrowser() && !calledProcessFn && !loading && !!data) {
-    const { redirecting } = processDataFn(data, router)
-    !!redirecting && setRedirecting(true)
-    setCalledProcessFn(true)
-  }
+  useEffect(() => {
+    if (!!processDataFn && isBrowser() && !loading && !!data) {
+      const { redirecting } = processDataFn(data, router)
+      !!redirecting && setRedirecting(true)
+    }
+  }, [data])
 
   return !!data && !redirecting ? <Comp /> : <LoadingPage />
 }

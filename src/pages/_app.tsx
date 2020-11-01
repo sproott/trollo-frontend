@@ -1,7 +1,7 @@
 import "../../styles/globals.css"
 import React from "react"
 import { AppProps } from "next/app"
-import "antd/dist/antd.compact.css"
+import "../../styles/antd-custom.less"
 import { RecoilRoot } from "recoil"
 import { Helmet } from "react-helmet"
 

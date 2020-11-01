@@ -1,12 +1,12 @@
 import React, { useEffect } from "react"
 import { H1 } from "../common/Text"
 import { Content } from "../common/page.styled"
-import { useBoardsQuery } from "../../../generated/graphql"
 import { Col, Divider, Row, Skeleton } from "antd"
 import { BoardGrid } from "./teams.styled"
 import TeamsInfo from "./TeamsInfo"
 import Box from "../common/Box"
 import NewTeamButton from "./NewTeamButton"
+import { useTeamsQuery } from "../../../generated/graphql"
 
 const SkeletonButton = () => <Skeleton.Button active style={{ width: "100px", height: "80px" }} />
 
@@ -29,7 +29,7 @@ const LoadingComp = () => (
 )
 
 const Teams = () => {
-  const { data, loading, startPolling, stopPolling } = useBoardsQuery()
+  const { data, loading, startPolling, stopPolling } = useTeamsQuery()
 
   useEffect(() => {
     startPolling(10000)
@@ -37,7 +37,7 @@ const Teams = () => {
   }, [])
 
   return (
-    <Content style={{ padding: "50px" }}>
+    <Content>
       <Row justify="center">
         <Col xs={24} sm={22} md={20} lg={16} xl={12}>
           {data?.currentUser && !loading && (

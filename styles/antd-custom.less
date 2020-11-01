@@ -1,0 +1,14 @@
+@import '~antd/lib/style/themes/default.less';
+@import '~antd/dist/antd.compact.less';
+
+.ant-btn-primary {
+  &:hover {
+    background-color: #096dd9;
+    border-color: #096dd9;
+  }
+
+  &:not(:hover) {
+    background-color: @primary-color;
+    border-color: @primary-color;
+  }
+}

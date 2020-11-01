@@ -1,16 +1,16 @@
 import React from "react"
-import { Button } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import * as yup from "yup"
 import TextInput from "../common/form/TextInput"
 import {
-  BoardsDocument,
-  BoardsQuery,
   MutationCreateTeamArgs,
+  TeamsDocument,
+  TeamsQuery,
   useCreateTeamMutation,
 } from "../../../generated/graphql"
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
+import { Button } from "antd"
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -24,10 +24,10 @@ const NewTeamButton = () => {
       variables: formData,
       update: (store, { data }) => {
         if (!data.createTeam.exists) {
-          const boards = store.readQuery<BoardsQuery>({ query: BoardsDocument })
+          const boards = store.readQuery<TeamsQuery>({ query: TeamsDocument })
 
-          store.writeQuery<BoardsQuery>({
-            query: BoardsDocument,
+          store.writeQuery<TeamsQuery>({
+            query: TeamsDocument,
             data: produce(boards, (x) => {
               x.currentUser.owns.push({ team: data.createTeam.team })
             }),
