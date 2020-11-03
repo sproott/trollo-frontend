@@ -87,7 +87,7 @@ const RegisterForm = () => {
   return (
     <Form {...layout} onSubmitCapture={handleSubmit(onSubmit)}>
       <Row justify="center">
-        <Col xs={16} sm={12} md={10} lg={8} xl={6}>
+        <Col xs={22} sm={16} md={12} lg={8} xl={6}>
           <div style={{ minHeight: "30px" }}>
             {gqlError && <H4 color="red">Something went wrong</H4>}
           </div>
