@@ -1,7 +1,7 @@
-import "../../styles/globals.css"
+import "../../styles/globals.less"
+import "../../styles/antd-custom.less"
 import React from "react"
 import { AppProps } from "next/app"
-import "../../styles/antd-custom.less"
 import { RecoilRoot } from "recoil"
 import { Helmet } from "react-helmet"
 
@@ -22,12 +22,5 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     </>
   )
 }
-
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-//   // calls page's `getInitialProps` and fills `appProps.pageProps`
-//   const appProps = await App.getInitialProps(appContext)
-//
-//   return { ...appProps }
-// }
 
 export default MyApp
