@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import Navbar from "../../components/common/Navbar"
 import withCurrentUser from "../../lib/withCurrentUser"
 import { redirectIfLoggedOut } from "../../lib/processDataFn"
-import { Content, Layout } from "../../components/common/page.styled"
+import { Layout } from "../../components/common/page.styled"
 import Board from "../../components/board/Board"
 
 const BoardPage = () => {

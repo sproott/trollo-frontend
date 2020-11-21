@@ -8,6 +8,7 @@ export type BoxProps = {
   flexWrap?: FlexWrap
   padding?: string
   fullWidth?: boolean
+  gap?: string
 }
 
 const Box = styled.div<BoxProps>`
@@ -18,6 +19,7 @@ const Box = styled.div<BoxProps>`
   flex-direction: ${({ flexDirection }) => flexDirection};
   padding: ${({ padding }) => padding};
   flex-wrap: ${({ flexWrap }) => flexWrap};
+  gap: ${({ gap }) => gap};
 `
 
 export type AlignItems = "stretch" | "center" | "flex-start" | "flex-end"

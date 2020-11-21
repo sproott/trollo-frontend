@@ -17,6 +17,15 @@ const typePolicies = {
       },
     },
   },
+  List: {
+    fields: {
+      cards: {
+        merge(existing: any, incoming: any) {
+          return incoming
+        },
+      },
+    },
+  },
 }
 
 export default typePolicies

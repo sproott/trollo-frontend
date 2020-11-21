@@ -16,6 +16,8 @@ export type Card = {
   __typename?: "Card"
   id: Scalars["ID"]
   name: Scalars["String"]
+  index: Scalars["Int"]
+  list: List
 }
 
 export type List = {
@@ -23,6 +25,7 @@ export type List = {
   id: Scalars["ID"]
   name: Scalars["String"]
   cards?: Maybe<Array<Card>>
+  board: Board
 }
 
 export type Board = {
@@ -99,6 +102,7 @@ export type Query = {
   __typename?: "Query"
   greeting: HelloWorld
   board: Board
+  nextIndex: Scalars["Int"]
   user: User
   currentUser?: Maybe<User>
   users: Array<User>
@@ -112,6 +116,10 @@ export type QueryBoardArgs = {
   id: Scalars["String"]
 }
 
+export type QueryNextIndexArgs = {
+  listId: Scalars["String"]
+}
+
 export type QueryUserArgs = {
   id: Scalars["String"]
 }
@@ -120,6 +128,9 @@ export type Mutation = {
   __typename?: "Mutation"
   createBoard: CreateBoardResponse
   deleteBoard?: Maybe<Scalars["Boolean"]>
+  createCard: Card
+  moveCard: Scalars["Boolean"]
+  createList: List
   createTeam: CreateTeamResponse
   deleteTeam?: Maybe<Scalars["Boolean"]>
   login: User
@@ -135,6 +146,17 @@ export type MutationCreateBoardArgs = {
 
 export type MutationDeleteBoardArgs = {
   id: Scalars["String"]
+}
+
+export type MutationCreateCardArgs = {
+  listId: Scalars["String"]
+  name: Scalars["String"]
+}
+
+export type MutationMoveCardArgs = {
+  destinationIndex: Scalars["Int"]
+  listId?: Maybe<Scalars["String"]>
+  cardId: Scalars["String"]
 }
 
 export type MutationCreateTeamArgs = {
@@ -177,12 +199,20 @@ export type BoardQuery = { __typename?: "Query" } & {
       lists?: Maybe<
         Array<
           { __typename?: "List" } & Pick<List, "id" | "name"> & {
-              cards?: Maybe<Array<{ __typename?: "Card" } & Pick<Card, "id" | "name">>>
+              cards?: Maybe<Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>>
             }
         >
       >
     }
 }
+
+export type MoveCardMutationVariables = Exact<{
+  destinationIndex: Scalars["Int"]
+  listId?: Maybe<Scalars["String"]>
+  cardId: Scalars["String"]
+}>
+
+export type MoveCardMutation = { __typename?: "Mutation" } & Pick<Mutation, "moveCard">
 
 export type CreateTeamMutationVariables = Exact<{
   name: Scalars["String"]
@@ -316,6 +346,7 @@ export const BoardDocument = gql`
         cards {
           id
           name
+          index
         }
       }
     }
@@ -339,7 +370,7 @@ export const BoardDocument = gql`
  * });
  */
 export function useBoardQuery(
-  baseOptions?: Apollo.QueryHookOptions<BoardQuery, BoardQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<BoardQuery, BoardQueryVariables>
 ) {
   return Apollo.useQuery<BoardQuery, BoardQueryVariables>(BoardDocument, baseOptions)
 }
@@ -353,6 +384,50 @@ export function useBoardLazyQuery(
 export type BoardQueryHookResult = ReturnType<typeof useBoardQuery>
 export type BoardLazyQueryHookResult = ReturnType<typeof useBoardLazyQuery>
 export type BoardQueryResult = Apollo.QueryResult<BoardQuery, BoardQueryVariables>
+export const MoveCardDocument = gql`
+  mutation moveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
+    moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
+  }
+`
+export type MoveCardMutationFn = Apollo.MutationFunction<
+  MoveCardMutation,
+  MoveCardMutationVariables
+>
+
+/**
+ * __useMoveCardMutation__
+ *
+ * To run a mutation, you first call `useMoveCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMoveCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [moveCardMutation, { data, loading, error }] = useMoveCardMutation({
+ *   variables: {
+ *      destinationIndex: // value for 'destinationIndex'
+ *      listId: // value for 'listId'
+ *      cardId: // value for 'cardId'
+ *   },
+ * });
+ */
+export function useMoveCardMutation(
+  baseOptions?: Apollo.MutationHookOptions<MoveCardMutation, MoveCardMutationVariables>
+) {
+  return Apollo.useMutation<MoveCardMutation, MoveCardMutationVariables>(
+    MoveCardDocument,
+    baseOptions
+  )
+}
+
+export type MoveCardMutationHookResult = ReturnType<typeof useMoveCardMutation>
+export type MoveCardMutationResult = Apollo.MutationResult<MoveCardMutation>
+export type MoveCardMutationOptions = Apollo.BaseMutationOptions<
+  MoveCardMutation,
+  MoveCardMutationVariables
+>
 export const CreateTeamDocument = gql`
   mutation CreateTeam($name: String!) {
     createTeam(name: $name) {

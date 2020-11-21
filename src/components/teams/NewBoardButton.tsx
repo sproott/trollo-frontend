@@ -39,7 +39,7 @@ const NewBoardButton = ({
             query: TeamsDocument,
             data: produce(boards, (x) => {
               x.currentUser.owns
-                .find((p) => p.team.id == teamId)
+                .find((p) => p.team.id === teamId)
                 .team.boards.push(data.createBoard.board)
             }),
           })

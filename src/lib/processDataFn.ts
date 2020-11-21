@@ -11,7 +11,7 @@ const loginRedirect = (
   router: NextRouter,
   loginStateForRedirect: boolean
 ) => {
-  if (!!data.currentUser == loginStateForRedirect) {
+  if (!!data.currentUser === loginStateForRedirect) {
     router.push("/")
     return { redirecting: true }
   }
