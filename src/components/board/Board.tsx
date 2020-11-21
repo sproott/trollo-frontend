@@ -43,13 +43,20 @@ const Board = ({ boardId }: { boardId: string }) => {
           store.writeQuery<BoardQuery>({
             query: BoardDocument,
             data: produce(board, (x) => {
+              // find the source and destination lists
               const sourceList = x.board.lists.find((list) => list.id === source.droppableId)
-              const [card] = sourceList.cards.splice(source.index, 1)
               const destinationList = x.board.lists.find(
                 (list) => list.id === destination.droppableId
               )
-              card.index = result.destination.index
+
+              // remove card from source
+              const [card] = sourceList.cards.splice(source.index, 1)
+
+              // insert card in destination
               destinationList.cards.splice(destination.index, 0, card)
+
+              // update card index
+              card.index = result.destination.index
 
               // reindex lists
               sourceList.cards.forEach((card, index) => (card.index = index))
