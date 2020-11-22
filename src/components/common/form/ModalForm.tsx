@@ -13,6 +13,7 @@ export type ModalFormProps<TInput, TData> = {
   onSubmit: (formData: TInput) => void
   loading: boolean
   data: TData
+  error?: boolean
   customSuccessCondition: (data: TData) => boolean
   renderForm: (control: Control<TInput>, errors: FieldErrors<TInput>) => React.ReactNode
   renderButton: (showModal: () => void) => React.ReactNode
@@ -25,12 +26,14 @@ const ModalForm = <TInput extends object, TData extends object>({
   onSubmit,
   loading,
   data,
+  error,
   customSuccessCondition,
   renderForm,
   renderButton,
 }: ModalFormProps<TInput, TData>) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [onSubmitFinished, setOnSubmitFinished] = useState(false)
   const { control, handleSubmit, errors, reset: resetForm } = useForm<TInput>({
     defaultValues,
     mode: "onBlur",
@@ -41,17 +44,24 @@ const ModalForm = <TInput extends object, TData extends object>({
   const onSubmitOuter = async (formData: TInput) => {
     setSubmitted(true)
     await onSubmit(formData)
+    setOnSubmitFinished(true)
   }
 
   const showModal = () => {
     resetForm()
+    data = undefined
     setModalVisible(true)
   }
   const closeModal = () => setModalVisible(false)
 
-  if (submitted && !loading && customSuccessCondition(data)) {
-    setSubmitted(false)
-    setModalVisible(false)
+  if (submitted && onSubmitFinished && !loading) {
+    setOnSubmitFinished(false)
+    if (customSuccessCondition(data)) {
+      setSubmitted(false)
+      setModalVisible(false)
+    } else if (!!error) {
+      setSubmitted(false)
+    }
   }
 
   return (

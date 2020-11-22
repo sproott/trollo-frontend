@@ -47,6 +47,7 @@ const NewTeamButton = () => {
       onSubmit={onSubmit}
       loading={loading}
       data={data}
+      error={data?.createTeam.exists}
       customSuccessCondition={(data) => !!data?.createTeam && !data.createTeam.exists}
       renderForm={(control, errors) => (
         <TextInput

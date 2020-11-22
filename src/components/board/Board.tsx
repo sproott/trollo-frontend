@@ -75,7 +75,7 @@ const Board = ({ boardId }: { boardId: string }) => {
     <Spinner />
   ) : (
     <Content>
-      <H1>General</H1>
+      <H1>{data.board.name}</H1>
       <div
         style={{ flex: 1, display: "flex", overflow: "auto", height: "100%", paddingTop: "10px" }}
       >

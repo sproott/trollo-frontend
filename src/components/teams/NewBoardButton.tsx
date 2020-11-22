@@ -29,6 +29,7 @@ const NewBoardButton = ({
   const [createBoard, { loading, data }] = useCreateBoardMutation()
 
   const onSubmit = async (formData: FormData) => {
+    console.log("onSubmit")
     await createBoard({
       variables: { teamId, ...formData },
       update: (store, { data }) => {
@@ -58,6 +59,7 @@ const NewBoardButton = ({
       onSubmit={onSubmit}
       loading={loading}
       data={data}
+      error={data?.createBoard.exists}
       customSuccessCondition={(data) => !!data?.createBoard && !data.createBoard.exists}
       renderForm={(control, errors) => (
         <TextInput
@@ -65,7 +67,7 @@ const NewBoardButton = ({
           name="name"
           error={
             errors.name?.message ||
-            (data?.createBoard.exists && "board with this name already exists")
+            (data?.createBoard.exists && "Board with this name already exists")
           }
           control={control}
         />
