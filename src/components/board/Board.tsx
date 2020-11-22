@@ -20,7 +20,6 @@ const Board = ({ boardId }: { boardId: string }) => {
   const router = useRouter()
 
   const onDragEnd = async (result: DropResult, provided: ResponderProvided) => {
-    console.log(result)
     const { source, destination, draggableId } = result
     if (
       !!destination &&
