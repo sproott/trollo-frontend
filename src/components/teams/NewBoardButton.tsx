@@ -61,13 +61,13 @@ const NewBoardButton = ({
       data={data}
       error={data?.createBoard.exists}
       customSuccessCondition={(data) => !!data?.createBoard && !data.createBoard.exists}
-      renderForm={(control, errors) => (
+      renderForm={(control, errors, reset) => (
         <TextInput
           label="Name"
           name="name"
           error={
             errors.name?.message ||
-            (data?.createBoard.exists && "Board with this name already exists")
+            (!reset && data?.createBoard.exists && "Board with this name already exists")
           }
           control={control}
         />

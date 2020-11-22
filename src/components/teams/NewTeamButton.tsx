@@ -49,13 +49,13 @@ const NewTeamButton = () => {
       data={data}
       error={data?.createTeam.exists}
       customSuccessCondition={(data) => !!data?.createTeam && !data.createTeam.exists}
-      renderForm={(control, errors) => (
+      renderForm={(control, errors, reset) => (
         <TextInput
           label="Name"
           name="name"
           error={
             errors.name?.message ||
-            (data?.createTeam.exists && "Team with this name already exists")
+            (!reset && data?.createTeam.exists && "Team with this name already exists")
           }
           control={control}
         />
