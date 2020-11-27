@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/router"
 import Spinner from "../loading/Spinner"
 import { Content } from "../common/page.styled"
-import { H1 } from "../common/Text"
+import { H0, H1 } from "../common/Text"
 import { DragDropContext, DropResult, ResponderProvided } from "react-beautiful-dnd"
 import DroppableList from "./DroppableList"
 import produce from "immer"
@@ -75,7 +75,7 @@ const Board = ({ boardId }: { boardId: string }) => {
     <Spinner />
   ) : (
     <Content>
-      <H1 style={{ fontSize: "x-large" }}>{data.board.name}</H1>
+      <H0>{data.board.name}</H0>
       <div
         style={{ flex: 1, display: "flex", overflow: "auto", height: "100%", paddingTop: "10px" }}
       >

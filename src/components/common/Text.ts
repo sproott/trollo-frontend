@@ -13,6 +13,9 @@ const styledWithTextProps = (tagName: any) => {
   `
 }
 
+export const H0 = styled(styledWithTextProps("h1"))`
+  font-size: x-large;
+`
 export const H1 = styledWithTextProps("h1")
 export const H2 = styledWithTextProps("h2")
 export const H3 = styledWithTextProps("h3")

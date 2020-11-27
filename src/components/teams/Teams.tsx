@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { H1 } from "../common/Text"
+import { H0, H1 } from "../common/Text"
 import { Content } from "../common/page.styled"
 import { Col, Divider, Row, Skeleton } from "antd"
 import { BoardGrid } from "./teams.styled"
@@ -43,12 +43,12 @@ const Teams = () => {
           {data?.currentUser && !loading && (
             <>
               <Box flex justifyContent="space-between">
-                <H1>Your teams</H1>
+                <H0>Your teams</H0>
                 <NewTeamButton />
               </Box>
               <TeamsInfo teams={data.currentUser.owns.map((p) => p.team)} isOwn />
               <Divider />
-              <H1>Teams you participate in</H1>
+              <H0>Teams you participate in</H0>
               <TeamsInfo teams={data.currentUser.participatesIn.map((p) => p.team)} />
             </>
           )}
