@@ -4,6 +4,7 @@ import { Card } from "antd"
 import BoardInfo from "./BoardInfo"
 import { BoardGrid } from "./teams.styled"
 import NewBoardButton from "./NewBoardButton"
+import { CardInner } from "../board/board.styled"
 
 const TeamsInfo = ({
   teams,

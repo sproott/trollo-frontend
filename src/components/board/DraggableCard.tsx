@@ -18,6 +18,7 @@ const DraggableCard = ({
           style={{
             ...provided.draggableProps.style,
           }}
+          isDragging={snapshot.isDragging}
         >
           {card.name}
         </CardInner>

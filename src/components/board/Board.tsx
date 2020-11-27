@@ -67,7 +67,7 @@ const Board = ({ boardId }: { boardId: string }) => {
     }
   }
 
-  if (!!error) {
+  if (error) {
     router.replace("/")
   }
 
@@ -75,7 +75,7 @@ const Board = ({ boardId }: { boardId: string }) => {
     <Spinner />
   ) : (
     <Content>
-      <H1>{data.board.name}</H1>
+      <H1 style={{ fontSize: "x-large" }}>{data.board.name}</H1>
       <div
         style={{ flex: 1, display: "flex", overflow: "auto", height: "100%", paddingTop: "10px" }}
       >

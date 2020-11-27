@@ -2,9 +2,7 @@ import { Card, List, Maybe } from "../../../generated/graphql"
 import { Droppable } from "react-beautiful-dnd"
 import DraggableCard from "./DraggableCard"
 import React from "react"
-import { Col } from "antd"
-import { ListInner } from "./board.styled"
-import { H3, H4 } from "../common/Text"
+import { Card as AntdCard, Col } from "antd"
 
 const DroppableList = ({
   list,
@@ -14,8 +12,7 @@ const DroppableList = ({
     }
 }) => (
   <Col xs={12} sm={10} md={8} lg={6} xl={4}>
-    <ListInner>
-      <H4 style={{ marginBottom: "5px", userSelect: "none" }}>{list.name}</H4>
+    <AntdCard title={list.name} style={{ margin: "0 4px" }}>
       <div>
         <Droppable droppableId={list.id}>
           {(provided, snapshot) => (
@@ -34,7 +31,7 @@ const DroppableList = ({
           )}
         </Droppable>
       </div>
-    </ListInner>
+    </AntdCard>
   </Col>
 )
 
