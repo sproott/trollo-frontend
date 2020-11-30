@@ -6,7 +6,21 @@
       "request": "launch",
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "yarn",
-      "runtimeArgs": ["run", "dev"]
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ]
+    },
+    {
+      "name": "generate",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": [
+        "run",
+        "generate"
+      ]
     }
   ]
 }

@@ -28,8 +28,8 @@ export const CreateBoardButton = styled(BoardButtonBase)`
   border: 3px dashed ${theme.blue.primary};
 
   :hover {
-    background-color: ${theme.blue[0]};
     color: ${theme.blue.primary};
+    background-color: ${theme.blue[0]};
   }
 `
 

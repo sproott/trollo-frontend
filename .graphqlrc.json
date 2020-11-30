@@ -1,0 +1,13 @@
+{
+  "name": "Main GraphQL Schema",
+  "schemaPath": "schema.json",
+  "extensions": {
+    "Backend GraphQL Endpoint": {
+      "url": "http://localhost:4000/graphql",
+      "headers": {
+        "user-agent": "JS GraphQL"
+      },
+      "introspect": false
+    }
+  }
+}

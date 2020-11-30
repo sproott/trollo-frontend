@@ -559,6 +559,76 @@
         },
         {
           "kind": "OBJECT",
+          "name": "CreateCardResponse",
+          "description": null,
+          "fields": [
+            {
+              "name": "card",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Card",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "exists",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "CreateListResponse",
+          "description": null,
+          "fields": [
+            {
+              "name": "list",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "List",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "exists",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "CreateTeamResponse",
           "description": null,
           "fields": [
@@ -1036,7 +1106,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "Card",
+                  "name": "CreateCardResponse",
                   "ofType": null
                 }
               },
@@ -1101,13 +1171,42 @@
             {
               "name": "createList",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "boardId",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "name",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "List",
+                  "name": "CreateListResponse",
                   "ofType": null
                 }
               },
@@ -2272,9 +2371,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-11-21T11:22:22.745Z",
-      "endTime": "2020-11-21T11:22:22.755Z",
-      "duration": 9984700,
+      "startTime": "2020-11-27T09:23:57.960Z",
+      "endTime": "2020-11-27T09:23:57.983Z",
+      "duration": 23834701,
       "execution": {
         "resolvers": []
       }
