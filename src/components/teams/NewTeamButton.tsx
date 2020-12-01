@@ -13,7 +13,7 @@ import ModalForm from "../common/form/ModalForm"
 import { Button } from "antd"
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+  name: yup.string().required("Name is required").max(50, "Name is too long (>50 characters)"),
 })
 
 const NewTeamButton = () => {
@@ -29,6 +29,7 @@ const NewTeamButton = () => {
           store.writeQuery<TeamsQuery>({
             query: TeamsDocument,
             data: produce(boards, (x) => {
+              // @ts-ignore
               x.currentUser.owns.push({ team: data.createTeam.team })
             }),
           })

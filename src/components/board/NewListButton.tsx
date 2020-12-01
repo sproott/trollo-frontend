@@ -12,36 +12,43 @@ import {
 } from "../../../generated/graphql"
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
-import {Button} from "antd"
-import {Maybe} from "graphql/jsutils/Maybe"
+import { Button } from "antd"
+import { Maybe } from "graphql/jsutils/Maybe"
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+  name: yup.string().required("Name is required").max(50, "Name is too long (>50 characters)"),
 })
 
-const NewListButton = (
-  {
-    board,
-  }: {
-    board: { __typename?: "Board" } & Pick<Board, "id" | "name"> & {
-      lists?: Maybe<Array<{ __typename?: "List" } & Pick<List, "id" | "name"> & {
-        cards?: Maybe<Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>>
-      }>>
+const NewListButton = ({
+  board,
+}: {
+  board: { __typename?: "Board" } & Pick<Board, "id" | "name"> & {
+      lists?: Maybe<
+        Array<
+          { __typename?: "List" } & Pick<List, "id" | "name"> & {
+              cards?: Maybe<Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>>
+            }
+        >
+      >
     }
-  }) => {
-  const [createList, {loading, data}] = useCreateListMutation()
+}) => {
+  const [createList, { loading, data }] = useCreateListMutation()
 
   const onSubmit = async (formData: MutationCreateTeamArgs) => {
     await createList({
-      variables: {boardId: board.id, ...formData},
-      update: (store, {data}) => {
+      variables: { boardId: board.id, ...formData },
+      update: (store, { data }) => {
         if (!data.createList.exists) {
           console.log("bruh")
-          const boardData = store.readQuery<BoardQuery>({query: BoardDocument, variables: {id: board.id}})
+          const boardData = store.readQuery<BoardQuery>({
+            query: BoardDocument,
+            variables: { id: board.id },
+          })
 
           store.writeQuery<BoardQuery>({
             query: BoardDocument,
             data: produce(boardData, (x) => {
+              // @ts-ignore
               x.board.lists.push(data.createList.list)
             }),
           })

@@ -33,7 +33,7 @@ export const CardInner = styled(InnerBase)<{ isDragging: boolean }>`
     left: 0;
     border-radius: 5px;
     box-shadow: 5px -5px 4px 1px rgba(58, 179, 255, 0.3);
-    opacity: ${({isDragging}) => (isDragging ? 1 : 0)};
+    opacity: ${({ isDragging }) => (isDragging ? 1 : 0)};
     transition: opacity 0.2s ease-in-out;
   }
 `
@@ -47,7 +47,8 @@ export const CreateCardButton = styled(InnerBase)`
   background-color: white;
   color: ${theme.blue.primary};
   border: 3px dashed ${theme.blue.primary};
-  
+  transition: 0.3s;
+
   :hover {
     color: ${theme.blue.primary};
     background-color: ${theme.blue[0]};

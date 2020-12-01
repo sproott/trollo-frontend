@@ -11,39 +11,41 @@ import {
 } from "../../../generated/graphql"
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
-import {Maybe} from "graphql/jsutils/Maybe"
-import {CreateCardButton} from "./board.styled";
-import {PlusOutlined} from "@ant-design/icons";
-import {Centered} from "../common/Centered";
+import { Maybe } from "graphql/jsutils/Maybe"
+import { CreateCardButton } from "./board.styled"
+import { PlusOutlined } from "@ant-design/icons"
+import { Centered } from "../common/Centered"
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+  name: yup.string().required("Name is required").max(50, "Name is too long (>50 characters)"),
 })
 
-const NewCardButton = (
-  {
-    boardId,
-    list,
-  }: {
-    boardId: string,
-    list: { __typename?: "List" } & Pick<List, "id" | "name"> & {
+const NewCardButton = ({
+  boardId,
+  list,
+}: {
+  boardId: string
+  list: { __typename?: "List" } & Pick<List, "id" | "name"> & {
       cards?: Maybe<Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>>
     }
-  }) => {
-  const [createCard, {loading, data}] = useCreateCardMutation()
+}) => {
+  const [createCard, { loading, data }] = useCreateCardMutation()
 
   const onSubmit = async (formData: MutationCreateTeamArgs) => {
     await createCard({
-      variables: {listId: list.id, ...formData},
-      update: (store, {data}) => {
+      variables: { listId: list.id, ...formData },
+      update: (store, { data }) => {
         if (!data.createCard.exists) {
           console.log("bruh")
-          const boardData = store.readQuery<BoardQuery>({query: BoardDocument, variables: {id: boardId}})
+          const boardData = store.readQuery<BoardQuery>({
+            query: BoardDocument,
+            variables: { id: boardId },
+          })
 
           store.writeQuery<BoardQuery>({
             query: BoardDocument,
             data: produce(boardData, (x) => {
-              x.board.lists.find(l => l.id === list.id).cards.push(data.createCard.card)
+              x.board.lists.find((l) => l.id === list.id).cards.push(data.createCard.card)
             }),
           })
         }
@@ -76,8 +78,8 @@ const NewCardButton = (
       )}
       renderButton={(showModal) => (
         <CreateCardButton onClick={showModal}>
-          <Centered style={{height: "100%"}}>
-            <PlusOutlined/>
+          <Centered style={{ height: "100%" }}>
+            <PlusOutlined />
           </Centered>
         </CreateCardButton>
       )}

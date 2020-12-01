@@ -18,7 +18,7 @@ type FormData = {
 }
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+  name: yup.string().required("Name is required").max(50, "Name is too long (>50 characters)"),
 })
 
 const NewBoardButton = ({

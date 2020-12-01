@@ -1,10 +1,12 @@
 import React from "react"
 import { TeamInfoFragment } from "../../../generated/graphql"
-import { Card } from "antd"
+import { Button, Card } from "antd"
 import BoardInfo from "./BoardInfo"
 import { BoardGrid } from "./teams.styled"
 import NewBoardButton from "./NewBoardButton"
 import { CardInner } from "../board/board.styled"
+import { EditOutlined } from "@ant-design/icons"
+import TeamInfo from "./TeamInfo"
 
 const TeamsInfo = ({
   teams,
@@ -16,16 +18,7 @@ const TeamsInfo = ({
   return (
     <div style={{ paddingTop: "10px" }}>
       {teams.map((team) => {
-        return (
-          <Card title={team.name} key={team.id} style={{ marginBottom: "10px" }}>
-            <BoardGrid style={{ padding: "10px 10px 0 10px" }}>
-              {team.boards?.map((board) => {
-                return <BoardInfo name={board.name} id={board.id} key={board.id} />
-              })}
-              {isOwn && <NewBoardButton team={team} />}
-            </BoardGrid>
-          </Card>
-        )
+        return <TeamInfo key={team.id} team={team} isOwn={isOwn} />
       })}
     </div>
   )
