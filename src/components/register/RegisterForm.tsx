@@ -10,7 +10,6 @@ import {
   CurrentUserDocument,
   CurrentUserQuery,
   RegisterInput,
-  TeamsDocument,
   useRegisterMutation,
 } from "../../../generated/graphql"
 import { H4 } from "../common/Text"
@@ -38,7 +37,7 @@ const RegisterForm = () => {
   const [done, setDone] = useState(false)
   const router = useRouter()
 
-  const { control, handleSubmit, errors, getValues } = useForm<RegisterInput>({
+  const { control, handleSubmit, errors } = useForm<RegisterInput>({
     defaultValues: {
       username: "",
       email: "",
@@ -98,18 +97,21 @@ const RegisterForm = () => {
               errors.username?.message || (!!registerError?.username && "Username already exists")
             }
             control={control}
+            maxLength={20}
           />
           <TextInput
             label="E-mail"
             name="email"
             error={errors.email?.message || (!!registerError?.email && "E-mail already exists")}
             control={control}
+            maxLength={254}
           />
           <PasswordInput
             label="Password"
             name="password"
             error={errors.password?.message}
             control={control}
+            maxLength={32}
           />
           <Box padding="20px 0 0 0">
             <HorizontallyCentered>

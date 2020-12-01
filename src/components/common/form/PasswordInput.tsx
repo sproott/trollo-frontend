@@ -2,10 +2,10 @@ import React from "react"
 import ControlledFormItem, { ControlledInputProps } from "./ControlledFormItem"
 import { Input } from "antd"
 
-const PasswordInput = (props: ControlledInputProps) => {
+const PasswordInput = (props: ControlledInputProps & { maxLength?: number }) => {
   return (
     <ControlledFormItem {...props}>
-      <Input.Password />
+      <Input.Password maxLength={props.maxLength} />
     </ControlledFormItem>
   )
 }

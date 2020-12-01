@@ -10,7 +10,6 @@ import {
   CurrentUserDocument,
   CurrentUserQuery,
   LoginInput,
-  TeamsDocument,
   useLoginMutation,
 } from "../../../generated/graphql"
 import { H4 } from "../common/Text"
@@ -62,8 +61,13 @@ const LoginForm = () => {
           <div style={{ minHeight: "30px" }}>
             {gqlError && <H4 color="red">Wrong username or password</H4>}
           </div>
-          <TextInput label="Username or e-mail" name="usernameOrEmail" control={control} />
-          <PasswordInput label="Password" name="password" control={control} />
+          <TextInput
+            label="Username or e-mail"
+            name="usernameOrEmail"
+            control={control}
+            maxLength={20}
+          />
+          <PasswordInput label="Password" name="password" control={control} maxLength={32} />
           <HorizontallyCentered>
             <SubmitButton label="Login" loading={submitted} />
           </HorizontallyCentered>
