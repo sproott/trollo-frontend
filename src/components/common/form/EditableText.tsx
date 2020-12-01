@@ -22,14 +22,21 @@ function EditableText({
   onConfirm,
   containerVisible,
   maxLength,
+  error,
+  success,
 }: {
   text: string
   label?: string
   onConfirm: (text: string) => void
   containerVisible?: boolean
   maxLength?: number
+  error?: string
+  success?: boolean
 }) {
   const [editing, setEditing] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [onSubmitFinished, setOnSubmitFinished] = useState(false)
+  const [reopened, setReopened] = useState(true)
   const { control, handleSubmit, errors, reset } = useForm<FormData>({
     defaultValues: {
       text,
@@ -39,15 +46,18 @@ function EditableText({
     resolver: yupResolver(schema),
   })
   const edit = () => {
+    setReopened(true)
     setEditing(true)
   }
   const cancel = () => {
     setEditing(false)
-  }
-  const onSubmit = ({ text }: FormData) => {
-    setEditing(false)
-    onConfirm(text)
     reset({ text })
+  }
+  const onSubmit = async ({ text }: FormData) => {
+    setSubmitted(true)
+    await onConfirm(text)
+    setOnSubmitFinished(true)
+    setReopened(false)
   }
 
   useEffect(() => {
@@ -55,6 +65,16 @@ function EditableText({
       setEditing(false)
     }
   }, [containerVisible])
+
+  if (submitted && onSubmitFinished) {
+    setOnSubmitFinished(false)
+    if (!!success) {
+      setEditing(false)
+      reset({ text })
+    } else {
+      setSubmitted(false)
+    }
+  }
 
   return (
     <div>
@@ -72,7 +92,7 @@ function EditableText({
                 name="text"
                 control={control}
                 maxLength={maxLength}
-                error={errors.text?.message}
+                error={!reopened && (errors.text?.message ?? error)}
               />
               <CheckOutlined onClick={handleSubmit(onSubmit)} />
               <CloseOutlined onClick={cancel} />

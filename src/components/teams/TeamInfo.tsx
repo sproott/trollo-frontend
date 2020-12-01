@@ -21,7 +21,7 @@ function TeamInfo({
   isOwn: boolean
 }) {
   const [modalVisible, setModalVisible] = useState(false)
-  const [rename] = useRenameTeamMutation()
+  const [rename, { data }] = useRenameTeamMutation()
   const showModal = () => {
     setModalVisible(true)
   }
@@ -34,9 +34,8 @@ function TeamInfo({
         name: newName,
         teamId: team.id,
       },
-      optimisticResponse: { renameTeam: true },
       update: (store, { data }) => {
-        if (data.renameTeam) {
+        if (data.renameTeam.success && !data.renameTeam.exists) {
           const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
           store.writeQuery<TeamsQuery>({
             query: TeamsDocument,
@@ -74,6 +73,8 @@ function TeamInfo({
           text={team.name}
           onConfirm={onConfirm}
           containerVisible={modalVisible}
+          error={data?.renameTeam.exists && "Team with this name already exists"}
+          success={data?.renameTeam.success}
         />
       </Modal>
     </>

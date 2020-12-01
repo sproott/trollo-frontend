@@ -1,5 +1,5 @@
-import * as Apollo from "@apollo/client"
 import { gql } from "@apollo/client"
+import * as Apollo from "@apollo/client"
 
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -88,6 +88,12 @@ export type CreateTeamResponse = {
   exists?: Maybe<Scalars["Boolean"]>
 }
 
+export type RenameTeamResponse = {
+  __typename?: "RenameTeamResponse"
+  success?: Maybe<Scalars["Boolean"]>
+  exists?: Maybe<Scalars["Boolean"]>
+}
+
 export type RegisterError = {
   __typename?: "RegisterError"
   email?: Maybe<Scalars["Boolean"]>
@@ -146,7 +152,7 @@ export type Mutation = {
   createList: CreateListResponse
   createTeam: CreateTeamResponse
   deleteTeam?: Maybe<Scalars["Boolean"]>
-  renameTeam: Scalars["Boolean"]
+  renameTeam: RenameTeamResponse
   login: User
   logout?: Maybe<Scalars["Boolean"]>
   register: RegisterResponse
@@ -273,7 +279,9 @@ export type RenameTeamMutationVariables = Exact<{
   teamId: Scalars["String"]
 }>
 
-export type RenameTeamMutation = { __typename?: "Mutation" } & Pick<Mutation, "renameTeam">
+export type RenameTeamMutation = { __typename?: "Mutation" } & {
+  renameTeam: { __typename?: "RenameTeamResponse" } & Pick<RenameTeamResponse, "success" | "exists">
+}
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput
@@ -308,10 +316,14 @@ export type TeamsQuery = { __typename?: "Query" } & {
   currentUser?: Maybe<
     { __typename?: "User" } & Pick<User, "id"> & {
         owns: Array<
-          { __typename?: "Participant" } & { team: { __typename?: "Team" } & TeamInfoFragment }
+          { __typename?: "Participant" } & {
+            team: { __typename?: "Team" } & TeamInfoFragment
+          }
         >
         participatesIn: Array<
-          { __typename?: "Participant" } & { team: { __typename?: "Team" } & TeamInfoFragment }
+          { __typename?: "Participant" } & {
+            team: { __typename?: "Team" } & TeamInfoFragment
+          }
         >
       }
   >
@@ -443,8 +455,10 @@ export const CreateCardDocument = gql`
     }
   }
 `
-export type CreateCardMutationFn = Apollo.MutationFunction<CreateCardMutation,
-  CreateCardMutationVariables>
+export type CreateCardMutationFn = Apollo.MutationFunction<
+  CreateCardMutation,
+  CreateCardMutationVariables
+>
 
 /**
  * __useCreateCardMutation__
@@ -583,8 +597,10 @@ export const CreateTeamDocument = gql`
     }
   }
 `
-export type CreateTeamMutationFn = Apollo.MutationFunction<CreateTeamMutation,
-  CreateTeamMutationVariables>
+export type CreateTeamMutationFn = Apollo.MutationFunction<
+  CreateTeamMutation,
+  CreateTeamMutationVariables
+>
 
 /**
  * __useCreateTeamMutation__
@@ -620,11 +636,16 @@ export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<
 >
 export const RenameTeamDocument = gql`
   mutation RenameTeam($name: String!, $teamId: String!) {
-    renameTeam(name: $name, teamId: $teamId)
+    renameTeam(name: $name, teamId: $teamId) {
+      success
+      exists
+    }
   }
 `
-export type RenameTeamMutationFn = Apollo.MutationFunction<RenameTeamMutation,
-  RenameTeamMutationVariables>
+export type RenameTeamMutationFn = Apollo.MutationFunction<
+  RenameTeamMutation,
+  RenameTeamMutationVariables
+>
 
 /**
  * __useRenameTeamMutation__
@@ -697,9 +718,9 @@ export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>
 export const LogoutDocument = gql`
-    mutation Logout {
-        logout
-    }
+  mutation Logout {
+    logout
+  }
 `
 export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>
 
@@ -746,8 +767,10 @@ export const RegisterDocument = gql`
     }
   }
 `
-export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation,
-  RegisterMutationVariables>
+export type RegisterMutationFn = Apollo.MutationFunction<
+  RegisterMutation,
+  RegisterMutationVariables
+>
 
 /**
  * __useRegisterMutation__
@@ -777,8 +800,10 @@ export function useRegisterMutation(
 
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation,
-  RegisterMutationVariables>
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<
+  RegisterMutation,
+  RegisterMutationVariables
+>
 export const TeamsDocument = gql`
   query Teams {
     currentUser {
@@ -829,12 +854,12 @@ export type TeamsQueryHookResult = ReturnType<typeof useTeamsQuery>
 export type TeamsLazyQueryHookResult = ReturnType<typeof useTeamsLazyQuery>
 export type TeamsQueryResult = Apollo.QueryResult<TeamsQuery, TeamsQueryVariables>
 export const CurrentUserDocument = gql`
-    query CurrentUser {
-        currentUser {
-            id
-            username
-        }
+  query CurrentUser {
+    currentUser {
+      id
+      username
     }
+  }
 `
 
 /**
