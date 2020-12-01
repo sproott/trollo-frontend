@@ -16,7 +16,7 @@ import { Button } from "antd"
 import { Maybe } from "graphql/jsutils/Maybe"
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required").max(50, "Name is too long (>50 characters)"),
+  name: yup.string().required("Name is required"),
 })
 
 const NewListButton = ({
