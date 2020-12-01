@@ -432,16 +432,16 @@ export type BoardQueryHookResult = ReturnType<typeof useBoardQuery>
 export type BoardLazyQueryHookResult = ReturnType<typeof useBoardLazyQuery>
 export type BoardQueryResult = Apollo.QueryResult<BoardQuery, BoardQueryVariables>
 export const CreateCardDocument = gql`
-    mutation createCard($listId: String!, $name: String!) {
-        createCard(listId: $listId, name: $name) {
-            card {
-                id
-                name
-                index
-            }
-            exists
-        }
+  mutation createCard($listId: String!, $name: String!) {
+    createCard(listId: $listId, name: $name) {
+      card {
+        id
+        name
+        index
+      }
+      exists
     }
+  }
 `
 export type CreateCardMutationFn = Apollo.MutationFunction<CreateCardMutation,
   CreateCardMutationVariables>
@@ -475,15 +475,19 @@ export function useCreateCardMutation(
 
 export type CreateCardMutationHookResult = ReturnType<typeof useCreateCardMutation>
 export type CreateCardMutationResult = Apollo.MutationResult<CreateCardMutation>
-export type CreateCardMutationOptions = Apollo.BaseMutationOptions<CreateCardMutation,
-  CreateCardMutationVariables>
+export type CreateCardMutationOptions = Apollo.BaseMutationOptions<
+  CreateCardMutation,
+  CreateCardMutationVariables
+>
 export const MoveCardDocument = gql`
-    mutation moveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
-        moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
-    }
+  mutation moveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
+    moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
+  }
 `
-export type MoveCardMutationFn = Apollo.MutationFunction<MoveCardMutation,
-  MoveCardMutationVariables>
+export type MoveCardMutationFn = Apollo.MutationFunction<
+  MoveCardMutation,
+  MoveCardMutationVariables
+>
 
 /**
  * __useMoveCardMutation__
@@ -515,21 +519,25 @@ export function useMoveCardMutation(
 
 export type MoveCardMutationHookResult = ReturnType<typeof useMoveCardMutation>
 export type MoveCardMutationResult = Apollo.MutationResult<MoveCardMutation>
-export type MoveCardMutationOptions = Apollo.BaseMutationOptions<MoveCardMutation,
-  MoveCardMutationVariables>
+export type MoveCardMutationOptions = Apollo.BaseMutationOptions<
+  MoveCardMutation,
+  MoveCardMutationVariables
+>
 export const CreateListDocument = gql`
-    mutation createList($boardId: String!, $name: String!) {
-        createList(boardId: $boardId, name: $name) {
-            list {
-                id
-                name
-            }
-            exists
-        }
+  mutation createList($boardId: String!, $name: String!) {
+    createList(boardId: $boardId, name: $name) {
+      list {
+        id
+        name
+      }
+      exists
     }
+  }
 `
-export type CreateListMutationFn = Apollo.MutationFunction<CreateListMutation,
-  CreateListMutationVariables>
+export type CreateListMutationFn = Apollo.MutationFunction<
+  CreateListMutation,
+  CreateListMutationVariables
+>
 
 /**
  * __useCreateListMutation__
@@ -560,18 +568,20 @@ export function useCreateListMutation(
 
 export type CreateListMutationHookResult = ReturnType<typeof useCreateListMutation>
 export type CreateListMutationResult = Apollo.MutationResult<CreateListMutation>
-export type CreateListMutationOptions = Apollo.BaseMutationOptions<CreateListMutation,
-  CreateListMutationVariables>
+export type CreateListMutationOptions = Apollo.BaseMutationOptions<
+  CreateListMutation,
+  CreateListMutationVariables
+>
 export const CreateTeamDocument = gql`
-    mutation CreateTeam($name: String!) {
-        createTeam(name: $name) {
-            team {
-                id
-                name
-            }
-            exists
-        }
+  mutation CreateTeam($name: String!) {
+    createTeam(name: $name) {
+      team {
+        id
+        name
+      }
+      exists
     }
+  }
 `
 export type CreateTeamMutationFn = Apollo.MutationFunction<CreateTeamMutation,
   CreateTeamMutationVariables>
@@ -604,12 +614,14 @@ export function useCreateTeamMutation(
 
 export type CreateTeamMutationHookResult = ReturnType<typeof useCreateTeamMutation>
 export type CreateTeamMutationResult = Apollo.MutationResult<CreateTeamMutation>
-export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<CreateTeamMutation,
-  CreateTeamMutationVariables>
+export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<
+  CreateTeamMutation,
+  CreateTeamMutationVariables
+>
 export const RenameTeamDocument = gql`
-    mutation RenameTeam($name: String!, $teamId: String!) {
-        renameTeam(name: $name, teamId: $teamId)
-    }
+  mutation RenameTeam($name: String!, $teamId: String!) {
+    renameTeam(name: $name, teamId: $teamId)
+  }
 `
 export type RenameTeamMutationFn = Apollo.MutationFunction<RenameTeamMutation,
   RenameTeamMutationVariables>
@@ -643,16 +655,18 @@ export function useRenameTeamMutation(
 
 export type RenameTeamMutationHookResult = ReturnType<typeof useRenameTeamMutation>
 export type RenameTeamMutationResult = Apollo.MutationResult<RenameTeamMutation>
-export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<RenameTeamMutation,
-  RenameTeamMutationVariables>
+export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<
+  RenameTeamMutation,
+  RenameTeamMutationVariables
+>
 export const LoginDocument = gql`
-    mutation Login($input: LoginInput!) {
-        login(input: $input) {
-            id
-            username
-            email
-        }
+  mutation Login($input: LoginInput!) {
+    login(input: $input) {
+      id
+      username
+      email
     }
+  }
 `
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>
 
@@ -713,22 +727,24 @@ export function useLogoutMutation(
 
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation,
-  LogoutMutationVariables>
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<
+  LogoutMutation,
+  LogoutMutationVariables
+>
 export const RegisterDocument = gql`
-    mutation Register($input: RegisterInput!) {
-        register(input: $input) {
-            user {
-                id
-                username
-                email
-            }
-            error {
-                username
-                email
-            }
-        }
+  mutation Register($input: RegisterInput!) {
+    register(input: $input) {
+      user {
+        id
+        username
+        email
+      }
+      error {
+        username
+        email
+      }
     }
+  }
 `
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation,
   RegisterMutationVariables>
@@ -764,22 +780,22 @@ export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation,
   RegisterMutationVariables>
 export const TeamsDocument = gql`
-    query Teams {
-        currentUser {
-            id
-            owns {
-                team {
-                    ...TeamInfo
-                }
-            }
-            participatesIn {
-                team {
-                    ...TeamInfo
-                }
-            }
+  query Teams {
+    currentUser {
+      id
+      owns {
+        team {
+          ...TeamInfo
         }
+      }
+      participatesIn {
+        team {
+          ...TeamInfo
+        }
+      }
     }
-    ${TeamInfoFragmentDoc}
+  }
+  ${TeamInfoFragmentDoc}
 `
 
 /**

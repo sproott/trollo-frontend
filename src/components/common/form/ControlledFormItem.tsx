@@ -1,5 +1,5 @@
 import { Control, Controller } from "react-hook-form"
-import React, { ReactChild, ReactChildren, ReactElement, ReactNode } from "react"
+import React, { ReactElement } from "react"
 import { Form } from "antd"
 
 export type ControlledInputProps = {
@@ -23,7 +23,12 @@ const ControlledFormItem = ({
   return (
     <Controller
       render={(props) => (
-        <Form.Item label={label} validateStatus={!!error && "error"} help={error}>
+        <Form.Item
+          label={label}
+          validateStatus={!!error && "error"}
+          help={error}
+          style={{ marginBottom: "0" }}
+        >
           {React.cloneElement(children, { ...props })}
         </Form.Item>
       )}

@@ -4,8 +4,14 @@ import { BoardGrid } from "./teams.styled"
 import BoardInfo from "./BoardInfo"
 import NewBoardButton from "./NewBoardButton"
 import { Card, Modal } from "antd"
-import { TeamInfoFragment } from "../../../generated/graphql"
+import {
+  TeamInfoFragment,
+  TeamsDocument,
+  TeamsQuery,
+  useRenameTeamMutation,
+} from "../../../generated/graphql"
 import EditableText from "../common/form/EditableText"
+import produce from "immer"
 
 function TeamInfo({
   team,
@@ -15,11 +21,32 @@ function TeamInfo({
   isOwn: boolean
 }) {
   const [modalVisible, setModalVisible] = useState(false)
+  const [rename] = useRenameTeamMutation()
   const showModal = () => {
     setModalVisible(true)
   }
   const closeModal = () => {
     setModalVisible(false)
+  }
+  const onConfirm = async (newName: string) => {
+    await rename({
+      variables: {
+        name: newName,
+        teamId: team.id,
+      },
+      optimisticResponse: { renameTeam: true },
+      update: (store, { data }) => {
+        if (data.renameTeam) {
+          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
+          store.writeQuery<TeamsQuery>({
+            query: TeamsDocument,
+            data: produce(teams, (x) => {
+              x.currentUser.owns.flatMap((p) => p.team).find((t) => t.id === team.id).name = newName
+            }),
+          })
+        }
+      },
+    })
   }
 
   return (
@@ -36,9 +63,18 @@ function TeamInfo({
           {isOwn && <NewBoardButton team={team} />}
         </BoardGrid>
       </Card>
-      <Modal visible={modalVisible} title={`Edit team ${team.name}`} onCancel={closeModal}>
-        <div>Name:</div>
-        <EditableText text={team.name} />
+      <Modal
+        visible={modalVisible}
+        title={`Edit team ${team.name}`}
+        onCancel={closeModal}
+        footer={<></>}
+      >
+        <EditableText
+          label="Name: "
+          text={team.name}
+          onConfirm={onConfirm}
+          containerVisible={modalVisible}
+        />
       </Modal>
     </>
   )
