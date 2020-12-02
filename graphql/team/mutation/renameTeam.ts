@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client/core"
+import { gql } from "@apollo/client"
 
 export const renameTeam = gql`
   mutation RenameTeam($name: String!, $teamId: String!) {

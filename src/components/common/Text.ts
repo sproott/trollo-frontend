@@ -22,6 +22,6 @@ export const H3 = styledWithTextProps("h3")
 export const H4 = styledWithTextProps("h4")
 export const H5 = styledWithTextProps("h5")
 
-export const Text = styled(styledWithTextProps("div"))`
+export const Div = styled(styledWithTextProps("div"))`
   font-size: 14px;
 `

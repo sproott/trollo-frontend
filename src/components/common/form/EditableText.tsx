@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Box from "../Box"
 import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons"
-import { Text } from "../Text"
+import { Div } from "../Text"
 import { useForm } from "react-hook-form"
 import TextInput from "./TextInput"
 import * as yup from "yup"
@@ -79,10 +79,10 @@ function EditableText({
   return (
     <div>
       <Box flex gap="7px" alignItems="center">
-        {!!label && <Text>{label}</Text>}
+        {!!label && <Div>{label}</Div>}
         {!editing ? (
           <>
-            <Text>{text}</Text>
+            <Div>{text}</Div>
             <EditOutlined onClick={edit} style={{ padding: "0 5px" }} />
           </>
         ) : (

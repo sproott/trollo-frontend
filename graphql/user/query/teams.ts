@@ -1,12 +1,18 @@
 import { gql } from "@apollo/client"
 
-export const teamsQuery = gql`
+export const teams = gql`
   fragment TeamInfo on Team {
     id
     name
     boards {
       id
       name
+    }
+    participants {
+      user {
+        id
+        username
+      }
     }
   }
 

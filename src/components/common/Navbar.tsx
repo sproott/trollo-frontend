@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useCurrentUserQuery } from "../../../generated/graphql"
 import { Header } from "./page.styled"
 import Logo from "./Logo"
-import Avatar from "./Avatar"
+import CurrentUserAvatar from "./CurrentUserAvatar"
 import { Button } from "./Navbar.styled"
 
 type NavbarProps = {
@@ -18,7 +18,7 @@ const UserInfo = () => {
   return (
     !loading &&
     (data?.currentUser?.username ? (
-      <Avatar />
+      <CurrentUserAvatar />
     ) : (
       <Space size="large">
         <Link href="/login">

@@ -15,6 +15,11 @@ const typePolicies = {
           return incoming
         },
       },
+      participants: {
+        merge(existing: any, incoming: any) {
+          return incoming
+        },
+      },
     },
   },
   List: {
