@@ -39,7 +39,6 @@ const NewListButton = ({
       variables: { boardId: board.id, ...formData },
       update: (store, { data }) => {
         if (!data.createList.exists) {
-          console.log("bruh")
           const boardData = store.readQuery<BoardQuery>({
             query: BoardDocument,
             variables: { id: board.id },

@@ -1,5 +1,5 @@
-import * as Apollo from "@apollo/client"
 import { gql } from "@apollo/client"
+import * as Apollo from "@apollo/client"
 
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -97,6 +97,7 @@ export type RenameTeamResponse = {
 export type AddUserResponse = {
   __typename?: "AddUserResponse"
   userId?: Maybe<Scalars["String"]>
+  username?: Maybe<Scalars["String"]>
   alreadyInTeam?: Maybe<Scalars["Boolean"]>
   doesNotExist?: Maybe<Scalars["Boolean"]>
 }
@@ -235,8 +236,8 @@ export type CreateBoardMutationVariables = Exact<{
 
 export type CreateBoardMutation = { __typename?: "Mutation" } & {
   createBoard: { __typename?: "CreateBoardResponse" } & Pick<CreateBoardResponse, "exists"> & {
-    board?: Maybe<{ __typename?: "Board" } & Pick<Board, "id" | "name">>
-  }
+      board?: Maybe<{ __typename?: "Board" } & Pick<Board, "id" | "name">>
+    }
 }
 
 export type BoardQueryVariables = Exact<{
@@ -245,10 +246,12 @@ export type BoardQueryVariables = Exact<{
 
 export type BoardQuery = { __typename?: "Query" } & {
   board: { __typename?: "Board" } & Pick<Board, "id" | "name"> & {
-    lists: Array<{ __typename?: "List" } & Pick<List, "id" | "name"> & {
-      cards: Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>
-    }>
-  }
+      lists: Array<
+        { __typename?: "List" } & Pick<List, "id" | "name"> & {
+            cards: Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>
+          }
+      >
+    }
 }
 
 export type CreateCardMutationVariables = Exact<{
@@ -258,8 +261,8 @@ export type CreateCardMutationVariables = Exact<{
 
 export type CreateCardMutation = { __typename?: "Mutation" } & {
   createCard: { __typename?: "CreateCardResponse" } & Pick<CreateCardResponse, "exists"> & {
-    card?: Maybe<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>
-  }
+      card?: Maybe<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>
+    }
 }
 
 export type MoveCardMutationVariables = Exact<{
@@ -289,7 +292,7 @@ export type AddUserMutationVariables = Exact<{
 export type AddUserMutation = { __typename?: "Mutation" } & {
   addUser: { __typename?: "AddUserResponse" } & Pick<
     AddUserResponse,
-    "userId" | "alreadyInTeam" | "doesNotExist"
+    "userId" | "username" | "alreadyInTeam" | "doesNotExist"
   >
 }
 
@@ -393,17 +396,18 @@ export const TeamInfoFragmentDoc = gql`
   }
 `
 export const CreateBoardDocument = gql`
-    mutation CreateBoard($teamId: String!, $name: String!) {
-        createBoard(teamId: $teamId, name: $name) {
-            board {
-                id
-                name
-            }
-            exists
-        }
+  mutation CreateBoard($teamId: String!, $name: String!) {
+    createBoard(teamId: $teamId, name: $name) {
+      board {
+        id
+        name
+      }
+      exists
     }
+  }
 `
-export type CreateBoardMutationFn = Apollo.MutationFunction<CreateBoardMutation,
+export type CreateBoardMutationFn = Apollo.MutationFunction<
+  CreateBoardMutation,
   CreateBoardMutationVariables
 >
 
@@ -436,25 +440,26 @@ export function useCreateBoardMutation(
 
 export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMutation>
 export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>
-export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation,
+export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<
+  CreateBoardMutation,
   CreateBoardMutationVariables
 >
 export const BoardDocument = gql`
-    query Board($id: String!) {
-        board(id: $id) {
-            id
-            name
-            lists {
-                id
-                name
-                cards {
-                    id
-                    name
-                    index
-                }
-            }
+  query Board($id: String!) {
+    board(id: $id) {
+      id
+      name
+      lists {
+        id
+        name
+        cards {
+          id
+          name
+          index
         }
+      }
     }
+  }
 `
 
 /**
@@ -489,18 +494,19 @@ export type BoardQueryHookResult = ReturnType<typeof useBoardQuery>
 export type BoardLazyQueryHookResult = ReturnType<typeof useBoardLazyQuery>
 export type BoardQueryResult = Apollo.QueryResult<BoardQuery, BoardQueryVariables>
 export const CreateCardDocument = gql`
-    mutation createCard($listId: String!, $name: String!) {
-        createCard(listId: $listId, name: $name) {
-            card {
-                id
-                name
-                index
-            }
-            exists
-        }
+  mutation createCard($listId: String!, $name: String!) {
+    createCard(listId: $listId, name: $name) {
+      card {
+        id
+        name
+        index
+      }
+      exists
     }
+  }
 `
-export type CreateCardMutationFn = Apollo.MutationFunction<CreateCardMutation,
+export type CreateCardMutationFn = Apollo.MutationFunction<
+  CreateCardMutation,
   CreateCardMutationVariables
 >
 
@@ -533,15 +539,17 @@ export function useCreateCardMutation(
 
 export type CreateCardMutationHookResult = ReturnType<typeof useCreateCardMutation>
 export type CreateCardMutationResult = Apollo.MutationResult<CreateCardMutation>
-export type CreateCardMutationOptions = Apollo.BaseMutationOptions<CreateCardMutation,
+export type CreateCardMutationOptions = Apollo.BaseMutationOptions<
+  CreateCardMutation,
   CreateCardMutationVariables
 >
 export const MoveCardDocument = gql`
-    mutation moveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
-        moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
-    }
+  mutation moveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
+    moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
+  }
 `
-export type MoveCardMutationFn = Apollo.MutationFunction<MoveCardMutation,
+export type MoveCardMutationFn = Apollo.MutationFunction<
+  MoveCardMutation,
   MoveCardMutationVariables
 >
 
@@ -575,21 +583,23 @@ export function useMoveCardMutation(
 
 export type MoveCardMutationHookResult = ReturnType<typeof useMoveCardMutation>
 export type MoveCardMutationResult = Apollo.MutationResult<MoveCardMutation>
-export type MoveCardMutationOptions = Apollo.BaseMutationOptions<MoveCardMutation,
+export type MoveCardMutationOptions = Apollo.BaseMutationOptions<
+  MoveCardMutation,
   MoveCardMutationVariables
 >
 export const CreateListDocument = gql`
-    mutation createList($boardId: String!, $name: String!) {
-        createList(boardId: $boardId, name: $name) {
-            list {
-                id
-                name
-            }
-            exists
-        }
+  mutation createList($boardId: String!, $name: String!) {
+    createList(boardId: $boardId, name: $name) {
+      list {
+        id
+        name
+      }
+      exists
     }
+  }
 `
-export type CreateListMutationFn = Apollo.MutationFunction<CreateListMutation,
+export type CreateListMutationFn = Apollo.MutationFunction<
+  CreateListMutation,
   CreateListMutationVariables
 >
 
@@ -630,6 +640,7 @@ export const AddUserDocument = gql`
   mutation AddUser($username: String!, $teamId: String!) {
     addUser(username: $username, teamId: $teamId) {
       userId
+      username
       alreadyInTeam
       doesNotExist
     }
@@ -678,7 +689,8 @@ export const CreateTeamDocument = gql`
     }
   }
 `
-export type CreateTeamMutationFn = Apollo.MutationFunction<CreateTeamMutation,
+export type CreateTeamMutationFn = Apollo.MutationFunction<
+  CreateTeamMutation,
   CreateTeamMutationVariables
 >
 
@@ -799,17 +811,18 @@ export function useRenameTeamMutation(
 
 export type RenameTeamMutationHookResult = ReturnType<typeof useRenameTeamMutation>
 export type RenameTeamMutationResult = Apollo.MutationResult<RenameTeamMutation>
-export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<RenameTeamMutation,
+export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<
+  RenameTeamMutation,
   RenameTeamMutationVariables
 >
 export const LoginDocument = gql`
-    mutation Login($input: LoginInput!) {
-        login(input: $input) {
-            id
-            username
-            email
-        }
+  mutation Login($input: LoginInput!) {
+    login(input: $input) {
+      id
+      username
+      email
     }
+  }
 `
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>
 
@@ -840,9 +853,9 @@ export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>
 export const LogoutDocument = gql`
-    mutation Logout {
-        logout
-    }
+  mutation Logout {
+    logout
+  }
 `
 export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>
 
@@ -870,25 +883,27 @@ export function useLogoutMutation(
 
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation,
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<
+  LogoutMutation,
   LogoutMutationVariables
 >
 export const RegisterDocument = gql`
-    mutation Register($input: RegisterInput!) {
-        register(input: $input) {
-            user {
-                id
-                username
-                email
-            }
-            error {
-                username
-                email
-            }
-        }
+  mutation Register($input: RegisterInput!) {
+    register(input: $input) {
+      user {
+        id
+        username
+        email
+      }
+      error {
+        username
+        email
+      }
     }
+  }
 `
-export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation,
+export type RegisterMutationFn = Apollo.MutationFunction<
+  RegisterMutation,
   RegisterMutationVariables
 >
 

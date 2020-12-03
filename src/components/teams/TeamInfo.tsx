@@ -117,9 +117,9 @@ function TeamInfo({
             success={data?.renameTeam.success}
           />
           <Box flex flexDirection="column" gap="5px">
+            <H3>Users:</H3>
             {team.participants.length > 1 && (
               <Box flex flexDirection="column" gap="5px">
-                <H3>Users:</H3>
                 <Col span={12}>
                   <Box flex flexDirection="column" gap="5px">
                     {team.participants

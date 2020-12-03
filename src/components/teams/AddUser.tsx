@@ -49,7 +49,7 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
                 .find((t) => t.id === teamId)
                 .participants.push({
                   user: {
-                    username,
+                    username: data.addUser.username,
                     id: data.addUser.userId,
                   },
                 })

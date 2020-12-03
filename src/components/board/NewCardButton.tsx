@@ -36,7 +36,6 @@ const NewCardButton = ({
       variables: { listId: list.id, ...formData },
       update: (store, { data }) => {
         if (!data.createCard.exists) {
-          console.log("bruh")
           const boardData = store.readQuery<BoardQuery>({
             query: BoardDocument,
             variables: { id: boardId },
