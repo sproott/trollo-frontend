@@ -56,6 +56,7 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
             }),
           })
           resetForm()
+          setError(undefined)
         } else if (data.addUser.doesNotExist) {
           setError("User doesn't exist")
           return
@@ -64,7 +65,6 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
         } else {
           setError("Cannot add self")
         }
-        setError(undefined)
       },
     })
   }
