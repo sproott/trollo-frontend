@@ -25,3 +25,11 @@ export const H5 = styledWithTextProps("h5")
 export const Div = styled(styledWithTextProps("div"))`
   font-size: 14px;
 `
+
+export const LineClamp = styled("div")<{ numLines?: number }>`
+  display: -webkit-box;
+  -webkit-line-clamp: ${({ numLines }) => numLines ?? 2};
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: break-word;
+`

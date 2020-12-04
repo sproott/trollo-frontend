@@ -1,7 +1,10 @@
 import React from "react"
 import { Draggable } from "react-beautiful-dnd"
 import { Card } from "../../../generated/graphql"
+import { LineClamp } from "../common/Text"
 import { CardInner } from "./board.styled"
+import { Tooltip } from "antd"
+import { BoardButton } from "../teams/teams.styled"
 
 const DraggableCard = ({
   card,
@@ -20,7 +23,7 @@ const DraggableCard = ({
           }}
           isDragging={snapshot.isDragging}
         >
-          {card.name}
+          <LineClamp>{card.name}</LineClamp>
         </CardInner>
       )}
     </Draggable>
