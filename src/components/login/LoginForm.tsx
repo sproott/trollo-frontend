@@ -14,6 +14,7 @@ import {
 } from "../../../generated/graphql"
 import { H4 } from "../common/Text"
 import { useRouter } from "next/router"
+import Box from "../common/Box"
 
 const layout = {
   layout: "vertical",
@@ -58,19 +59,21 @@ const LoginForm = () => {
     <Form {...layout} onSubmitCapture={handleSubmit(onSubmit)}>
       <Row justify="center">
         <Col xs={20} sm={16} md={12} lg={8} xl={6}>
-          <div style={{ minHeight: "30px" }}>
-            {gqlError && <H4 color="red">Wrong username or password</H4>}
-          </div>
-          <TextInput
-            label="Username or e-mail"
-            name="usernameOrEmail"
-            control={control}
-            maxLength={20}
-          />
-          <PasswordInput label="Password" name="password" control={control} maxLength={32} />
-          <HorizontallyCentered>
-            <SubmitButton label="Login" loading={submitted} />
-          </HorizontallyCentered>
+          <Box flex flexDirection="column" gap="10px">
+            <div style={{ minHeight: "30px" }}>
+              {gqlError && <H4 color="red">Wrong username or password</H4>}
+            </div>
+            <TextInput
+              label="Username or e-mail"
+              name="usernameOrEmail"
+              control={control}
+              maxLength={20}
+            />
+            <PasswordInput label="Password" name="password" control={control} maxLength={32} />
+            <HorizontallyCentered>
+              <SubmitButton label="Login" loading={submitted} />
+            </HorizontallyCentered>
+          </Box>
         </Col>
       </Row>
     </Form>

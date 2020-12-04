@@ -87,36 +87,38 @@ const RegisterForm = () => {
     <Form {...layout} onSubmitCapture={handleSubmit(onSubmit)}>
       <Row justify="center">
         <Col xs={22} sm={16} md={12} lg={8} xl={6}>
-          <div style={{ minHeight: "30px" }}>
-            {gqlError && <H4 color="red">Something went wrong</H4>}
-          </div>
-          <TextInput
-            label="Username"
-            name="username"
-            error={
-              errors.username?.message || (!!registerError?.username && "Username already exists")
-            }
-            control={control}
-            maxLength={20}
-          />
-          <TextInput
-            label="E-mail"
-            name="email"
-            error={errors.email?.message || (!!registerError?.email && "E-mail already exists")}
-            control={control}
-            maxLength={254}
-          />
-          <PasswordInput
-            label="Password"
-            name="password"
-            error={errors.password?.message}
-            control={control}
-            maxLength={32}
-          />
-          <Box padding="20px 0 0 0">
-            <HorizontallyCentered>
-              <SubmitButton label="Register" loading={submitted} />
-            </HorizontallyCentered>
+          <Box flex flexDirection="column" gap="15px">
+            <div style={{ minHeight: "30px" }}>
+              {gqlError && <H4 color="red">Something went wrong</H4>}
+            </div>
+            <TextInput
+              label="Username"
+              name="username"
+              error={
+                errors.username?.message || (!!registerError?.username && "Username already exists")
+              }
+              control={control}
+              maxLength={20}
+            />
+            <TextInput
+              label="E-mail"
+              name="email"
+              error={errors.email?.message || (!!registerError?.email && "E-mail already exists")}
+              control={control}
+              maxLength={254}
+            />
+            <PasswordInput
+              label="Password"
+              name="password"
+              error={errors.password?.message}
+              control={control}
+              maxLength={32}
+            />
+            <Box padding="20px 0 0 0">
+              <HorizontallyCentered>
+                <SubmitButton label="Register" loading={submitted} />
+              </HorizontallyCentered>
+            </Box>
           </Box>
         </Col>
       </Row>
