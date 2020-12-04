@@ -5,6 +5,7 @@ export const boardQuery = gql`
     board(id: $id) {
       id
       name
+      isOwn
       lists {
         id
         name

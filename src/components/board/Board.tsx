@@ -1,9 +1,12 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   BoardDocument,
   BoardQuery,
+  TeamsDocument,
+  TeamsQuery,
   useBoardQuery,
   useMoveCardMutation,
+  useRenameBoardMutation,
 } from "../../../generated/graphql"
 import { useRouter } from "next/router"
 import Spinner from "../loading/Spinner"
@@ -14,11 +17,39 @@ import DroppableList from "./DroppableList"
 import produce from "immer"
 import Box from "../common/Box"
 import NewListButton from "./NewListButton"
+import { EditOutlined } from "@ant-design/icons"
+import EditableText from "../common/form/EditableText"
+import { Modal } from "antd"
 
 const Board = ({ boardId }: { boardId: string }) => {
+  const [modalVisible, setModalVisible] = useState(false)
   const { data, error, loading } = useBoardQuery({ variables: { id: boardId } })
   const [moveCard] = useMoveCardMutation()
+  const [rename, { data: renameData }] = useRenameBoardMutation()
   const router = useRouter()
+
+  const onConfirm = async (newName: string) => {
+    await rename({
+      variables: {
+        name: newName,
+        boardId: data.board.id,
+      },
+      update: (store, { data }) => {
+        if (data.renameBoard.success && !data.renameBoard.exists) {
+          const board = store.readQuery<BoardQuery>({
+            query: BoardDocument,
+            variables: { id: boardId },
+          })
+          store.writeQuery<BoardQuery>({
+            query: BoardDocument,
+            data: produce(board, (x) => {
+              x.board.name = newName
+            }),
+          })
+        }
+      },
+    })
+  }
 
   const onDragEnd = async (result: DropResult, provided: ResponderProvided) => {
     const { source, destination, draggableId } = result
@@ -77,7 +108,15 @@ const Board = ({ boardId }: { boardId: string }) => {
   ) : (
     <Content>
       <Box flex justifyContent="space-between">
-        <H0>{data.board.name}</H0>
+        <Box flex justifyContent="space-between" alignItems="center" gap="20px">
+          <H0>{data.board.name}</H0>
+          {data.board.isOwn && (
+            <EditOutlined
+              onClick={setModalVisible.bind(this, true)}
+              style={{ padding: "15px 20px" }}
+            />
+          )}
+        </Box>
         <NewListButton board={data.board} />
       </Box>
       <div
@@ -85,12 +124,31 @@ const Board = ({ boardId }: { boardId: string }) => {
       >
         <DragDropContext onDragEnd={onDragEnd}>
           <Box flex fullWidth>
-            {data.board.lists.map((list) => (
-              <DroppableList boardId={data.board.id} key={list.id} list={list} />
-            ))}
+            {[...data.board.lists]
+              .sort((l1, l2) => l1.name.localeCompare(l2.name))
+              .map((list) => (
+                <DroppableList boardId={data.board.id} key={list.id} list={list} />
+              ))}
           </Box>
         </DragDropContext>
       </div>
+      <Modal
+        visible={modalVisible}
+        title={`Edit board ${data.board.name}`}
+        onCancel={setModalVisible.bind(this, false)}
+        footer={<></>}
+      >
+        <Box flex flexDirection="column" gap="15px">
+          <EditableText
+            label="Name: "
+            text={data.board.name}
+            onConfirm={onConfirm}
+            containerVisible={modalVisible}
+            error={renameData?.renameBoard.exists && "Board with this name already exists"}
+            success={renameData?.renameBoard.success}
+          />
+        </Box>
+      </Modal>
     </Content>
   )
 }

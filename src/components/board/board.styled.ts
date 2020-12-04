@@ -22,7 +22,7 @@ export const CardInner = styled(InnerBase)<{ isDragging: boolean }>`
   margin: 0 8px 8px 8px;
   user-select: none;
   color: white;
-  background-color: ${() => theme.blue.primary};
+  background-color: ${theme.blue.primary};
 
   &::after {
     content: " ";

@@ -33,6 +33,7 @@ export type Board = {
   id: Scalars["ID"]
   name: Scalars["String"]
   lists: Array<List>
+  isOwn: Scalars["Boolean"]
 }
 
 export type Team = {
@@ -70,6 +71,12 @@ export type CreateBoardResponse = {
   exists?: Maybe<Scalars["Boolean"]>
 }
 
+export type RenameResponse = {
+  __typename?: "RenameResponse"
+  success?: Maybe<Scalars["Boolean"]>
+  exists?: Maybe<Scalars["Boolean"]>
+}
+
 export type CreateCardResponse = {
   __typename?: "CreateCardResponse"
   card?: Maybe<Card>
@@ -85,12 +92,6 @@ export type CreateListResponse = {
 export type CreateTeamResponse = {
   __typename?: "CreateTeamResponse"
   team?: Maybe<Team>
-  exists?: Maybe<Scalars["Boolean"]>
-}
-
-export type RenameTeamResponse = {
-  __typename?: "RenameTeamResponse"
-  success?: Maybe<Scalars["Boolean"]>
   exists?: Maybe<Scalars["Boolean"]>
 }
 
@@ -154,13 +155,14 @@ export type QueryUserArgs = {
 export type Mutation = {
   __typename?: "Mutation"
   createBoard: CreateBoardResponse
+  renameBoard: RenameResponse
   deleteBoard?: Maybe<Scalars["Boolean"]>
   createCard: CreateCardResponse
   moveCard: Scalars["Boolean"]
   createList: CreateListResponse
   createTeam: CreateTeamResponse
   deleteTeam?: Maybe<Scalars["Boolean"]>
-  renameTeam: RenameTeamResponse
+  renameTeam: RenameResponse
   addUser: AddUserResponse
   removeUser: Scalars["Boolean"]
   login: User
@@ -172,6 +174,11 @@ export type Mutation = {
 export type MutationCreateBoardArgs = {
   name: Scalars["String"]
   teamId: Scalars["String"]
+}
+
+export type MutationRenameBoardArgs = {
+  name: Scalars["String"]
+  boardId: Scalars["String"]
 }
 
 export type MutationDeleteBoardArgs = {
@@ -240,12 +247,21 @@ export type CreateBoardMutation = { __typename?: "Mutation" } & {
     }
 }
 
+export type RenameBoardMutationVariables = Exact<{
+  name: Scalars["String"]
+  boardId: Scalars["String"]
+}>
+
+export type RenameBoardMutation = { __typename?: "Mutation" } & {
+  renameBoard: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
+}
+
 export type BoardQueryVariables = Exact<{
   id: Scalars["String"]
 }>
 
 export type BoardQuery = { __typename?: "Query" } & {
-  board: { __typename?: "Board" } & Pick<Board, "id" | "name"> & {
+  board: { __typename?: "Board" } & Pick<Board, "id" | "name" | "isOwn"> & {
       lists: Array<
         { __typename?: "List" } & Pick<List, "id" | "name"> & {
             cards: Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>
@@ -319,7 +335,7 @@ export type RenameTeamMutationVariables = Exact<{
 }>
 
 export type RenameTeamMutation = { __typename?: "Mutation" } & {
-  renameTeam: { __typename?: "RenameTeamResponse" } & Pick<RenameTeamResponse, "success" | "exists">
+  renameTeam: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
 }
 
 export type LoginMutationVariables = Exact<{
@@ -444,11 +460,58 @@ export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<
   CreateBoardMutation,
   CreateBoardMutationVariables
 >
+export const RenameBoardDocument = gql`
+  mutation RenameBoard($name: String!, $boardId: String!) {
+    renameBoard(name: $name, boardId: $boardId) {
+      success
+      exists
+    }
+  }
+`
+export type RenameBoardMutationFn = Apollo.MutationFunction<
+  RenameBoardMutation,
+  RenameBoardMutationVariables
+>
+
+/**
+ * __useRenameBoardMutation__
+ *
+ * To run a mutation, you first call `useRenameBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameBoardMutation, { data, loading, error }] = useRenameBoardMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useRenameBoardMutation(
+  baseOptions?: Apollo.MutationHookOptions<RenameBoardMutation, RenameBoardMutationVariables>
+) {
+  return Apollo.useMutation<RenameBoardMutation, RenameBoardMutationVariables>(
+    RenameBoardDocument,
+    baseOptions
+  )
+}
+
+export type RenameBoardMutationHookResult = ReturnType<typeof useRenameBoardMutation>
+export type RenameBoardMutationResult = Apollo.MutationResult<RenameBoardMutation>
+export type RenameBoardMutationOptions = Apollo.BaseMutationOptions<
+  RenameBoardMutation,
+  RenameBoardMutationVariables
+>
 export const BoardDocument = gql`
   query Board($id: String!) {
     board(id: $id) {
       id
       name
+      isOwn
       lists {
         id
         name

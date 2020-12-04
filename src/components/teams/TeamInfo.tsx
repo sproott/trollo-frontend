@@ -35,12 +35,6 @@ function TeamInfo({
       currentUser: { id: userId },
     },
   } = useCurrentUserQuery()
-  const showModal = () => {
-    setModalVisible(true)
-  }
-  const closeModal = () => {
-    setModalVisible(false)
-  }
   const onConfirm = async (newName: string) => {
     await rename({
       variables: {
@@ -92,19 +86,28 @@ function TeamInfo({
       <Card
         title={team.name}
         style={{ marginBottom: "10px" }}
-        extra={isOwn && <EditOutlined onClick={showModal} style={{ padding: "0 20px" }} />}
+        extra={
+          isOwn && (
+            <EditOutlined
+              onClick={setModalVisible.bind(this, true)}
+              style={{ padding: "0 20px" }}
+            />
+          )
+        }
       >
         <BoardGrid style={{ padding: "10px 10px 0 10px" }}>
-          {team.boards?.map((board) => {
-            return <BoardInfo name={board.name} id={board.id} key={board.id} />
-          })}
+          {[...team.boards]
+            .sort((b1, b2) => b1.name.localeCompare(b2.name))
+            .map((board) => {
+              return <BoardInfo name={board.name} id={board.id} key={board.id} />
+            })}
           {isOwn && <NewBoardButton team={team} />}
         </BoardGrid>
       </Card>
       <Modal
         visible={modalVisible}
         title={`Edit team ${team.name}`}
-        onCancel={closeModal}
+        onCancel={setModalVisible.bind(this, false)}
         footer={<></>}
       >
         <Box flex flexDirection="column" gap="15px">
@@ -124,7 +127,7 @@ function TeamInfo({
                   <Box flex flexDirection="column" gap="5px">
                     {team.participants
                       .flatMap((p) => p.user)
-                      .sort((user1, user2) => user1.username.localeCompare(user2.username))
+                      .sort((u1, u2) => u1.username.localeCompare(u2.username))
                       .map((user) => {
                         return (
                           user.id !== userId && (
