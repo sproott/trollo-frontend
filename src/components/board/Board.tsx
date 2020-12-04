@@ -6,25 +6,28 @@ import {
   TeamsQuery,
   useBoardQuery,
   useMoveCardMutation,
+  useMoveListMutation,
   useRenameBoardMutation,
 } from "../../../generated/graphql"
 import { useRouter } from "next/router"
 import Spinner from "../loading/Spinner"
 import { Content } from "../common/page.styled"
 import { H0 } from "../common/Text"
-import { DragDropContext, DropResult, ResponderProvided } from "react-beautiful-dnd"
-import DroppableList from "./DroppableList"
+import { DragDropContext, Droppable, DropResult, ResponderProvided } from "react-beautiful-dnd"
+import DraggableDroppableList from "./DraggableDroppableList"
 import produce from "immer"
 import Box from "../common/Box"
 import NewListButton from "./NewListButton"
 import { EditOutlined } from "@ant-design/icons"
 import EditableText from "../common/form/EditableText"
 import { Modal } from "antd"
+import { DroppableType } from "../../constants/DroppableType"
 
 const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const { data, error, loading } = useBoardQuery({ variables: { id: boardId } })
   const [moveCard] = useMoveCardMutation()
+  const [moveList] = useMoveListMutation()
   const [rename, { data: renameData }] = useRenameBoardMutation()
   const router = useRouter()
 
@@ -52,50 +55,95 @@ const Board = ({ boardId }: { boardId: string }) => {
   }
 
   const onDragEnd = async (result: DropResult, provided: ResponderProvided) => {
-    const { source, destination, draggableId } = result
-    if (
-      !!destination &&
-      !(destination.droppableId === source.droppableId && result.source.index === destination.index)
-    ) {
-      await moveCard({
-        variables: {
-          cardId: draggableId,
-          listId:
-            destination.droppableId !== source.droppableId ? destination.droppableId : undefined,
-          destinationIndex: destination.index,
-        },
-        optimisticResponse: { moveCard: true },
-        update: (store, { data }) => {
-          const board = store.readQuery<BoardQuery>({
-            query: BoardDocument,
-            variables: { id: boardId },
-          })
+    const { source, destination, draggableId, type } = result
+    if (type === DroppableType.LIST) {
+      if (
+        !!destination &&
+        !(
+          destination.droppableId === source.droppableId &&
+          result.source.index === destination.index
+        )
+      ) {
+        await moveCard({
+          variables: {
+            cardId: draggableId,
+            listId:
+              destination.droppableId !== source.droppableId ? destination.droppableId : undefined,
+            destinationIndex: destination.index,
+          },
+          optimisticResponse: { moveCard: true },
+          update: (store, { data }) => {
+            const board = store.readQuery<BoardQuery>({
+              query: BoardDocument,
+              variables: { id: boardId },
+            })
 
-          store.writeQuery<BoardQuery>({
-            query: BoardDocument,
-            data: produce(board, (x) => {
-              // find the source and destination lists
-              const sourceList = x.board.lists.find((list) => list.id === source.droppableId)
-              const destinationList = x.board.lists.find(
-                (list) => list.id === destination.droppableId
-              )
+            store.writeQuery<BoardQuery>({
+              query: BoardDocument,
+              data: produce(board, (x) => {
+                // find the source and destination lists
+                const sourceList = x.board.lists.find((list) => list.id === source.droppableId)
+                const destinationList =
+                  source.droppableId === destination.droppableId
+                    ? sourceList
+                    : x.board.lists.find((list) => list.id === destination.droppableId)
 
-              // remove card from source
-              const [card] = sourceList.cards.splice(source.index, 1)
+                // remove card from source
+                const [card] = sourceList.cards.splice(source.index, 1)
 
-              // insert card in destination
-              destinationList.cards.splice(destination.index, 0, card)
+                // insert card in destination
+                destinationList.cards.splice(destination.index, 0, card)
 
-              // update card index
-              card.index = result.destination.index
+                // update card index
+                card.index = destination.index
 
-              // reindex lists
-              sourceList.cards.forEach((card, index) => (card.index = index))
-              destinationList.cards.forEach((card, index) => (card.index = index))
-            }),
-          })
-        },
-      })
+                // reindex cards in lists
+                sourceList.cards.forEach((card, index) => (card.index = index))
+                destinationList.cards.forEach((card, index) => (card.index = index))
+              }),
+            })
+          },
+        })
+      }
+    } else {
+      if (
+        !!destination &&
+        !(
+          destination.droppableId === source.droppableId &&
+          result.source.index === destination.index
+        )
+      ) {
+        await moveList({
+          variables: {
+            listId: draggableId,
+            destinationIndex: destination.index,
+          },
+          optimisticResponse: { moveList: true },
+          update: (store, { data }) => {
+            const board = store.readQuery<BoardQuery>({
+              query: BoardDocument,
+              variables: { id: boardId },
+            })
+
+            store.writeQuery<BoardQuery>({
+              query: BoardDocument,
+              data: produce(board, (x) => {
+                // remove list from source
+                const [list] = x.board.lists.splice(source.index, 1)
+
+                // insert list in destination
+                x.board.lists.splice(destination.index, 0, list)
+
+                // update list index
+                list.index = destination.index
+
+                // reindex lists
+                x.board.lists.forEach((list, index) => (list.index = index))
+              }),
+            })
+          },
+        })
+      }
     }
   }
 
@@ -123,13 +171,20 @@ const Board = ({ boardId }: { boardId: string }) => {
         style={{ flex: 1, display: "flex", overflow: "auto", height: "100%", paddingTop: "10px" }}
       >
         <DragDropContext onDragEnd={onDragEnd}>
-          <Box flex fullWidth>
-            {[...data.board.lists]
-              .sort((l1, l2) => l1.name.localeCompare(l2.name))
-              .map((list) => (
-                <DroppableList boardId={data.board.id} key={list.id} list={list} />
-              ))}
-          </Box>
+          <Droppable droppableId={data.board.id} type={DroppableType.BOARD} direction="horizontal">
+            {(provided, snapshot) => (
+              <Box flex fullWidth {...provided.droppableProps} ref={provided.innerRef}>
+                <Box flex fullWidth>
+                  {[...data.board.lists]
+                    .sort((l1, l2) => l1.index - l2.index)
+                    .map((list) => (
+                      <DraggableDroppableList boardId={data.board.id} key={list.id} list={list} />
+                    ))}
+                  {provided.placeholder}
+                </Box>
+              </Box>
+            )}
+          </Droppable>
         </DragDropContext>
       </div>
       <Modal

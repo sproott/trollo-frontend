@@ -9,6 +9,7 @@ export const boardQuery = gql`
       lists {
         id
         name
+        index
         cards {
           id
           name

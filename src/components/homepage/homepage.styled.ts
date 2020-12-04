@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import theme from "../../style/theme"
 
-export const HomepageHeader = styled("div")`
+export const HomepageHeader = styled.div`
   color: white;
   font-size: 36px;
 `

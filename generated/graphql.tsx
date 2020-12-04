@@ -24,6 +24,7 @@ export type List = {
   __typename?: "List"
   id: Scalars["ID"]
   name: Scalars["String"]
+  index: Scalars["Int"]
   cards: Array<Card>
   board: Board
 }
@@ -160,6 +161,7 @@ export type Mutation = {
   createCard: CreateCardResponse
   moveCard: Scalars["Boolean"]
   createList: CreateListResponse
+  moveList: Scalars["Boolean"]
   createTeam: CreateTeamResponse
   deleteTeam?: Maybe<Scalars["Boolean"]>
   renameTeam: RenameResponse
@@ -199,6 +201,11 @@ export type MutationMoveCardArgs = {
 export type MutationCreateListArgs = {
   boardId: Scalars["String"]
   name: Scalars["String"]
+}
+
+export type MutationMoveListArgs = {
+  destinationIndex: Scalars["Int"]
+  listId: Scalars["String"]
 }
 
 export type MutationCreateTeamArgs = {
@@ -263,7 +270,7 @@ export type BoardQueryVariables = Exact<{
 export type BoardQuery = { __typename?: "Query" } & {
   board: { __typename?: "Board" } & Pick<Board, "id" | "name" | "isOwn"> & {
       lists: Array<
-        { __typename?: "List" } & Pick<List, "id" | "name"> & {
+        { __typename?: "List" } & Pick<List, "id" | "name" | "index"> & {
             cards: Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>
           }
       >
@@ -299,6 +306,13 @@ export type CreateListMutation = { __typename?: "Mutation" } & {
       list?: Maybe<{ __typename?: "List" } & Pick<List, "id" | "name">>
     }
 }
+
+export type MoveListMutationVariables = Exact<{
+  destinationIndex: Scalars["Int"]
+  listId: Scalars["String"]
+}>
+
+export type MoveListMutation = { __typename?: "Mutation" } & Pick<Mutation, "moveList">
 
 export type AddUserMutationVariables = Exact<{
   username: Scalars["String"]
@@ -515,6 +529,7 @@ export const BoardDocument = gql`
       lists {
         id
         name
+        index
         cards {
           id
           name
@@ -607,7 +622,7 @@ export type CreateCardMutationOptions = Apollo.BaseMutationOptions<
   CreateCardMutationVariables
 >
 export const MoveCardDocument = gql`
-  mutation moveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
+  mutation MoveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
     moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
   }
 `
@@ -698,6 +713,49 @@ export type CreateListMutationResult = Apollo.MutationResult<CreateListMutation>
 export type CreateListMutationOptions = Apollo.BaseMutationOptions<
   CreateListMutation,
   CreateListMutationVariables
+>
+export const MoveListDocument = gql`
+  mutation MoveList($destinationIndex: Int!, $listId: String!) {
+    moveList(destinationIndex: $destinationIndex, listId: $listId)
+  }
+`
+export type MoveListMutationFn = Apollo.MutationFunction<
+  MoveListMutation,
+  MoveListMutationVariables
+>
+
+/**
+ * __useMoveListMutation__
+ *
+ * To run a mutation, you first call `useMoveListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMoveListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [moveListMutation, { data, loading, error }] = useMoveListMutation({
+ *   variables: {
+ *      destinationIndex: // value for 'destinationIndex'
+ *      listId: // value for 'listId'
+ *   },
+ * });
+ */
+export function useMoveListMutation(
+  baseOptions?: Apollo.MutationHookOptions<MoveListMutation, MoveListMutationVariables>
+) {
+  return Apollo.useMutation<MoveListMutation, MoveListMutationVariables>(
+    MoveListDocument,
+    baseOptions
+  )
+}
+
+export type MoveListMutationHookResult = ReturnType<typeof useMoveListMutation>
+export type MoveListMutationResult = Apollo.MutationResult<MoveListMutation>
+export type MoveListMutationOptions = Apollo.BaseMutationOptions<
+  MoveListMutation,
+  MoveListMutationVariables
 >
 export const AddUserDocument = gql`
   mutation AddUser($username: String!, $teamId: String!) {
