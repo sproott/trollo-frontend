@@ -170,11 +170,11 @@ const Board = ({ boardId }: { boardId: string }) => {
     setModalVisible(false)
   }
 
-  if ((!!deleteMutationData?.deleteBoard && deleted) || error) {
+  if ((!!deleteMutationData?.deleteBoard && deleted) || error || (!loading && !data)) {
     router.replace("/")
   }
 
-  return loading && !data ? (
+  return !data ? (
     <Spinner />
   ) : (
     <Content>

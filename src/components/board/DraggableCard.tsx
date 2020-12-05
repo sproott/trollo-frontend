@@ -4,16 +4,16 @@ import {
   BoardDocument,
   BoardQuery,
   Card,
+  useDeleteCardMutation,
   useRenameCardMutation,
-  useRenameListMutation,
 } from "../../../generated/graphql"
 import { LineClamp } from "../common/Text"
 import { CardInner } from "./board.styled"
-import { Modal, Tooltip } from "antd"
-import { BoardButton } from "../teams/teams.styled"
+import { Button, Modal } from "antd"
 import Box from "../common/Box"
 import EditableText from "../common/form/EditableText"
 import produce from "immer"
+import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 
 const DraggableCard = ({
   card,
@@ -23,7 +23,35 @@ const DraggableCard = ({
   boardId: string
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
+  const [confirmationVisible, setConfirmationVisible] = useState(false)
   const [rename, { data }] = useRenameCardMutation()
+  const [deleteCardMutate] = useDeleteCardMutation()
+
+  const deleteCard = async () => {
+    await deleteCardMutate({
+      variables: { id: card.id },
+      update: (store, { data }) => {
+        if (data.deleteCard) {
+          const board = store.readQuery<BoardQuery>({ query: BoardDocument })
+          store.writeQuery<BoardQuery>({
+            query: BoardDocument,
+            data: produce(board, (x) => {
+              const cards = x.board.lists.find(
+                (l) => l.cards.findIndex((c) => c.id === card.id) !== -1
+              ).cards
+              cards.splice(
+                cards.findIndex((c) => c.id === card.id),
+                1
+              )
+              cards.forEach((card, index) => (card.index = index))
+            }),
+          })
+        }
+      },
+    })
+    setConfirmationVisible(false)
+    setModalVisible(false)
+  }
 
   const onConfirm = async (newName: string) => {
     await rename({
@@ -70,7 +98,11 @@ const DraggableCard = ({
         visible={modalVisible}
         title={`Edit card ${card.name}`}
         onCancel={setModalVisible.bind(this, false)}
-        footer={<></>}
+        footer={
+          <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
+            Delete card
+          </Button>
+        }
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
@@ -83,6 +115,12 @@ const DraggableCard = ({
           />
         </Box>
       </Modal>
+      <ConfirmDeleteModal
+        title="Do you really want to delete this card?"
+        visible={confirmationVisible}
+        onCancel={setConfirmationVisible.bind(this, false)}
+        onOk={deleteCard}
+      />
     </>
   )
 }
