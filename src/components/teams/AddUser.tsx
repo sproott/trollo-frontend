@@ -45,7 +45,7 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
             query: TeamsDocument,
             data: produce(teams, (x) => {
               x.currentUser.owns
-                .flatMap((p) => p.team)
+                .map((p) => p.team)
                 .find((t) => t.id === teamId)
                 .participants.push({
                   user: {

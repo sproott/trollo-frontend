@@ -29,7 +29,6 @@ const NewBoardButton = ({
   const [createBoard, { loading, data }] = useCreateBoardMutation()
 
   const onSubmit = async (formData: FormData) => {
-    console.log("onSubmit")
     await createBoard({
       variables: { teamId, ...formData },
       update: (store, { data }) => {

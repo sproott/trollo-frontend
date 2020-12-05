@@ -51,7 +51,7 @@ function TeamInfo({
           store.writeQuery<TeamsQuery>({
             query: TeamsDocument,
             data: produce(teams, (x) => {
-              x.currentUser.owns.flatMap((p) => p.team).find((t) => t.id === team.id).name = newName
+              x.currentUser.owns.map((p) => p.team).find((t) => t.id === team.id).name = newName
             }),
           })
         }
@@ -72,7 +72,7 @@ function TeamInfo({
             query: TeamsDocument,
             data: produce(teams, (x) => {
               const participants = x.currentUser.owns
-                .flatMap((p) => p.team)
+                .map((p) => p.team)
                 .find((t) => t.id === team.id).participants
               participants.splice(
                 participants.findIndex((p) => p.user.id === userId),

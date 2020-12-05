@@ -1,5 +1,5 @@
 import React from "react"
-import { Modal } from "antd"
+import { Button, Modal } from "antd"
 import { Div } from "./Text"
 
 function ConfirmDeleteModal({
@@ -17,10 +17,15 @@ function ConfirmDeleteModal({
     <Modal
       visible={visible}
       onCancel={onCancel}
-      onOk={onOk}
       destroyOnClose
-      okType={"danger"}
-      okText="Delete"
+      footer={
+        <>
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button onClick={onOk} type="primary" danger>
+            Delete
+          </Button>
+        </>
+      }
     >
       <Div>{title}</Div>
     </Modal>

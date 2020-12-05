@@ -2708,9 +2708,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-12-05T14:35:12.297Z",
-      "endTime": "2020-12-05T14:35:12.320Z",
-      "duration": 22740071,
+      "startTime": "2020-12-05T14:43:49.993Z",
+      "endTime": "2020-12-05T14:43:50.047Z",
+      "duration": 54554366,
       "execution": {
         "resolvers": []
       }

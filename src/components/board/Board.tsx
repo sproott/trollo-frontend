@@ -5,6 +5,7 @@ import {
   TeamsDocument,
   TeamsQuery,
   useBoardQuery,
+  useDeleteBoardMutation,
   useMoveCardMutation,
   useMoveListMutation,
   useRenameBoardMutation,
@@ -20,15 +21,19 @@ import Box from "../common/Box"
 import NewListButton from "./NewListButton"
 import { EditOutlined } from "@ant-design/icons"
 import EditableText from "../common/form/EditableText"
-import { Modal } from "antd"
+import { Button, Modal } from "antd"
 import { DroppableType } from "../../constants/DroppableType"
+import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 
 const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
+  const [confirmationVisible, setConfirmationVisible] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const { data, error, loading } = useBoardQuery({ variables: { id: boardId } })
   const [moveCard] = useMoveCardMutation()
   const [moveList] = useMoveListMutation()
-  const [rename, { data: renameData }] = useRenameBoardMutation()
+  const [rename, { data: renameMutationData }] = useRenameBoardMutation()
+  const [deleteBoardMutate, { data: deleteMutationData }] = useDeleteBoardMutation()
   const router = useRouter()
 
   const onConfirm = async (newName: string) => {
@@ -138,7 +143,34 @@ const Board = ({ boardId }: { boardId: string }) => {
     }
   }
 
-  if (error) {
+  const deleteBoard = async () => {
+    await deleteBoardMutate({
+      variables: { id: boardId },
+      update: (store, { data }) => {
+        if (data.deleteBoard) {
+          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
+          store.writeQuery<TeamsQuery>({
+            query: TeamsDocument,
+            data: produce(teams, (x) => {
+              const team = x.currentUser.owns
+                .map((p) => p.team)
+                .find((t) => t.boards.findIndex((b) => b.id === boardId) !== -1)
+              team.boards.splice(
+                team.boards.findIndex((b) => b.id === boardId),
+                1
+              )
+            }),
+          })
+        }
+
+        setDeleted(true)
+      },
+    })
+    setConfirmationVisible(false)
+    setModalVisible(false)
+  }
+
+  if ((!!deleteMutationData?.deleteBoard && deleted) || error) {
     router.replace("/")
   }
 
@@ -180,7 +212,11 @@ const Board = ({ boardId }: { boardId: string }) => {
         visible={modalVisible}
         title={`Edit board ${data.board.name}`}
         onCancel={setModalVisible.bind(this, false)}
-        footer={<></>}
+        footer={
+          <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
+            Delete board
+          </Button>
+        }
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
@@ -188,11 +224,17 @@ const Board = ({ boardId }: { boardId: string }) => {
             text={data.board.name}
             onConfirm={onConfirm}
             containerVisible={modalVisible}
-            error={renameData?.renameBoard.exists && "Board with this name already exists"}
-            success={renameData?.renameBoard.success}
+            error={renameMutationData?.renameBoard.exists && "Board with this name already exists"}
+            success={renameMutationData?.renameBoard.success}
           />
         </Box>
       </Modal>
+      <ConfirmDeleteModal
+        title="Do you really want to delete this board?"
+        visible={confirmationVisible}
+        onCancel={setConfirmationVisible.bind(this, false)}
+        onOk={deleteBoard}
+      />
     </Content>
   )
 }
