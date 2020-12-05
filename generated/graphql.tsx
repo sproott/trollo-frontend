@@ -149,11 +149,13 @@ export type Mutation = {
   __typename?: "Mutation"
   createBoard: CreateBoardResponse
   renameBoard: RenameResponse
-  deleteBoard?: Maybe<Scalars["Boolean"]>
+  deleteBoard: Scalars["Boolean"]
   createCard: CreateCardResponse
   moveCard: Scalars["Boolean"]
+  renameCard: RenameResponse
   createList: CreateListResponse
   moveList: Scalars["Boolean"]
+  renameList: RenameResponse
   createTeam: CreateTeamResponse
   deleteTeam: Scalars["Boolean"]
   renameTeam: RenameResponse
@@ -190,6 +192,11 @@ export type MutationMoveCardArgs = {
   cardId: Scalars["String"]
 }
 
+export type MutationRenameCardArgs = {
+  name: Scalars["String"]
+  cardId: Scalars["String"]
+}
+
 export type MutationCreateListArgs = {
   boardId: Scalars["String"]
   name: Scalars["String"]
@@ -197,6 +204,11 @@ export type MutationCreateListArgs = {
 
 export type MutationMoveListArgs = {
   destinationIndex: Scalars["Int"]
+  listId: Scalars["String"]
+}
+
+export type MutationRenameListArgs = {
+  name: Scalars["String"]
   listId: Scalars["String"]
 }
 
@@ -311,6 +323,15 @@ export type MoveListMutationVariables = Exact<{
 }>
 
 export type MoveListMutation = { __typename?: "Mutation" } & Pick<Mutation, "moveList">
+
+export type RenameListMutationVariables = Exact<{
+  name: Scalars["String"]
+  listId: Scalars["String"]
+}>
+
+export type RenameListMutation = { __typename?: "Mutation" } & {
+  renameList: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
+}
 
 export type AddUserMutationVariables = Exact<{
   username: Scalars["String"]
@@ -802,6 +823,52 @@ export type MoveListMutationResult = Apollo.MutationResult<MoveListMutation>
 export type MoveListMutationOptions = Apollo.BaseMutationOptions<
   MoveListMutation,
   MoveListMutationVariables
+>
+export const RenameListDocument = gql`
+  mutation RenameList($name: String!, $listId: String!) {
+    renameList(name: $name, listId: $listId) {
+      success
+      exists
+    }
+  }
+`
+export type RenameListMutationFn = Apollo.MutationFunction<
+  RenameListMutation,
+  RenameListMutationVariables
+>
+
+/**
+ * __useRenameListMutation__
+ *
+ * To run a mutation, you first call `useRenameListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameListMutation, { data, loading, error }] = useRenameListMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      listId: // value for 'listId'
+ *   },
+ * });
+ */
+export function useRenameListMutation(
+  baseOptions?: Apollo.MutationHookOptions<RenameListMutation, RenameListMutationVariables>
+) {
+  return Apollo.useMutation<RenameListMutation, RenameListMutationVariables>(
+    RenameListDocument,
+    baseOptions
+  )
+}
+
+export type RenameListMutationHookResult = ReturnType<typeof useRenameListMutation>
+export type RenameListMutationResult = Apollo.MutationResult<RenameListMutation>
+export type RenameListMutationOptions = Apollo.BaseMutationOptions<
+  RenameListMutation,
+  RenameListMutationVariables
 >
 export const AddUserDocument = gql`
   mutation AddUser($username: String!, $teamId: String!) {
