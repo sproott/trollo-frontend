@@ -111,11 +111,9 @@ const DraggableDroppableList = ({
                       minHeight: "1px",
                     }}
                   >
-                    {[...list.cards]
-                      .sort((c1, c2) => c1.index - c2.index)
-                      .map((card) => (
-                        <DraggableCard key={card.id} card={card} boardId={boardId} />
-                      ))}
+                    {list.cards.map((card) => (
+                      <DraggableCard key={card.id} card={card} boardId={boardId} />
+                    ))}
                     {provided.placeholder}
                   </div>
                 )}

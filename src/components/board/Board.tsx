@@ -75,32 +75,34 @@ const Board = ({ boardId }: { boardId: string }) => {
           },
           optimisticResponse: { moveCard: true },
           update: (store, { data }) => {
-            const board = store.readQuery<BoardQuery>({
-              query: BoardDocument,
-              variables: { id: boardId },
-            })
+            if (data.moveCard) {
+              const board = store.readQuery<BoardQuery>({
+                query: BoardDocument,
+                variables: { id: boardId },
+              })
 
-            store.writeQuery<BoardQuery>({
-              query: BoardDocument,
-              data: produce(board, (x) => {
-                // find the source and destination lists
-                const sourceList = x.board.lists.find((list) => list.id === source.droppableId)
-                const destinationList =
-                  source.droppableId === destination.droppableId
-                    ? sourceList
-                    : x.board.lists.find((list) => list.id === destination.droppableId)
+              store.writeQuery<BoardQuery>({
+                query: BoardDocument,
+                data: produce(board, (x) => {
+                  // find the source and destination lists
+                  const sourceList = x.board.lists.find((list) => list.id === source.droppableId)
+                  const destinationList =
+                    source.droppableId === destination.droppableId
+                      ? sourceList
+                      : x.board.lists.find((list) => list.id === destination.droppableId)
 
-                // remove card from source
-                const [card] = sourceList.cards.splice(source.index, 1)
+                  // remove card from source
+                  const [card] = sourceList.cards.splice(source.index, 1)
 
-                // insert card in destination
-                destinationList.cards.splice(destination.index, 0, card)
+                  // insert card in destination
+                  destinationList.cards.splice(destination.index, 0, card)
 
-                // reindex cards in lists
-                sourceList.cards.forEach((card, index) => (card.index = index))
-                destinationList.cards.forEach((card, index) => (card.index = index))
-              }),
-            })
+                  // reindex cards in lists
+                  sourceList.cards.forEach((card, index) => (card.index = index))
+                  destinationList.cards.forEach((card, index) => (card.index = index))
+                }),
+              })
+            }
           },
         })
       }
@@ -119,24 +121,26 @@ const Board = ({ boardId }: { boardId: string }) => {
           },
           optimisticResponse: { moveList: true },
           update: (store, { data }) => {
-            const board = store.readQuery<BoardQuery>({
-              query: BoardDocument,
-              variables: { id: boardId },
-            })
+            if (data.moveList) {
+              const board = store.readQuery<BoardQuery>({
+                query: BoardDocument,
+                variables: { id: boardId },
+              })
 
-            store.writeQuery<BoardQuery>({
-              query: BoardDocument,
-              data: produce(board, (x) => {
-                // remove list from source
-                const [list] = x.board.lists.splice(source.index, 1)
+              store.writeQuery<BoardQuery>({
+                query: BoardDocument,
+                data: produce(board, (x) => {
+                  // remove list from source
+                  const [list] = x.board.lists.splice(source.index, 1)
 
-                // insert list in destination
-                x.board.lists.splice(destination.index, 0, list)
+                  // insert list in destination
+                  x.board.lists.splice(destination.index, 0, list)
 
-                // reindex lists
-                x.board.lists.forEach((list, index) => (list.index = index))
-              }),
-            })
+                  // reindex lists
+                  x.board.lists.forEach((list, index) => (list.index = index))
+                }),
+              })
+            }
           },
         })
       }
@@ -197,11 +201,9 @@ const Board = ({ boardId }: { boardId: string }) => {
           <Droppable droppableId={data.board.id} type={DroppableType.BOARD} direction="horizontal">
             {(provided, snapshot) => (
               <Box flex fullWidth {...provided.droppableProps} ref={provided.innerRef}>
-                {[...data.board.lists]
-                  .sort((l1, l2) => l1.index - l2.index)
-                  .map((list) => (
-                    <DraggableDroppableList boardId={data.board.id} key={list.id} list={list} />
-                  ))}
+                {data.board.lists.map((list) => (
+                  <DraggableDroppableList boardId={data.board.id} key={list.id} list={list} />
+                ))}
                 {provided.placeholder}
               </Box>
             )}
