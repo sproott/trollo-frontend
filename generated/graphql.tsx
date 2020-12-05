@@ -306,6 +306,15 @@ export type MoveCardMutationVariables = Exact<{
 
 export type MoveCardMutation = { __typename?: "Mutation" } & Pick<Mutation, "moveCard">
 
+export type RenameCardMutationVariables = Exact<{
+  name: Scalars["String"]
+  cardId: Scalars["String"]
+}>
+
+export type RenameCardMutation = { __typename?: "Mutation" } & {
+  renameCard: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
+}
+
 export type CreateListMutationVariables = Exact<{
   boardId: Scalars["String"]
   name: Scalars["String"]
@@ -731,6 +740,52 @@ export type MoveCardMutationResult = Apollo.MutationResult<MoveCardMutation>
 export type MoveCardMutationOptions = Apollo.BaseMutationOptions<
   MoveCardMutation,
   MoveCardMutationVariables
+>
+export const RenameCardDocument = gql`
+  mutation RenameCard($name: String!, $cardId: String!) {
+    renameCard(name: $name, cardId: $cardId) {
+      success
+      exists
+    }
+  }
+`
+export type RenameCardMutationFn = Apollo.MutationFunction<
+  RenameCardMutation,
+  RenameCardMutationVariables
+>
+
+/**
+ * __useRenameCardMutation__
+ *
+ * To run a mutation, you first call `useRenameCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameCardMutation, { data, loading, error }] = useRenameCardMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      cardId: // value for 'cardId'
+ *   },
+ * });
+ */
+export function useRenameCardMutation(
+  baseOptions?: Apollo.MutationHookOptions<RenameCardMutation, RenameCardMutationVariables>
+) {
+  return Apollo.useMutation<RenameCardMutation, RenameCardMutationVariables>(
+    RenameCardDocument,
+    baseOptions
+  )
+}
+
+export type RenameCardMutationHookResult = ReturnType<typeof useRenameCardMutation>
+export type RenameCardMutationResult = Apollo.MutationResult<RenameCardMutation>
+export type RenameCardMutationOptions = Apollo.BaseMutationOptions<
+  RenameCardMutation,
+  RenameCardMutationVariables
 >
 export const CreateListDocument = gql`
   mutation createList($boardId: String!, $name: String!) {
