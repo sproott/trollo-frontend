@@ -4,7 +4,6 @@ import DraggableCard from "./DraggableCard"
 import React from "react"
 import { Card as AntdCard, Col } from "antd"
 import NewCardButton from "./NewCardButton"
-import { CardInner, ListShadow } from "./board.styled"
 import { DroppableType } from "../../constants/DroppableType"
 
 const DraggableDroppableList = ({

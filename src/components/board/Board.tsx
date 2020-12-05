@@ -59,10 +59,7 @@ const Board = ({ boardId }: { boardId: string }) => {
     if (type === DroppableType.LIST) {
       if (
         !!destination &&
-        !(
-          destination.droppableId === source.droppableId &&
-          result.source.index === destination.index
-        )
+        !(destination.droppableId === source.droppableId && source.index === destination.index)
       ) {
         await moveCard({
           variables: {
@@ -93,9 +90,6 @@ const Board = ({ boardId }: { boardId: string }) => {
 
                 // insert card in destination
                 destinationList.cards.splice(destination.index, 0, card)
-
-                // update card index
-                card.index = destination.index
 
                 // reindex cards in lists
                 sourceList.cards.forEach((card, index) => (card.index = index))
@@ -134,9 +128,6 @@ const Board = ({ boardId }: { boardId: string }) => {
                 // insert list in destination
                 x.board.lists.splice(destination.index, 0, list)
 
-                // update list index
-                list.index = destination.index
-
                 // reindex lists
                 x.board.lists.forEach((list, index) => (list.index = index))
               }),
@@ -174,14 +165,12 @@ const Board = ({ boardId }: { boardId: string }) => {
           <Droppable droppableId={data.board.id} type={DroppableType.BOARD} direction="horizontal">
             {(provided, snapshot) => (
               <Box flex fullWidth {...provided.droppableProps} ref={provided.innerRef}>
-                <Box flex fullWidth>
-                  {[...data.board.lists]
-                    .sort((l1, l2) => l1.index - l2.index)
-                    .map((list) => (
-                      <DraggableDroppableList boardId={data.board.id} key={list.id} list={list} />
-                    ))}
-                  {provided.placeholder}
-                </Box>
+                {[...data.board.lists]
+                  .sort((l1, l2) => l1.index - l2.index)
+                  .map((list) => (
+                    <DraggableDroppableList boardId={data.board.id} key={list.id} list={list} />
+                  ))}
+                {provided.placeholder}
               </Box>
             )}
           </Droppable>
