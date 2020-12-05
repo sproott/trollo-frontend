@@ -79,6 +79,7 @@ const ModalForm = <TInput extends object, TData extends object>({
         // @ts-ignore
         onOk={handleSubmit(onSubmitOuter)}
         confirmLoading={submitted}
+        destroyOnClose
       >
         {/*@ts-ignore*/}
         <Form onSubmitCapture={handleSubmit(onSubmitOuter)}>

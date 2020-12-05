@@ -3,12 +3,13 @@ import { CloseOutlined, EditOutlined } from "@ant-design/icons"
 import { BoardGrid } from "./teams.styled"
 import BoardInfo from "./BoardInfo"
 import NewBoardButton from "./NewBoardButton"
-import { Card, Col, Modal } from "antd"
+import { Button, Card, Col, Modal } from "antd"
 import {
   TeamInfoFragment,
   TeamsDocument,
   TeamsQuery,
   useCurrentUserQuery,
+  useDeleteTeamMutation,
   useRemoveUserMutation,
   useRenameTeamMutation,
 } from "../../../generated/graphql"
@@ -19,6 +20,7 @@ import Avatar from "../common/Avatar"
 import { H3, Div } from "../common/Text"
 import theme from "../../style/theme"
 import AddUser from "./AddUser"
+import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 
 function TeamInfo({
   team,
@@ -28,8 +30,10 @@ function TeamInfo({
   isOwn: boolean
 }) {
   const [modalVisible, setModalVisible] = useState(false)
+  const [confirmationVisible, setConfirmationVisible] = useState(false)
   const [rename, { data }] = useRenameTeamMutation()
   const [removeUserMutate] = useRemoveUserMutation()
+  const [deleteTeamMutate] = useDeleteTeamMutation()
   const {
     data: {
       currentUser: { id: userId },
@@ -80,6 +84,31 @@ function TeamInfo({
       },
     })
   }
+  const deleteTeam = async () => {
+    await deleteTeamMutate({
+      variables: {
+        id: team.id,
+      },
+      update: (store, { data }) => {
+        if (!!data.deleteTeam) {
+          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
+
+          store.writeQuery<TeamsQuery>({
+            query: TeamsDocument,
+            data: produce(teams, (x) => {
+              const ownParticipants = x.currentUser.owns
+              ownParticipants.splice(
+                ownParticipants.findIndex((p) => p.team.id === team.id),
+                1
+              )
+            }),
+          })
+        }
+      },
+    })
+    setConfirmationVisible(false)
+    setModalVisible(false)
+  }
 
   return (
     <>
@@ -108,7 +137,11 @@ function TeamInfo({
         visible={modalVisible}
         title={`Edit team ${team.name}`}
         onCancel={setModalVisible.bind(this, false)}
-        footer={<></>}
+        footer={
+          <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
+            Delete team
+          </Button>
+        }
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
@@ -159,6 +192,12 @@ function TeamInfo({
           </Box>
         </Box>
       </Modal>
+      <ConfirmDeleteModal
+        title="Do you really want to delete this team?"
+        visible={confirmationVisible}
+        onCancel={setConfirmationVisible.bind(this, false)}
+        onOk={deleteTeam}
+      />
     </>
   )
 }

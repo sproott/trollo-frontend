@@ -565,33 +565,6 @@
         },
         {
           "kind": "OBJECT",
-          "name": "HelloWorld",
-          "description": null,
-          "fields": [
-            {
-              "name": "greeting",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
           "name": "CreateBoardResponse",
           "description": null,
           "fields": [
@@ -991,33 +964,6 @@
           "name": "Query",
           "description": null,
           "fields": [
-            {
-              "name": "greeting",
-              "description": null,
-              "args": [
-                {
-                  "name": "name",
-                  "description": null,
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "HelloWorld",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "board",
               "description": null,
@@ -1516,9 +1462,13 @@
                 }
               ],
               "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2758,9 +2708,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-12-04T13:46:47.504Z",
-      "endTime": "2020-12-04T13:46:47.516Z",
-      "duration": 12200640,
+      "startTime": "2020-12-05T14:35:12.297Z",
+      "endTime": "2020-12-05T14:35:12.320Z",
+      "duration": 22740071,
       "execution": {
         "resolvers": []
       }

@@ -1,7 +1,7 @@
 const typePolicies = {
   User: {
     fields: {
-      ownTeams: {
+      owns: {
         merge(existing: any, incoming: any) {
           return incoming
         },

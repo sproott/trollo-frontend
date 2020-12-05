@@ -3,6 +3,8 @@ import * as Apollo from "@apollo/client"
 
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -59,11 +61,6 @@ export type User = {
   owns: Array<Participant>
   participatesIn: Array<Participant>
   is_admin: Scalars["Boolean"]
-}
-
-export type HelloWorld = {
-  __typename?: "HelloWorld"
-  greeting: Scalars["String"]
 }
 
 export type CreateBoardResponse = {
@@ -129,16 +126,11 @@ export type LoginInput = {
 
 export type Query = {
   __typename?: "Query"
-  greeting: HelloWorld
   board: Board
   nextIndex: Scalars["Int"]
   user: User
   currentUser?: Maybe<User>
   users: Array<User>
-}
-
-export type QueryGreetingArgs = {
-  name?: Maybe<Scalars["String"]>
 }
 
 export type QueryBoardArgs = {
@@ -163,7 +155,7 @@ export type Mutation = {
   createList: CreateListResponse
   moveList: Scalars["Boolean"]
   createTeam: CreateTeamResponse
-  deleteTeam?: Maybe<Scalars["Boolean"]>
+  deleteTeam: Scalars["Boolean"]
   renameTeam: RenameResponse
   addUser: AddUserResponse
   removeUser: Scalars["Boolean"]
@@ -335,6 +327,12 @@ export type CreateTeamMutation = { __typename?: "Mutation" } & {
       team?: Maybe<{ __typename?: "Team" } & Pick<Team, "id" | "name">>
     }
 }
+
+export type DeleteTeamMutationVariables = Exact<{
+  id: Scalars["String"]
+}>
+
+export type DeleteTeamMutation = { __typename?: "Mutation" } & Pick<Mutation, "deleteTeam">
 
 export type RemoveUserMutationVariables = Exact<{
   teamId: Scalars["String"]
@@ -846,6 +844,48 @@ export type CreateTeamMutationResult = Apollo.MutationResult<CreateTeamMutation>
 export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<
   CreateTeamMutation,
   CreateTeamMutationVariables
+>
+export const DeleteTeamDocument = gql`
+  mutation DeleteTeam($id: String!) {
+    deleteTeam(id: $id)
+  }
+`
+export type DeleteTeamMutationFn = Apollo.MutationFunction<
+  DeleteTeamMutation,
+  DeleteTeamMutationVariables
+>
+
+/**
+ * __useDeleteTeamMutation__
+ *
+ * To run a mutation, you first call `useDeleteTeamMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTeamMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTeamMutation, { data, loading, error }] = useDeleteTeamMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTeamMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteTeamMutation, DeleteTeamMutationVariables>
+) {
+  return Apollo.useMutation<DeleteTeamMutation, DeleteTeamMutationVariables>(
+    DeleteTeamDocument,
+    baseOptions
+  )
+}
+
+export type DeleteTeamMutationHookResult = ReturnType<typeof useDeleteTeamMutation>
+export type DeleteTeamMutationResult = Apollo.MutationResult<DeleteTeamMutation>
+export type DeleteTeamMutationOptions = Apollo.BaseMutationOptions<
+  DeleteTeamMutation,
+  DeleteTeamMutationVariables
 >
 export const RemoveUserDocument = gql`
   mutation RemoveUser($teamId: String!, $userId: String!) {

@@ -29,12 +29,7 @@ const LoadingComp = () => (
 )
 
 const Teams = () => {
-  const { data, loading, startPolling, stopPolling } = useTeamsQuery()
-
-  useEffect(() => {
-    startPolling(10000)
-    return stopPolling
-  }, [])
+  const { data, loading } = useTeamsQuery()
 
   return (
     <Content>

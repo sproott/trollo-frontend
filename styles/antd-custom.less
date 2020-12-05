@@ -1,14 +1,23 @@
 @import "~antd/dist/antd.compact.less";
 
 .ant-btn-primary {
-  &:hover {
-    background-color: #096dd9;
-    border-color: #096dd9;
+  &:not(.ant-btn-dangerous) {
+    &:hover {
+      background-color: #096dd9;
+      border-color: #096dd9;
+    }
+
+    &:not(:hover) {
+      background-color: @primary-color;
+      border-color: @primary-color;
+    }
   }
 
-  &:not(:hover) {
-    background-color: @primary-color;
-    border-color: @primary-color;
+  &.ant-btn-dangerous {
+    &:not(:hover) {
+      background-color: @btn-danger-bg;
+      border-color: @btn-danger-border;
+    }
   }
 }
 
