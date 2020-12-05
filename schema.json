@@ -1371,6 +1371,37 @@
               "deprecationReason": null
             },
             {
+              "name": "deleteCard",
+              "description": null,
+              "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "createList",
               "description": null,
               "args": [
@@ -1499,6 +1530,37 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "RenameResponse",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "deleteList",
+              "description": null,
+              "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 }
               },
@@ -2802,9 +2864,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-12-05T17:48:57.154Z",
-      "endTime": "2020-12-05T17:48:57.177Z",
-      "duration": 22897144,
+      "startTime": "2020-12-05T18:01:22.436Z",
+      "endTime": "2020-12-05T18:01:22.462Z",
+      "duration": 25561815,
       "execution": {
         "resolvers": []
       }

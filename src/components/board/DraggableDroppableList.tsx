@@ -4,10 +4,8 @@ import {
   Card,
   List,
   Maybe,
-  TeamsDocument,
-  TeamsQuery,
+  useDeleteListMutation,
   useRenameListMutation,
-  useRenameTeamMutation,
 } from "../../../generated/graphql"
 import { Draggable, Droppable } from "react-beautiful-dnd"
 import DraggableCard from "./DraggableCard"
@@ -18,6 +16,7 @@ import { DroppableType } from "../../constants/DroppableType"
 import Box from "../common/Box"
 import EditableText from "../common/form/EditableText"
 import produce from "immer"
+import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 
 const DraggableDroppableList = ({
   boardId,
@@ -29,7 +28,32 @@ const DraggableDroppableList = ({
     }
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
+  const [confirmationVisible, setConfirmationVisible] = useState(false)
   const [rename, { data }] = useRenameListMutation()
+  const [deleteListMutate] = useDeleteListMutation()
+
+  const deleteList = async () => {
+    await deleteListMutate({
+      variables: { id: list.id },
+      update: (store, { data }) => {
+        if (data.deleteList) {
+          const board = store.readQuery<BoardQuery>({ query: BoardDocument })
+          store.writeQuery<BoardQuery>({
+            query: BoardDocument,
+            data: produce(board, (x) => {
+              x.board.lists.splice(
+                x.board.lists.findIndex((l) => l.id === list.id),
+                1
+              )
+              x.board.lists.forEach((list, index) => (list.index = index))
+            }),
+          })
+        }
+      },
+    })
+    setConfirmationVisible(false)
+    setModalVisible(false)
+  }
 
   const onConfirm = async (newName: string) => {
     await rename({
@@ -105,7 +129,11 @@ const DraggableDroppableList = ({
         visible={modalVisible}
         title={`Edit list ${list.name}`}
         onCancel={setModalVisible.bind(this, false)}
-        footer={<></>}
+        footer={
+          <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
+            Delete list
+          </Button>
+        }
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
@@ -118,6 +146,12 @@ const DraggableDroppableList = ({
           />
         </Box>
       </Modal>
+      <ConfirmDeleteModal
+        title="Do you really want to delete this list?"
+        visible={confirmationVisible}
+        onCancel={setConfirmationVisible.bind(this, false)}
+        onOk={deleteList}
+      />
     </>
   )
 }

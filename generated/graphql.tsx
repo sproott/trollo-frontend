@@ -153,9 +153,11 @@ export type Mutation = {
   createCard: CreateCardResponse
   moveCard: Scalars["Boolean"]
   renameCard: RenameResponse
+  deleteCard: Scalars["Boolean"]
   createList: CreateListResponse
   moveList: Scalars["Boolean"]
   renameList: RenameResponse
+  deleteList: Scalars["Boolean"]
   createTeam: CreateTeamResponse
   deleteTeam: Scalars["Boolean"]
   renameTeam: RenameResponse
@@ -197,6 +199,10 @@ export type MutationRenameCardArgs = {
   cardId: Scalars["String"]
 }
 
+export type MutationDeleteCardArgs = {
+  id: Scalars["String"]
+}
+
 export type MutationCreateListArgs = {
   boardId: Scalars["String"]
   name: Scalars["String"]
@@ -210,6 +216,10 @@ export type MutationMoveListArgs = {
 export type MutationRenameListArgs = {
   name: Scalars["String"]
   listId: Scalars["String"]
+}
+
+export type MutationDeleteListArgs = {
+  id: Scalars["String"]
 }
 
 export type MutationCreateTeamArgs = {
@@ -298,6 +308,12 @@ export type CreateCardMutation = { __typename?: "Mutation" } & {
     }
 }
 
+export type DeleteCardMutationVariables = Exact<{
+  id: Scalars["String"]
+}>
+
+export type DeleteCardMutation = { __typename?: "Mutation" } & Pick<Mutation, "deleteCard">
+
 export type MoveCardMutationVariables = Exact<{
   destinationIndex: Scalars["Int"]
   listId?: Maybe<Scalars["String"]>
@@ -325,6 +341,12 @@ export type CreateListMutation = { __typename?: "Mutation" } & {
       list?: Maybe<{ __typename?: "List" } & Pick<List, "id" | "name">>
     }
 }
+
+export type DeleteListMutationVariables = Exact<{
+  id: Scalars["String"]
+}>
+
+export type DeleteListMutation = { __typename?: "Mutation" } & Pick<Mutation, "deleteList">
 
 export type MoveListMutationVariables = Exact<{
   destinationIndex: Scalars["Int"]
@@ -697,6 +719,48 @@ export type CreateCardMutationOptions = Apollo.BaseMutationOptions<
   CreateCardMutation,
   CreateCardMutationVariables
 >
+export const DeleteCardDocument = gql`
+  mutation DeleteCard($id: String!) {
+    deleteCard(id: $id)
+  }
+`
+export type DeleteCardMutationFn = Apollo.MutationFunction<
+  DeleteCardMutation,
+  DeleteCardMutationVariables
+>
+
+/**
+ * __useDeleteCardMutation__
+ *
+ * To run a mutation, you first call `useDeleteCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCardMutation, { data, loading, error }] = useDeleteCardMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCardMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteCardMutation, DeleteCardMutationVariables>
+) {
+  return Apollo.useMutation<DeleteCardMutation, DeleteCardMutationVariables>(
+    DeleteCardDocument,
+    baseOptions
+  )
+}
+
+export type DeleteCardMutationHookResult = ReturnType<typeof useDeleteCardMutation>
+export type DeleteCardMutationResult = Apollo.MutationResult<DeleteCardMutation>
+export type DeleteCardMutationOptions = Apollo.BaseMutationOptions<
+  DeleteCardMutation,
+  DeleteCardMutationVariables
+>
 export const MoveCardDocument = gql`
   mutation MoveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
     moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
@@ -835,6 +899,48 @@ export type CreateListMutationResult = Apollo.MutationResult<CreateListMutation>
 export type CreateListMutationOptions = Apollo.BaseMutationOptions<
   CreateListMutation,
   CreateListMutationVariables
+>
+export const DeleteListDocument = gql`
+  mutation DeleteList($id: String!) {
+    deleteList(id: $id)
+  }
+`
+export type DeleteListMutationFn = Apollo.MutationFunction<
+  DeleteListMutation,
+  DeleteListMutationVariables
+>
+
+/**
+ * __useDeleteListMutation__
+ *
+ * To run a mutation, you first call `useDeleteListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteListMutation, { data, loading, error }] = useDeleteListMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteListMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteListMutation, DeleteListMutationVariables>
+) {
+  return Apollo.useMutation<DeleteListMutation, DeleteListMutationVariables>(
+    DeleteListDocument,
+    baseOptions
+  )
+}
+
+export type DeleteListMutationHookResult = ReturnType<typeof useDeleteListMutation>
+export type DeleteListMutationResult = Apollo.MutationResult<DeleteListMutation>
+export type DeleteListMutationOptions = Apollo.BaseMutationOptions<
+  DeleteListMutation,
+  DeleteListMutationVariables
 >
 export const MoveListDocument = gql`
   mutation MoveList($destinationIndex: Int!, $listId: String!) {

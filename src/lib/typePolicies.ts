@@ -1,33 +1,36 @@
+const acceptIncoming = (existing: any, incoming: any) => {
+  return incoming
+}
+
 const typePolicies = {
   User: {
     fields: {
       owns: {
-        merge(existing: any, incoming: any) {
-          return incoming
-        },
+        merge: acceptIncoming,
       },
     },
   },
   Team: {
     fields: {
       boards: {
-        merge(existing: any, incoming: any) {
-          return incoming
-        },
+        merge: acceptIncoming,
       },
       participants: {
-        merge(existing: any, incoming: any) {
-          return incoming
-        },
+        merge: acceptIncoming,
       },
     },
   },
   List: {
     fields: {
       cards: {
-        merge(existing: any, incoming: any) {
-          return incoming
-        },
+        merge: acceptIncoming,
+      },
+    },
+  },
+  Board: {
+    fields: {
+      lists: {
+        merge: acceptIncoming,
       },
     },
   },
