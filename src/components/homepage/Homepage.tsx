@@ -1,9 +1,9 @@
-import { Col, Space } from "antd"
+import { Col } from "antd"
 import React from "react"
 import Box from "../common/Box"
 import { CenteredContent } from "../common/page.styled"
 import theme from "../../style/theme"
-import { HomepageHeader, HomepageLink } from "./homepage.styled"
+import { HomepageHeader, HomepageLink, TryItArrow } from "./homepage.styled"
 import Link from "next/link"
 
 function Homepage() {
@@ -23,7 +23,9 @@ function Homepage() {
             </Box>
             <Box flex justifyContent="flex-end">
               <Link href="/register">
-                <HomepageLink>try it</HomepageLink>
+                <Box flex alignItems="center">
+                  <HomepageLink>try it</HomepageLink> <TryItArrow />
+                </Box>
               </Link>
             </Box>
           </Box>
