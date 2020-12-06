@@ -5,6 +5,7 @@ import { Div } from "../Text"
 import { useForm } from "react-hook-form"
 import TextInput from "./TextInput"
 import { Form } from "antd"
+import TextArea from "./TextArea"
 
 type FormData = {
   text: string
@@ -85,12 +86,13 @@ function EditableText({
         ) : (
           <Form onSubmitCapture={handleSubmit(onSubmit)}>
             <Box flex gap="7px" alignItems="center">
-              <TextInput
+              <TextArea
                 name="text"
                 useFormMethods={useFormMethods}
                 rules={{ required: { value: true, message: "Cannot be blank" } }}
                 maxLength={maxLength}
                 error={!reopened && (errors.text?.message ?? error)}
+                optional={optional}
               />
               <CheckOutlined onClick={handleSubmit(onSubmit)} />
               <CloseOutlined onClick={cancel} />

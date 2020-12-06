@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Form, Modal } from "antd"
 import { DeepPartial, UnpackNestedValue, useForm, UseFormMethods } from "react-hook-form"
+import Box from "../Box"
 
 export type ModalFormProps<TInput, TData> = {
   title: string
@@ -74,7 +75,9 @@ const ModalForm = <TInput extends object, TData extends object>({
       >
         {/*@ts-ignore*/}
         <Form onSubmitCapture={handleSubmit(onSubmitOuter)}>
-          {renderForm(useFormMethods, reset)}
+          <Box flex flexDirection="column" gap="15px">
+            {renderForm(useFormMethods, reset)}
+          </Box>
         </Form>
       </Modal>
       {renderButton(showModal)}

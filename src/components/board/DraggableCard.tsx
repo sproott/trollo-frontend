@@ -6,6 +6,7 @@ import {
   Card,
   useDeleteCardMutation,
   useRenameCardMutation,
+  useUpdateCardDescriptionMutation,
 } from "../../../generated/graphql"
 import { LineClamp } from "../common/Text"
 import { CardInner } from "./board.styled"
@@ -14,17 +15,22 @@ import Box from "../common/Box"
 import EditableText from "../common/form/EditableText"
 import produce from "immer"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
+import EditableTextArea from "../common/form/EditableTextArea"
 
 const DraggableCard = ({
   card,
   boardId,
 }: {
-  card: { __typename?: "Card" } & Pick<Card, "name" | "id" | "index">
+  card: { __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">
   boardId: string
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
-  const [rename, { data }] = useRenameCardMutation()
+  const [renameMutate, { data: renameData }] = useRenameCardMutation()
+  const [
+    updateDescriptionMutate,
+    { data: updateDescriptionData },
+  ] = useUpdateCardDescriptionMutation()
   const [deleteCardMutate] = useDeleteCardMutation()
 
   const deleteCard = async () => {
@@ -53,8 +59,8 @@ const DraggableCard = ({
     setModalVisible(false)
   }
 
-  const onConfirm = async (newName: string) => {
-    await rename({
+  const rename = async (newName: string) => {
+    await renameMutate({
       variables: {
         name: newName,
         cardId: card.id,
@@ -69,6 +75,31 @@ const DraggableCard = ({
             query: BoardDocument,
             data: produce(board, (x) => {
               x.board.lists.flatMap((l) => l.cards).find((c) => c.id === card.id).name = newName
+            }),
+          })
+        }
+      },
+    })
+  }
+
+  const updateDescription = async (newDescription: string) => {
+    await updateDescriptionMutate({
+      variables: {
+        description: newDescription,
+        cardId: card.id,
+      },
+      update: (store, { data }) => {
+        if (data.updateCardDescription) {
+          const board = store.readQuery<BoardQuery>({
+            query: BoardDocument,
+            variables: { id: boardId },
+          })
+          store.writeQuery<BoardQuery>({
+            query: BoardDocument,
+            data: produce(board, (x) => {
+              x.board.lists
+                .flatMap((l) => l.cards)
+                .find((c) => c.id === card.id).description = newDescription
             }),
           })
         }
@@ -106,12 +137,19 @@ const DraggableCard = ({
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
-            label="Name: "
+            label="Name"
             text={card.name}
-            onConfirm={onConfirm}
+            onConfirm={rename}
             containerVisible={modalVisible}
-            error={data?.renameCard.exists && "Card with this name already exists"}
-            success={data?.renameCard.success}
+            error={renameData?.renameCard.exists && "Card with this name already exists"}
+            success={renameData?.renameCard.success}
+          />
+          <EditableTextArea
+            label="Description"
+            text={card.description}
+            onConfirm={updateDescription}
+            success={updateDescriptionData?.updateCardDescription}
+            optional
           />
         </Box>
       </Modal>

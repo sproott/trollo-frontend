@@ -47,6 +47,18 @@
               "deprecationReason": null
             },
             {
+              "name": "description",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "index",
               "description": null,
               "args": [],
@@ -1244,6 +1256,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "description",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "name",
                   "description": null,
                   "type": {
@@ -1364,6 +1386,51 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "RenameResponse",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updateCardDescription",
+              "description": null,
+              "args": [
+                {
+                  "name": "description",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "cardId",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
                   "ofType": null
                 }
               },
@@ -2864,9 +2931,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-12-05T18:01:22.436Z",
-      "endTime": "2020-12-05T18:01:22.462Z",
-      "duration": 25561815,
+      "startTime": "2020-12-06T13:18:35.580Z",
+      "endTime": "2020-12-06T13:18:35.610Z",
+      "duration": 30112741,
       "execution": {
         "resolvers": []
       }

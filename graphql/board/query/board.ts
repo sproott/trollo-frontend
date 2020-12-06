@@ -13,6 +13,7 @@ export const boardQuery = gql`
         cards {
           id
           name
+          description
           index
         }
       }

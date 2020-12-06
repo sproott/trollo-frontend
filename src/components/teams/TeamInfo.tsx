@@ -145,7 +145,7 @@ function TeamInfo({
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
-            label="Name: "
+            label="Name"
             text={team.name}
             onConfirm={onConfirm}
             containerVisible={modalVisible}

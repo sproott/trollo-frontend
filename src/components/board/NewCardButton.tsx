@@ -5,7 +5,7 @@ import {
   BoardQuery,
   Card,
   List,
-  MutationCreateTeamArgs,
+  MutationCreateCardArgs,
   useCreateCardMutation,
 } from "../../../generated/graphql"
 import produce from "immer"
@@ -14,6 +14,7 @@ import { Maybe } from "graphql/jsutils/Maybe"
 import { CreateCardButton } from "./board.styled"
 import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
+import TextArea from "../common/form/TextArea"
 
 const NewCardButton = ({
   boardId,
@@ -21,12 +22,14 @@ const NewCardButton = ({
 }: {
   boardId: string
   list: { __typename?: "List" } & Pick<List, "id" | "name"> & {
-      cards?: Maybe<Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>>
+      cards?: Maybe<
+        Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">>
+      >
     }
 }) => {
   const [createCard, { loading, data }] = useCreateCardMutation()
 
-  const onSubmit = async (formData: MutationCreateTeamArgs) => {
+  const onSubmit = async (formData: MutationCreateCardArgs) => {
     await createCard({
       variables: { listId: list.id, ...formData },
       update: (store, { data }) => {
@@ -52,6 +55,7 @@ const NewCardButton = ({
       title={`Create a new card in ${list.name}`}
       defaultValues={{
         name: "",
+        description: "",
       }}
       onSubmit={onSubmit}
       loading={loading}
@@ -59,15 +63,24 @@ const NewCardButton = ({
       error={data?.createCard.exists}
       customSuccessCondition={(data) => !!data?.createCard && !data.createCard.exists}
       renderForm={(useFormMethods, reset) => (
-        <TextInput
-          label="Name"
-          name="name"
-          error={
-            useFormMethods.errors.name?.message ||
-            (!reset && data?.createCard.exists && "Card with this name already exists")
-          }
-          useFormMethods={useFormMethods}
-        />
+        <>
+          <TextInput
+            label="Name"
+            name="name"
+            error={
+              useFormMethods.errors.name?.message ||
+              (!reset && data?.createCard.exists && "Card with this name already exists")
+            }
+            useFormMethods={useFormMethods}
+          />
+          <TextArea
+            label="Description"
+            name="description"
+            error={useFormMethods.errors.description?.message}
+            useFormMethods={useFormMethods}
+            optional
+          />
+        </>
       )}
       renderButton={(showModal) => (
         <CreateCardButton onClick={showModal}>

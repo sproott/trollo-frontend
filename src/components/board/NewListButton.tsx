@@ -6,7 +6,7 @@ import {
   BoardQuery,
   Card,
   List,
-  MutationCreateTeamArgs,
+  MutationCreateListArgs,
   useCreateListMutation,
 } from "../../../generated/graphql"
 import produce from "immer"
@@ -21,7 +21,9 @@ const NewListButton = ({
       lists?: Maybe<
         Array<
           { __typename?: "List" } & Pick<List, "id" | "name"> & {
-              cards?: Maybe<Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>>
+              cards?: Maybe<
+                Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">>
+              >
             }
         >
       >
@@ -29,7 +31,7 @@ const NewListButton = ({
 }) => {
   const [createList, { loading, data }] = useCreateListMutation()
 
-  const onSubmit = async (formData: MutationCreateTeamArgs) => {
+  const onSubmit = async (formData: MutationCreateListArgs) => {
     await createList({
       variables: { boardId: board.id, ...formData },
       update: (store, { data }) => {

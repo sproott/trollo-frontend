@@ -24,7 +24,9 @@ const DraggableDroppableList = ({
 }: {
   boardId: string
   list: { __typename?: "List" } & Pick<List, "id" | "name" | "index"> & {
-      cards?: Maybe<Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "index">>>
+      cards?: Maybe<
+        Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">>
+      >
     }
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -135,7 +137,7 @@ const DraggableDroppableList = ({
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
-            label="Name: "
+            label="Name"
             text={list.name}
             onConfirm={onConfirm}
             containerVisible={modalVisible}

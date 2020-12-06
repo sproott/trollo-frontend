@@ -3,6 +3,7 @@ import { CreateBoardButton } from "./teams.styled"
 import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
 import {
+  MutationCreateBoardArgs,
   TeamInfoFragment,
   TeamsDocument,
   TeamsQuery,
@@ -12,10 +13,6 @@ import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import TextInput from "../common/form/TextInput"
 
-type FormData = {
-  name: string
-}
-
 const NewBoardButton = ({
   team: { id: teamId, name: teamName },
 }: {
@@ -23,7 +20,7 @@ const NewBoardButton = ({
 }) => {
   const [createBoard, { loading, data }] = useCreateBoardMutation()
 
-  const onSubmit = async (formData: FormData) => {
+  const onSubmit = async (formData: MutationCreateBoardArgs) => {
     await createBoard({
       variables: { teamId, ...formData },
       update: (store, { data }) => {
