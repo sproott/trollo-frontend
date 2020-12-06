@@ -1,5 +1,4 @@
 import React from "react"
-import * as yup from "yup"
 import TextInput from "../common/form/TextInput"
 import {
   Board,
@@ -14,10 +13,6 @@ import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import { Button } from "antd"
 import { Maybe } from "graphql/jsutils/Maybe"
-
-const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-})
 
 const NewListButton = ({
   board,
@@ -62,21 +57,20 @@ const NewListButton = ({
       defaultValues={{
         name: "",
       }}
-      schema={schema}
       onSubmit={onSubmit}
       loading={loading}
       data={data}
       error={data?.createList.exists}
       customSuccessCondition={(data) => !!data?.createList && !data.createList.exists}
-      renderForm={(control, errors, reset) => (
+      renderForm={(useFormMethods, reset) => (
         <TextInput
           label="Name"
           name="name"
           error={
-            errors.name?.message ||
+            useFormMethods.errors.name?.message ||
             (!reset && data?.createList.exists && "List with this name already exists")
           }
-          control={control}
+          useFormMethods={useFormMethods}
         />
       )}
       renderButton={(showModal) => (

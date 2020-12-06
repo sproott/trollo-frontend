@@ -4,17 +4,11 @@ import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons"
 import { Div } from "../Text"
 import { useForm } from "react-hook-form"
 import TextInput from "./TextInput"
-import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup"
 import { Form } from "antd"
 
 type FormData = {
   text: string
 }
-
-const schema = yup.object().shape({
-  text: yup.string().required("Cannot be blank"),
-})
 
 function EditableText({
   text,
@@ -37,14 +31,15 @@ function EditableText({
   const [submitted, setSubmitted] = useState(false)
   const [onSubmitFinished, setOnSubmitFinished] = useState(false)
   const [reopened, setReopened] = useState(true)
-  const { control, handleSubmit, errors, reset } = useForm<FormData>({
+  const useFormMethods = useForm<FormData>({
     defaultValues: {
       text,
     },
     mode: "onBlur",
     reValidateMode: "onBlur",
-    resolver: yupResolver(schema),
   })
+  const { handleSubmit, errors, reset } = useFormMethods
+
   const edit = () => {
     setReopened(true)
     setEditing(true)
@@ -90,7 +85,8 @@ function EditableText({
             <Box flex gap="7px" alignItems="center">
               <TextInput
                 name="text"
-                control={control}
+                useFormMethods={useFormMethods}
+                rules={{ required: { value: true, message: "Cannot be blank" } }}
                 maxLength={maxLength}
                 error={!reopened && (errors.text?.message ?? error)}
               />

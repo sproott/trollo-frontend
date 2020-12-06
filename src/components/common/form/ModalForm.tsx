@@ -1,32 +1,22 @@
 import React, { useState } from "react"
 import { Form, Modal } from "antd"
-import { DeepPartial, UnpackNestedValue, useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { ObjectSchema } from "yup"
-import { FieldErrors } from "react-hook-form/dist/types/errors"
-import { Control } from "react-hook-form/dist/types/form"
+import { DeepPartial, UnpackNestedValue, useForm, UseFormMethods } from "react-hook-form"
 
 export type ModalFormProps<TInput, TData> = {
   title: string
   defaultValues: UnpackNestedValue<DeepPartial<TInput>>
-  schema: ObjectSchema<any>
   onSubmit: (formData: TInput) => void
   loading: boolean
   data: TData
   error?: boolean
   customSuccessCondition: (data: TData) => boolean
-  renderForm: (
-    control: Control<TInput>,
-    errors: FieldErrors<TInput>,
-    reset: boolean
-  ) => React.ReactNode
+  renderForm: (useFormMethods: UseFormMethods<TInput>, reset: boolean) => React.ReactNode
   renderButton: (showModal: () => void) => React.ReactNode
 }
 
 const ModalForm = <TInput extends object, TData extends object>({
   title,
   defaultValues,
-  schema,
   onSubmit,
   loading,
   data,
@@ -39,12 +29,13 @@ const ModalForm = <TInput extends object, TData extends object>({
   const [submitted, setSubmitted] = useState(false)
   const [onSubmitFinished, setOnSubmitFinished] = useState(false)
   const [reset, setReset] = useState(true)
-  const { control, handleSubmit, errors, reset: resetForm } = useForm<TInput>({
+  const useFormMethods = useForm<TInput>({
     defaultValues,
     mode: "onBlur",
     reValidateMode: "onBlur",
-    resolver: yupResolver(schema),
   })
+
+  const { handleSubmit, reset: resetForm } = useFormMethods
 
   const onSubmitOuter = async (formData: TInput) => {
     setSubmitted(true)
@@ -83,7 +74,7 @@ const ModalForm = <TInput extends object, TData extends object>({
       >
         {/*@ts-ignore*/}
         <Form onSubmitCapture={handleSubmit(onSubmitOuter)}>
-          {renderForm(control, errors, reset)}
+          {renderForm(useFormMethods, reset)}
         </Form>
       </Modal>
       {renderButton(showModal)}

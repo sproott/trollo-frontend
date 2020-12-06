@@ -25,7 +25,7 @@ const LoginForm = () => {
   const [submitted, setSubmitted] = useState(false)
   const router = useRouter()
 
-  const { control, handleSubmit, errors } = useForm<LoginInput>({
+  const useFormMethods = useForm<LoginInput>({
     defaultValues: {
       usernameOrEmail: "",
       password: "",
@@ -55,6 +55,8 @@ const LoginForm = () => {
     await router.replace("/")
   }
 
+  const { handleSubmit } = useFormMethods
+
   return (
     <Form {...layout} onSubmitCapture={handleSubmit(onSubmit)}>
       <Row justify="center">
@@ -66,10 +68,15 @@ const LoginForm = () => {
             <TextInput
               label="Username or e-mail"
               name="usernameOrEmail"
-              control={control}
-              maxLength={20}
+              useFormMethods={useFormMethods}
+              maxLength={254}
             />
-            <PasswordInput label="Password" name="password" control={control} maxLength={32} />
+            <PasswordInput
+              label="Password"
+              name="password"
+              useFormMethods={useFormMethods}
+              maxLength={32}
+            />
             <HorizontallyCentered>
               <SubmitButton label="Login" loading={submitted} />
             </HorizontallyCentered>

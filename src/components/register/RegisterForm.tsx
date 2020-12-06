@@ -14,22 +14,12 @@ import {
 } from "../../../generated/graphql"
 import { H4 } from "../common/Text"
 import { useRouter } from "next/router"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
 import Box from "../common/Box"
+import { Constants } from "../../constants/Constants"
 
 const layout = {
   layout: "vertical",
 } as FormProps
-
-const schema = yup.object().shape({
-  username: yup.string().required("Username is required"),
-  email: yup.string().required("Email is required").email("Email is invalid"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters"),
-})
 
 const RegisterForm = () => {
   const [register, { loading, error: gqlError, data }] = useRegisterMutation()
@@ -37,7 +27,7 @@ const RegisterForm = () => {
   const [done, setDone] = useState(false)
   const router = useRouter()
 
-  const { control, handleSubmit, errors } = useForm<RegisterInput>({
+  const useFormMethods = useForm<RegisterInput>({
     defaultValues: {
       username: "",
       email: "",
@@ -45,8 +35,8 @@ const RegisterForm = () => {
     },
     mode: "onBlur",
     reValidateMode: "onBlur",
-    resolver: yupResolver(schema),
   })
+  const { handleSubmit, errors } = useFormMethods
 
   const onSubmit = async (formData: RegisterInput) => {
     setSubmitted(true)
@@ -97,21 +87,23 @@ const RegisterForm = () => {
               error={
                 errors.username?.message || (!!registerError?.username && "Username already exists")
               }
-              control={control}
+              useFormMethods={useFormMethods}
               maxLength={20}
             />
             <TextInput
               label="E-mail"
               name="email"
               error={errors.email?.message || (!!registerError?.email && "E-mail already exists")}
-              control={control}
+              useFormMethods={useFormMethods}
+              rules={{ pattern: { value: Constants.EMAIL_REGEX, message: "E-mail is invalid" } }}
               maxLength={254}
             />
             <PasswordInput
               label="Password"
               name="password"
               error={errors.password?.message}
-              control={control}
+              useFormMethods={useFormMethods}
+              rules={{ min: { value: 8, message: "Password must be at least 8 characters long" } }}
               maxLength={32}
             />
             <Box padding="20px 0 0 0">

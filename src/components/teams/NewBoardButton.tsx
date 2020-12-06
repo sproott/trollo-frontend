@@ -11,15 +11,10 @@ import {
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import TextInput from "../common/form/TextInput"
-import * as yup from "yup"
 
 type FormData = {
   name: string
 }
-
-const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-})
 
 const NewBoardButton = ({
   team: { id: teamId, name: teamName },
@@ -54,21 +49,20 @@ const NewBoardButton = ({
       defaultValues={{
         name: "",
       }}
-      schema={schema}
       onSubmit={onSubmit}
       loading={loading}
       data={data}
       error={data?.createBoard.exists}
       customSuccessCondition={(data) => !!data?.createBoard && !data.createBoard.exists}
-      renderForm={(control, errors, reset) => (
+      renderForm={(useFormMethods, reset) => (
         <TextInput
           label="Name"
           name="name"
           error={
-            errors.name?.message ||
+            useFormMethods.errors.name?.message ||
             (!reset && data?.createBoard.exists && "Board with this name already exists")
           }
-          control={control}
+          useFormMethods={useFormMethods}
         />
       )}
       renderButton={(showModal) => (

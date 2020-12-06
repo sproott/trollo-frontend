@@ -14,9 +14,10 @@ type FormData = {
 }
 
 function AddUser({ teamId, containerVisible }: { teamId: string; containerVisible?: boolean }) {
-  const { control, handleSubmit, reset: resetForm } = useForm<FormData>({
+  const useFormMethods = useForm<FormData>({
     defaultValues: { username: "" },
   })
+  const { handleSubmit, reset: resetForm } = useFormMethods
   const [addUser] = useAddUserMutation()
   const [error, setError] = useState<string>()
 
@@ -73,7 +74,7 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
     <Form onSubmitCapture={handleSubmit(onSubmit)}>
       <Box flex alignItems="center" gap="10px">
         <Avatar username="?" backgroundColor={theme.blue.primary} color="white" pointer />
-        <TextInput name="username" maxLength={20} control={control} error={error} />
+        <TextInput name="username" maxLength={20} useFormMethods={useFormMethods} error={error} />
       </Box>
     </Form>
   )

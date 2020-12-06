@@ -1,30 +1,35 @@
-import { Control, Controller } from "react-hook-form"
+import { Control, Controller, FieldName, UseFormMethods } from "react-hook-form"
 import React, { ReactElement } from "react"
 import { Form } from "antd"
+import { RegisterOptions } from "react-hook-form/dist/types/validator"
 
-export type ControlledInputProps = {
-  name: string
+export type ControlledInputProps<TInput> = {
+  name: FieldName<TInput>
   label?: string
   error?: string
-  control: Control
+  optional?: boolean
+  useFormMethods: UseFormMethods<TInput>
+  rules?: RegisterOptions
 }
 
-interface ControlledInputWithChildrenProps extends ControlledInputProps {
+interface ControlledInputWithChildrenProps<TInput> extends ControlledInputProps<TInput> {
   children: ReactElement
 }
 
-const ControlledFormItem = ({
+const ControlledFormItem = <TInput extends object>({
   name,
   label,
-  control,
+  useFormMethods,
   error,
   children,
-}: ControlledInputWithChildrenProps) => {
+  optional,
+  rules,
+}: ControlledInputWithChildrenProps<TInput>) => {
   return (
     <Controller
       render={(props) => (
         <Form.Item
-          label={label}
+          label={label + ": "}
           validateStatus={!!error && "error"}
           help={error}
           style={{ marginBottom: "0" }}
@@ -32,7 +37,11 @@ const ControlledFormItem = ({
           {React.cloneElement(children, { ...props })}
         </Form.Item>
       )}
-      control={control}
+      control={useFormMethods.control}
+      rules={{
+        required: !optional && { value: true, message: `${label} is required` },
+        ...rules,
+      }}
       name={name}
     />
   )

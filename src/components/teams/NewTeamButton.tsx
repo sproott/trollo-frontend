@@ -1,6 +1,5 @@
 import React from "react"
 import { PlusOutlined } from "@ant-design/icons"
-import * as yup from "yup"
 import TextInput from "../common/form/TextInput"
 import {
   MutationCreateTeamArgs,
@@ -11,10 +10,6 @@ import {
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import { Button } from "antd"
-
-const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-})
 
 const NewTeamButton = () => {
   const [createTeam, { loading, data }] = useCreateTeamMutation()
@@ -44,23 +39,24 @@ const NewTeamButton = () => {
       defaultValues={{
         name: "",
       }}
-      schema={schema}
       onSubmit={onSubmit}
       loading={loading}
       data={data}
       error={data?.createTeam.exists}
       customSuccessCondition={(data) => !!data?.createTeam && !data.createTeam.exists}
-      renderForm={(control, errors, reset) => (
-        <TextInput
-          label="Name"
-          name="name"
-          error={
-            errors.name?.message ||
-            (!reset && data?.createTeam.exists && "Team with this name already exists")
-          }
-          control={control}
-        />
-      )}
+      renderForm={(useFormMethods, reset) => {
+        return (
+          <TextInput
+            label="Name"
+            name="name"
+            error={
+              useFormMethods.errors.name?.message ||
+              (!reset && data?.createTeam.exists && "Team with this name already exists")
+            }
+            useFormMethods={useFormMethods}
+          />
+        )
+      }}
       renderButton={(showModal) => (
         <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>
           New team

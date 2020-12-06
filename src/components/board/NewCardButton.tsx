@@ -1,5 +1,4 @@
 import React from "react"
-import * as yup from "yup"
 import TextInput from "../common/form/TextInput"
 import {
   BoardDocument,
@@ -15,10 +14,6 @@ import { Maybe } from "graphql/jsutils/Maybe"
 import { CreateCardButton } from "./board.styled"
 import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
-
-const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-})
 
 const NewCardButton = ({
   boardId,
@@ -58,21 +53,20 @@ const NewCardButton = ({
       defaultValues={{
         name: "",
       }}
-      schema={schema}
       onSubmit={onSubmit}
       loading={loading}
       data={data}
       error={data?.createCard.exists}
       customSuccessCondition={(data) => !!data?.createCard && !data.createCard.exists}
-      renderForm={(control, errors, reset) => (
+      renderForm={(useFormMethods, reset) => (
         <TextInput
           label="Name"
           name="name"
           error={
-            errors.name?.message ||
+            useFormMethods.errors.name?.message ||
             (!reset && data?.createCard.exists && "Card with this name already exists")
           }
-          control={control}
+          useFormMethods={useFormMethods}
         />
       )}
       renderButton={(showModal) => (
