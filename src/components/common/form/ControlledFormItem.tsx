@@ -1,4 +1,4 @@
-import { Control, Controller, FieldName, UseFormMethods } from "react-hook-form"
+import { Controller, FieldName, UseFormMethods } from "react-hook-form"
 import React, { ReactElement } from "react"
 import { Form } from "antd"
 import { RegisterOptions } from "react-hook-form/dist/types/validator"
@@ -29,7 +29,7 @@ const ControlledFormItem = <TInput extends object>({
     <Controller
       render={(props) => (
         <Form.Item
-          label={label + ": "}
+          label={!!label && label + ": "}
           validateStatus={!!error && "error"}
           help={error}
           style={{ marginBottom: "0" }}
