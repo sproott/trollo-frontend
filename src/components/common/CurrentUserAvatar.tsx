@@ -10,13 +10,8 @@ import { H3 } from "./Text"
 import Avatar from "./Avatar"
 
 const CurrentUserAvatar = () => {
-  const { data, startPolling, stopPolling } = useCurrentUserQuery()
+  const { data } = useCurrentUserQuery()
   const [logout] = useLogoutMutation()
-
-  useEffect(() => {
-    startPolling(10000)
-    return stopPolling
-  }, [])
 
   const onLogout = async () => {
     try {
