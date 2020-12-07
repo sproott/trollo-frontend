@@ -38,7 +38,10 @@ const DraggableCard = ({
       variables: { id: card.id },
       update: (store, { data }) => {
         if (data.deleteCard) {
-          const board = store.readQuery<BoardQuery>({ query: BoardDocument })
+          const board = store.readQuery<BoardQuery>({
+            query: BoardDocument,
+            variables: { id: boardId },
+          })
           store.writeQuery<BoardQuery>({
             query: BoardDocument,
             data: produce(board, (x) => {
