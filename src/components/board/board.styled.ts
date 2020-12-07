@@ -14,6 +14,7 @@ export const CardInner = styled(InnerBase)<{ isDragging: boolean }>`
   user-select: none;
   color: white;
   background-color: ${theme.blue.primary};
+  overflow-wrap: anywhere;
 
   &::after {
     content: " ";

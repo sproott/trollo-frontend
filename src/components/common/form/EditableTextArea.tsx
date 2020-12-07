@@ -80,11 +80,17 @@ function EditableText({
         {!!label && <Div>{label}: </Div>}
         {!editing ? (
           <>
-            <Div>{text}</Div>
+            <Div
+              style={{
+                overflowWrap: "anywhere",
+              }}
+            >
+              {text}
+            </Div>
             <EditOutlined onClick={edit} style={{ padding: "0 5px" }} />
           </>
         ) : (
-          <Form onSubmitCapture={handleSubmit(onSubmit)}>
+          <Form onSubmitCapture={handleSubmit(onSubmit)} style={{ flexGrow: 1 }}>
             <Box flex gap="7px" alignItems="center">
               <TextArea
                 name="text"
@@ -93,6 +99,8 @@ function EditableText({
                 maxLength={maxLength}
                 error={!reopened && (errors.text?.message ?? error)}
                 optional={optional}
+                onPressEnter={handleSubmit(onSubmit)}
+                style={{ flexGrow: 1 }}
               />
               <CheckOutlined onClick={handleSubmit(onSubmit)} />
               <CloseOutlined onClick={cancel} />

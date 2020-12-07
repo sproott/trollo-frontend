@@ -1,5 +1,5 @@
 import { Controller, FieldName, UseFormMethods } from "react-hook-form"
-import React, { ReactElement } from "react"
+import React, { CSSProperties, ReactElement } from "react"
 import { Form } from "antd"
 import { RegisterOptions } from "react-hook-form/dist/types/validator"
 
@@ -12,8 +12,9 @@ export type ControlledInputProps<TInput> = {
   rules?: RegisterOptions
 }
 
-interface ControlledInputWithChildrenProps<TInput> extends ControlledInputProps<TInput> {
+interface ControlledInputWithReactProps<TInput> extends ControlledInputProps<TInput> {
   children: ReactElement
+  style?: CSSProperties
 }
 
 const ControlledFormItem = <TInput extends object>({
@@ -24,7 +25,8 @@ const ControlledFormItem = <TInput extends object>({
   children,
   optional,
   rules,
-}: ControlledInputWithChildrenProps<TInput>) => {
+  style,
+}: ControlledInputWithReactProps<TInput>) => {
   return (
     <Controller
       render={(props) => (
@@ -32,7 +34,7 @@ const ControlledFormItem = <TInput extends object>({
           label={!!label && `${label}: `}
           validateStatus={!!error && "error"}
           help={error}
-          style={{ marginBottom: "0" }}
+          style={{ ...style, marginBottom: "0" }}
         >
           {React.cloneElement(children, { ...props })}
         </Form.Item>
