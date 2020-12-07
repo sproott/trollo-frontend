@@ -7,10 +7,10 @@ import {
   List,
   MutationCreateCardArgs,
   useCreateCardMutation,
+  User,
 } from "../../../generated/graphql"
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
-import { Maybe } from "graphql/jsutils/Maybe"
 import { CreateCardButton } from "./board.styled"
 import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
@@ -21,11 +21,7 @@ const NewCardButton = ({
   list,
 }: {
   boardId: string
-  list: { __typename?: "List" } & Pick<List, "id" | "name"> & {
-      cards?: Maybe<
-        Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">>
-      >
-    }
+  list: BoardQuery["board"]["lists"][0]
 }) => {
   const [createCard, { loading, data }] = useCreateCardMutation()
 

@@ -20,6 +20,7 @@ export type Card = {
   name: Scalars["String"]
   description?: Maybe<Scalars["String"]>
   index: Scalars["Int"]
+  assignee?: Maybe<User>
   list: List
 }
 
@@ -37,6 +38,7 @@ export type Board = {
   id: Scalars["ID"]
   name: Scalars["String"]
   lists: Array<List>
+  team: Team
   isOwn: Scalars["Boolean"]
 }
 
@@ -156,6 +158,8 @@ export type Mutation = {
   renameCard: RenameResponse
   updateCardDescription: Scalars["Boolean"]
   deleteCard: Scalars["Boolean"]
+  assignUser: Scalars["Boolean"]
+  unassignUser: Scalars["Boolean"]
   createList: CreateListResponse
   moveList: Scalars["Boolean"]
   renameList: RenameResponse
@@ -209,6 +213,15 @@ export type MutationUpdateCardDescriptionArgs = {
 
 export type MutationDeleteCardArgs = {
   id: Scalars["String"]
+}
+
+export type MutationAssignUserArgs = {
+  userId: Scalars["String"]
+  cardId: Scalars["String"]
+}
+
+export type MutationUnassignUserArgs = {
+  cardId: Scalars["String"]
 }
 
 export type MutationCreateListArgs = {
@@ -300,12 +313,28 @@ export type BoardQuery = { __typename?: "Query" } & {
       lists: Array<
         { __typename?: "List" } & Pick<List, "id" | "name" | "index"> & {
             cards: Array<
-              { __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">
+              { __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index"> & {
+                  assignee?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
+                }
             >
           }
       >
+      team: { __typename?: "Team" } & Pick<Team, "id"> & {
+          participants: Array<
+            { __typename?: "Participant" } & {
+              user: { __typename?: "User" } & Pick<User, "id" | "username">
+            }
+          >
+        }
     }
 }
+
+export type AssignUserMutationVariables = Exact<{
+  userId: Scalars["String"]
+  cardId: Scalars["String"]
+}>
+
+export type AssignUserMutation = { __typename?: "Mutation" } & Pick<Mutation, "assignUser">
 
 export type UpdateCardDescriptionMutationVariables = Exact<{
   description: Scalars["String"]
@@ -351,6 +380,12 @@ export type RenameCardMutationVariables = Exact<{
 export type RenameCardMutation = { __typename?: "Mutation" } & {
   renameCard: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
 }
+
+export type UnassignUserMutationVariables = Exact<{
+  cardId: Scalars["String"]
+}>
+
+export type UnassignUserMutation = { __typename?: "Mutation" } & Pick<Mutation, "unassignUser">
 
 export type CreateListMutationVariables = Exact<{
   boardId: Scalars["String"]
@@ -653,7 +688,20 @@ export const BoardDocument = gql`
           id
           name
           description
+          assignee {
+            id
+            username
+          }
           index
+        }
+      }
+      team {
+        id
+        participants {
+          user {
+            id
+            username
+          }
         }
       }
     }
@@ -691,6 +739,49 @@ export function useBoardLazyQuery(
 export type BoardQueryHookResult = ReturnType<typeof useBoardQuery>
 export type BoardLazyQueryHookResult = ReturnType<typeof useBoardLazyQuery>
 export type BoardQueryResult = Apollo.QueryResult<BoardQuery, BoardQueryVariables>
+export const AssignUserDocument = gql`
+  mutation AssignUser($userId: String!, $cardId: String!) {
+    assignUser(userId: $userId, cardId: $cardId)
+  }
+`
+export type AssignUserMutationFn = Apollo.MutationFunction<
+  AssignUserMutation,
+  AssignUserMutationVariables
+>
+
+/**
+ * __useAssignUserMutation__
+ *
+ * To run a mutation, you first call `useAssignUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssignUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assignUserMutation, { data, loading, error }] = useAssignUserMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      cardId: // value for 'cardId'
+ *   },
+ * });
+ */
+export function useAssignUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<AssignUserMutation, AssignUserMutationVariables>
+) {
+  return Apollo.useMutation<AssignUserMutation, AssignUserMutationVariables>(
+    AssignUserDocument,
+    baseOptions
+  )
+}
+
+export type AssignUserMutationHookResult = ReturnType<typeof useAssignUserMutation>
+export type AssignUserMutationResult = Apollo.MutationResult<AssignUserMutation>
+export type AssignUserMutationOptions = Apollo.BaseMutationOptions<
+  AssignUserMutation,
+  AssignUserMutationVariables
+>
 export const UpdateCardDescriptionDocument = gql`
   mutation UpdateCardDescription($description: String!, $cardId: String!) {
     updateCardDescription(description: $description, cardId: $cardId)
@@ -922,6 +1013,48 @@ export type RenameCardMutationResult = Apollo.MutationResult<RenameCardMutation>
 export type RenameCardMutationOptions = Apollo.BaseMutationOptions<
   RenameCardMutation,
   RenameCardMutationVariables
+>
+export const UnassignUserDocument = gql`
+  mutation UnassignUser($cardId: String!) {
+    unassignUser(cardId: $cardId)
+  }
+`
+export type UnassignUserMutationFn = Apollo.MutationFunction<
+  UnassignUserMutation,
+  UnassignUserMutationVariables
+>
+
+/**
+ * __useUnassignUserMutation__
+ *
+ * To run a mutation, you first call `useUnassignUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnassignUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unassignUserMutation, { data, loading, error }] = useUnassignUserMutation({
+ *   variables: {
+ *      cardId: // value for 'cardId'
+ *   },
+ * });
+ */
+export function useUnassignUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<UnassignUserMutation, UnassignUserMutationVariables>
+) {
+  return Apollo.useMutation<UnassignUserMutation, UnassignUserMutationVariables>(
+    UnassignUserDocument,
+    baseOptions
+  )
+}
+
+export type UnassignUserMutationHookResult = ReturnType<typeof useUnassignUserMutation>
+export type UnassignUserMutationResult = Apollo.MutationResult<UnassignUserMutation>
+export type UnassignUserMutationOptions = Apollo.BaseMutationOptions<
+  UnassignUserMutation,
+  UnassignUserMutationVariables
 >
 export const CreateListDocument = gql`
   mutation createList($boardId: String!, $name: String!) {

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "@apollo/client/core"
 
 export const boardQuery = gql`
   query Board($id: String!) {
@@ -14,7 +14,20 @@ export const boardQuery = gql`
           id
           name
           description
+          assignee {
+            id
+            username
+          }
           index
+        }
+      }
+      team {
+        id
+        participants {
+          user {
+            id
+            username
+          }
         }
       }
     }

@@ -1,5 +1,5 @@
 import React from "react"
-import { TeamInfoFragment } from "../../../generated/graphql"
+import { TeamInfoFragment, TeamsQuery } from "../../../generated/graphql"
 import { Button, Card } from "antd"
 import BoardInfo from "./BoardInfo"
 import { BoardGrid } from "./teams.styled"
@@ -12,7 +12,7 @@ const TeamsInfo = ({
   teams,
   isOwn,
 }: {
-  teams: Array<{ __typename?: "Team" } & TeamInfoFragment>
+  teams: Array<TeamsQuery["currentUser"]["owns"][0]["team"]>
   isOwn?: boolean
 }) => {
   return (

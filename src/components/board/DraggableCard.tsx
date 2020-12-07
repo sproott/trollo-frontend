@@ -3,26 +3,29 @@ import { Draggable } from "react-beautiful-dnd"
 import {
   BoardDocument,
   BoardQuery,
-  Card,
   useDeleteCardMutation,
   useRenameCardMutation,
   useUpdateCardDescriptionMutation,
 } from "../../../generated/graphql"
 import { LineClamp } from "../common/Text"
 import { CardInner } from "./board.styled"
-import { Button, Modal } from "antd"
+import { Button, Modal, Select } from "antd"
 import Box from "../common/Box"
 import EditableText from "../common/form/EditableText"
 import produce from "immer"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 import EditableTextArea from "../common/form/EditableTextArea"
+import AssigneeSelect from "./AssigneeSelect"
+import Avatar from "../common/Avatar"
 
 const DraggableCard = ({
   card,
   boardId,
+  participants,
 }: {
-  card: { __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">
+  card: BoardQuery["board"]["lists"][0]["cards"][0]
   boardId: string
+  participants: BoardQuery["board"]["team"]["participants"]
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
@@ -153,6 +156,12 @@ const DraggableCard = ({
             onConfirm={updateDescription}
             success={updateDescriptionData?.updateCardDescription}
             optional
+          />
+          <AssigneeSelect
+            assignee={card.assignee}
+            boardId={boardId}
+            cardId={card.id}
+            participants={participants}
           />
         </Box>
       </Modal>

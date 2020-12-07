@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "@apollo/client/core"
 
 export const renameBoard = gql`
   mutation RenameBoard($name: String!, $boardId: String!) {

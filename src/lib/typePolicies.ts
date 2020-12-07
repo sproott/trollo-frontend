@@ -1,8 +1,10 @@
+import { TypePolicies } from "@apollo/client"
+
 const acceptIncoming = (existing: any, incoming: any) => {
   return incoming
 }
 
-const typePolicies = {
+const typePolicies: TypePolicies = {
   User: {
     fields: {
       owns: {

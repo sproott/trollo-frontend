@@ -202,7 +202,7 @@ const Board = ({ boardId }: { boardId: string }) => {
             {(provided, snapshot) => (
               <Box flex fullWidth {...provided.droppableProps} ref={provided.innerRef}>
                 {data.board.lists.map((list) => (
-                  <DraggableDroppableList boardId={data.board.id} key={list.id} list={list} />
+                  <DraggableDroppableList board={data.board} key={list.id} list={list} />
                 ))}
                 {provided.placeholder}
               </Box>

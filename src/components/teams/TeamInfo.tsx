@@ -26,7 +26,7 @@ function TeamInfo({
   team,
   isOwn,
 }: {
-  team: { __typename?: "Team" } & TeamInfoFragment
+  team: TeamsQuery["currentUser"]["owns"][0]["team"]
   isOwn: boolean
 }) {
   const [modalVisible, setModalVisible] = useState(false)

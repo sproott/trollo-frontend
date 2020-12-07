@@ -8,27 +8,13 @@ import {
   List,
   MutationCreateListArgs,
   useCreateListMutation,
+  User,
 } from "../../../generated/graphql"
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import { Button } from "antd"
-import { Maybe } from "graphql/jsutils/Maybe"
 
-const NewListButton = ({
-  board,
-}: {
-  board: { __typename?: "Board" } & Pick<Board, "id" | "name"> & {
-      lists?: Maybe<
-        Array<
-          { __typename?: "List" } & Pick<List, "id" | "name"> & {
-              cards?: Maybe<
-                Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">>
-              >
-            }
-        >
-      >
-    }
-}) => {
+const NewListButton = ({ board }: { board: BoardQuery["board"] }) => {
   const [createList, { loading, data }] = useCreateListMutation()
 
   const onSubmit = async (formData: MutationCreateListArgs) => {

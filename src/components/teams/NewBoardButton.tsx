@@ -16,7 +16,7 @@ import TextInput from "../common/form/TextInput"
 const NewBoardButton = ({
   team: { id: teamId, name: teamName },
 }: {
-  team: { __typename?: "Team" } & TeamInfoFragment
+  team: TeamsQuery["currentUser"]["owns"][0]["team"]
 }) => {
   const [createBoard, { loading, data }] = useCreateBoardMutation()
 

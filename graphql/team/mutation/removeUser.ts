@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "@apollo/client/core"
 
 export const removeUser = gql`
   mutation RemoveUser($teamId: String!, $userId: String!) {

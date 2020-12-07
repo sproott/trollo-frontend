@@ -1,9 +1,6 @@
 import {
   BoardDocument,
   BoardQuery,
-  Card,
-  List,
-  Maybe,
   useDeleteListMutation,
   useRenameListMutation,
 } from "../../../generated/graphql"
@@ -19,16 +16,13 @@ import produce from "immer"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 
 const DraggableDroppableList = ({
-  boardId,
+  board,
   list,
 }: {
-  boardId: string
-  list: { __typename?: "List" } & Pick<List, "id" | "name" | "index"> & {
-      cards?: Maybe<
-        Array<{ __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index">>
-      >
-    }
+  board: BoardQuery["board"]
+  list: BoardQuery["board"]["lists"][0]
 }) => {
+  const { id: boardId } = board
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
   const [rename, { data }] = useRenameListMutation()
@@ -39,7 +33,10 @@ const DraggableDroppableList = ({
       variables: { id: list.id },
       update: (store, { data }) => {
         if (data.deleteList) {
-          const board = store.readQuery<BoardQuery>({ query: BoardDocument })
+          const board = store.readQuery<BoardQuery>({
+            query: BoardDocument,
+            variables: { id: boardId },
+          })
           store.writeQuery<BoardQuery>({
             query: BoardDocument,
             data: produce(board, (x) => {
@@ -114,7 +111,12 @@ const DraggableDroppableList = ({
                     }}
                   >
                     {list.cards.map((card) => (
-                      <DraggableCard key={card.id} card={card} boardId={boardId} />
+                      <DraggableCard
+                        key={card.id}
+                        card={card}
+                        boardId={boardId}
+                        participants={board.team.participants}
+                      />
                     ))}
                     {provided.placeholder}
                   </div>

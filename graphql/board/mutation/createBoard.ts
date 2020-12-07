@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "@apollo/client/core"
 
 export const createBoardMutation = gql`
   mutation CreateBoard($teamId: String!, $name: String!) {
