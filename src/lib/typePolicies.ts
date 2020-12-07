@@ -10,6 +10,9 @@ const typePolicies: TypePolicies = {
       owns: {
         merge: acceptIncoming,
       },
+      participatesIn: {
+        merge: acceptIncoming,
+      },
     },
   },
   Team: {

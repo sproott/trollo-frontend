@@ -1,15 +1,15 @@
 import React, { useState } from "react"
-import { CloseOutlined, EditOutlined } from "@ant-design/icons"
+import { CloseOutlined, EditOutlined, ExportOutlined } from "@ant-design/icons"
 import { BoardGrid } from "./teams.styled"
 import BoardInfo from "./BoardInfo"
 import NewBoardButton from "./NewBoardButton"
 import { Button, Card, Col, Modal } from "antd"
 import {
-  TeamInfoFragment,
   TeamsDocument,
   TeamsQuery,
   useCurrentUserQuery,
   useDeleteTeamMutation,
+  useLeaveTeamMutation,
   useRemoveUserMutation,
   useRenameTeamMutation,
 } from "../../../generated/graphql"
@@ -17,7 +17,7 @@ import EditableText from "../common/form/EditableText"
 import produce from "immer"
 import Box from "../common/Box"
 import Avatar from "../common/Avatar"
-import { H3, Div } from "../common/Text"
+import { Div, H3 } from "../common/Text"
 import theme from "../../style/theme"
 import AddUser from "./AddUser"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
@@ -29,11 +29,13 @@ function TeamInfo({
   team: TeamsQuery["currentUser"]["owns"][0]["team"]
   isOwn: boolean
 }) {
-  const [modalVisible, setModalVisible] = useState(false)
+  const [editModalVisible, setEditModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
+  const [leaveConfirmationVisible, setLeaveConfirmationVisible] = useState(false)
   const [rename, { data }] = useRenameTeamMutation()
   const [removeUserMutate] = useRemoveUserMutation()
   const [deleteTeamMutate] = useDeleteTeamMutation()
+  const [leaveTeamMutate] = useLeaveTeamMutation()
   const {
     data: {
       currentUser: { id: userId },
@@ -84,6 +86,27 @@ function TeamInfo({
       },
     })
   }
+  const leaveTeam = async () => {
+    leaveTeamMutate({
+      variables: { teamId: team.id },
+      update: (store, { data }) => {
+        if (data.leaveTeam) {
+          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
+
+          store.writeQuery<TeamsQuery>({
+            query: TeamsDocument,
+            data: produce(teams, (x) => {
+              const participants = x.currentUser.participatesIn
+              participants.splice(
+                participants.findIndex((p) => p.team.id === team.id),
+                1
+              )
+            }),
+          })
+        }
+      },
+    })
+  }
   const deleteTeam = async () => {
     await deleteTeamMutate({
       variables: {
@@ -107,7 +130,7 @@ function TeamInfo({
       },
     })
     setConfirmationVisible(false)
-    setModalVisible(false)
+    setEditModalVisible(false)
   }
 
   return (
@@ -116,10 +139,15 @@ function TeamInfo({
         title={team.name}
         style={{ marginBottom: "10px" }}
         extra={
-          isOwn && (
+          isOwn ? (
             <EditOutlined
-              onClick={setModalVisible.bind(this, true)}
+              onClick={setEditModalVisible.bind(this, true)}
               style={{ padding: "0 20px" }}
+            />
+          ) : (
+            <ExportOutlined
+              onClick={setLeaveConfirmationVisible.bind(this, true)}
+              style={{ padding: "0 20px", color: "red" }}
             />
           )
         }
@@ -134,9 +162,9 @@ function TeamInfo({
         </BoardGrid>
       </Card>
       <Modal
-        visible={modalVisible}
+        visible={editModalVisible}
         title={`Edit team ${team.name}`}
-        onCancel={setModalVisible.bind(this, false)}
+        onCancel={setEditModalVisible.bind(this, false)}
         footer={
           <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
             Delete team
@@ -148,7 +176,7 @@ function TeamInfo({
             label="Name"
             text={team.name}
             onConfirm={onConfirm}
-            containerVisible={modalVisible}
+            containerVisible={editModalVisible}
             error={data?.renameTeam.exists && "Team with this name already exists"}
             success={data?.renameTeam.success}
           />
@@ -188,7 +216,7 @@ function TeamInfo({
                 </Col>
               </Box>
             )}
-            <AddUser teamId={team.id} containerVisible={modalVisible} />
+            <AddUser teamId={team.id} containerVisible={editModalVisible} />
           </Box>
         </Box>
       </Modal>
@@ -197,6 +225,13 @@ function TeamInfo({
         visible={confirmationVisible}
         onCancel={setConfirmationVisible.bind(this, false)}
         onOk={deleteTeam}
+      />
+      <ConfirmDeleteModal
+        title={"Do you really want to leave this team?"}
+        visible={leaveConfirmationVisible}
+        onCancel={setLeaveConfirmationVisible.bind(this, false)}
+        okButtonText="Leave"
+        onOk={leaveTeam}
       />
     </>
   )

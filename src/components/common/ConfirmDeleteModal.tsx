@@ -7,11 +7,13 @@ function ConfirmDeleteModal({
   visible,
   onCancel,
   onOk,
+  okButtonText,
 }: {
   title: string
   visible: boolean
   onCancel: () => void
   onOk: () => void
+  okButtonText?: string
 }) {
   return (
     <Modal
@@ -22,7 +24,7 @@ function ConfirmDeleteModal({
         <>
           <Button onClick={onCancel}>Cancel</Button>
           <Button onClick={onOk} type="primary" danger>
-            Delete
+            {okButtonText ?? "Delete"}
           </Button>
         </>
       }

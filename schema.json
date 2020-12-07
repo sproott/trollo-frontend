@@ -1936,6 +1936,37 @@
               "deprecationReason": null
             },
             {
+              "name": "leaveTeam",
+              "description": null,
+              "args": [
+                {
+                  "name": "teamId",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "login",
               "description": null,
               "args": [
@@ -3035,9 +3066,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-12-07T14:59:34.722Z",
-      "endTime": "2020-12-07T14:59:34.734Z",
-      "duration": 11786504,
+      "startTime": "2020-12-07T15:25:32.304Z",
+      "endTime": "2020-12-07T15:25:32.315Z",
+      "duration": 10235687,
       "execution": {
         "resolvers": []
       }
