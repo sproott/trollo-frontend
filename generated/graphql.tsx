@@ -283,6 +283,8 @@ export type MutationMakeAdminArgs = {
   username: Scalars["String"]
 }
 
+export type TeamsQueryBoardFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
+
 export type CreateBoardMutationVariables = Exact<{
   teamId: Scalars["String"]
   name: Scalars["String"]
@@ -315,24 +317,17 @@ export type BoardQueryVariables = Exact<{
 
 export type BoardQuery = { __typename?: "Query" } & {
   board: { __typename?: "Board" } & Pick<Board, "id" | "name" | "isOwn"> & {
-      lists: Array<
-        { __typename?: "List" } & Pick<List, "id" | "name" | "index"> & {
-            cards: Array<
-              { __typename?: "Card" } & Pick<Card, "id" | "name" | "description" | "index"> & {
-                  assignee?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
-                }
-            >
-          }
-      >
-      team: { __typename?: "Team" } & Pick<Team, "id"> & {
-          participants: Array<
-            { __typename?: "Participant" } & {
-              user: { __typename?: "User" } & Pick<User, "id" | "username">
-            }
-          >
-        }
+      lists: Array<{ __typename?: "List" } & BoardQueryListFragment>
+      team: { __typename?: "Team" } & BoardQueryTeamFragment
     }
 }
+
+export type BoardQueryCardFragment = { __typename?: "Card" } & Pick<
+  Card,
+  "id" | "name" | "description" | "index"
+> & {
+    assignee?: Maybe<{ __typename?: "User" } & UserInfoFragment>
+  }
 
 export type AssignUserMutationVariables = Exact<{
   userId: Scalars["String"]
@@ -392,6 +387,13 @@ export type UnassignUserMutationVariables = Exact<{
 
 export type UnassignUserMutation = { __typename?: "Mutation" } & Pick<Mutation, "unassignUser">
 
+export type BoardQueryListFragment = { __typename?: "List" } & Pick<
+  List,
+  "id" | "name" | "index"
+> & {
+    cards: Array<{ __typename?: "Card" } & BoardQueryCardFragment>
+  }
+
 export type CreateListMutationVariables = Exact<{
   boardId: Scalars["String"]
   name: Scalars["String"]
@@ -424,6 +426,23 @@ export type RenameListMutationVariables = Exact<{
 export type RenameListMutation = { __typename?: "Mutation" } & {
   renameList: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
 }
+
+export type ParticipantTeamFragment = { __typename?: "Participant" } & {
+  team: { __typename?: "Team" } & TeamsQueryTeamFragment
+}
+
+export type ParticipantUserFragment = { __typename?: "Participant" } & {
+  user: { __typename?: "User" } & UserInfoFragment
+}
+
+export type BoardQueryTeamFragment = { __typename?: "Team" } & Pick<Team, "id"> & {
+    participants: Array<{ __typename?: "Participant" } & ParticipantUserFragment>
+  }
+
+export type TeamsQueryTeamFragment = { __typename?: "Team" } & Pick<Team, "id" | "name"> & {
+    boards: Array<{ __typename?: "Board" } & TeamsQueryBoardFragment>
+    participants: Array<{ __typename?: "Participant" } & ParticipantUserFragment>
+  }
 
 export type AddUserMutationVariables = Exact<{
   username: Scalars["String"]
@@ -475,6 +494,13 @@ export type RenameTeamMutation = { __typename?: "Mutation" } & {
   renameTeam: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
 }
 
+export type UserInfoFragment = { __typename?: "User" } & Pick<User, "id" | "username">
+
+export type UserTeamsInfoFragment = { __typename?: "User" } & Pick<User, "id"> & {
+    owns: Array<{ __typename?: "Participant" } & ParticipantTeamFragment>
+    participatesIn: Array<{ __typename?: "Participant" } & ParticipantTeamFragment>
+  }
+
 export type LoginMutationVariables = Exact<{
   input: LoginInput
 }>
@@ -504,49 +530,97 @@ export type CurrentUserQuery = { __typename?: "Query" } & {
   currentUser?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
 }
 
-export type TeamInfoFragment = { __typename?: "Team" } & Pick<Team, "id" | "name"> & {
-    boards: Array<{ __typename?: "Board" } & Pick<Board, "id" | "name">>
-    participants: Array<
-      { __typename?: "Participant" } & {
-        user: { __typename?: "User" } & Pick<User, "id" | "username">
-      }
-    >
-  }
-
 export type TeamsQueryVariables = Exact<{ [key: string]: never }>
 
 export type TeamsQuery = { __typename?: "Query" } & {
-  currentUser?: Maybe<
-    { __typename?: "User" } & Pick<User, "id"> & {
-        owns: Array<
-          { __typename?: "Participant" } & {
-            team: { __typename?: "Team" } & TeamInfoFragment
-          }
-        >
-        participatesIn: Array<
-          { __typename?: "Participant" } & {
-            team: { __typename?: "Team" } & TeamInfoFragment
-          }
-        >
-      }
-  >
+  currentUser?: Maybe<{ __typename?: "User" } & UserTeamsInfoFragment>
 }
 
-export const TeamInfoFragmentDoc = gql`
-  fragment TeamInfo on Team {
+export const UserInfoFragmentDoc = gql`
+  fragment UserInfo on User {
+    id
+    username
+  }
+`
+export const BoardQueryCardFragmentDoc = gql`
+  fragment BoardQueryCard on Card {
+    id
+    name
+    description
+    assignee {
+      ...UserInfo
+    }
+    index
+  }
+  ${UserInfoFragmentDoc}
+`
+export const BoardQueryListFragmentDoc = gql`
+  fragment BoardQueryList on List {
+    id
+    name
+    index
+    cards {
+      ...BoardQueryCard
+    }
+  }
+  ${BoardQueryCardFragmentDoc}
+`
+export const ParticipantUserFragmentDoc = gql`
+  fragment ParticipantUser on Participant {
+    user {
+      ...UserInfo
+    }
+  }
+  ${UserInfoFragmentDoc}
+`
+export const BoardQueryTeamFragmentDoc = gql`
+  fragment BoardQueryTeam on Team {
+    id
+    participants {
+      ...ParticipantUser
+    }
+  }
+  ${ParticipantUserFragmentDoc}
+`
+export const TeamsQueryBoardFragmentDoc = gql`
+  fragment TeamsQueryBoard on Board {
+    id
+    name
+  }
+`
+export const TeamsQueryTeamFragmentDoc = gql`
+  fragment TeamsQueryTeam on Team {
     id
     name
     boards {
-      id
-      name
+      ...TeamsQueryBoard
     }
     participants {
-      user {
-        id
-        username
-      }
+      ...ParticipantUser
     }
   }
+  ${TeamsQueryBoardFragmentDoc}
+  ${ParticipantUserFragmentDoc}
+`
+export const ParticipantTeamFragmentDoc = gql`
+  fragment ParticipantTeam on Participant {
+    team {
+      ...TeamsQueryTeam
+    }
+  }
+  ${TeamsQueryTeamFragmentDoc}
+`
+export const UserTeamsInfoFragmentDoc = gql`
+  fragment UserTeamsInfo on User {
+    id
+    owns {
+      ...ParticipantTeam
+    }
+    participatesIn {
+      ...ParticipantTeam
+    }
+  }
+  ${ParticipantTeamFragmentDoc}
 `
 export const CreateBoardDocument = gql`
   mutation CreateBoard($teamId: String!, $name: String!) {
@@ -692,31 +766,15 @@ export const BoardDocument = gql`
       name
       isOwn
       lists {
-        id
-        name
-        index
-        cards {
-          id
-          name
-          description
-          assignee {
-            id
-            username
-          }
-          index
-        }
+        ...BoardQueryList
       }
       team {
-        id
-        participants {
-          user {
-            id
-            username
-          }
-        }
+        ...BoardQueryTeam
       }
     }
   }
+  ${BoardQueryListFragmentDoc}
+  ${BoardQueryTeamFragmentDoc}
 `
 
 /**
@@ -1682,20 +1740,10 @@ export type CurrentUserQueryResult = Apollo.QueryResult<CurrentUserQuery, Curren
 export const TeamsDocument = gql`
   query Teams {
     currentUser {
-      id
-      owns {
-        team {
-          ...TeamInfo
-        }
-      }
-      participatesIn {
-        team {
-          ...TeamInfo
-        }
-      }
+      ...UserTeamsInfo
     }
   }
-  ${TeamInfoFragmentDoc}
+  ${UserTeamsInfoFragmentDoc}
 `
 
 /**

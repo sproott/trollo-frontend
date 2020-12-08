@@ -7,28 +7,10 @@ export const boardQuery = gql`
       name
       isOwn
       lists {
-        id
-        name
-        index
-        cards {
-          id
-          name
-          description
-          assignee {
-            id
-            username
-          }
-          index
-        }
+        ...BoardQueryList
       }
       team {
-        id
-        participants {
-          user {
-            id
-            username
-          }
-        }
+        ...BoardQueryTeam
       }
     }
   }

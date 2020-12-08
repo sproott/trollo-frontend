@@ -3,6 +3,7 @@ import TextInput from "../common/form/TextInput"
 import {
   BoardDocument,
   BoardQuery,
+  BoardQueryListFragment,
   Card,
   List,
   MutationCreateCardArgs,
@@ -16,13 +17,7 @@ import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
 import TextArea from "../common/form/TextArea"
 
-const NewCardButton = ({
-  boardId,
-  list,
-}: {
-  boardId: string
-  list: BoardQuery["board"]["lists"][0]
-}) => {
+const NewCardButton = ({ boardId, list }: { boardId: string; list: BoardQueryListFragment }) => {
   const [createCard, { loading, data }] = useCreateCardMutation()
 
   const onSubmit = async (formData: MutationCreateCardArgs) => {

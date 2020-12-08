@@ -58,7 +58,6 @@ const Board = ({ boardId }: { boardId: string }) => {
       },
     })
   }
-
   const onDragEnd = async (result: DropResult, provided: ResponderProvided) => {
     const { source, destination, draggableId, type } = result
     if (type === DroppableType.LIST) {
@@ -146,7 +145,6 @@ const Board = ({ boardId }: { boardId: string }) => {
       }
     }
   }
-
   const deleteBoard = async () => {
     await deleteBoardMutate({
       variables: { id: boardId },

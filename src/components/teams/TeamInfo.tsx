@@ -7,6 +7,7 @@ import { Button, Card, Col, Modal } from "antd"
 import {
   TeamsDocument,
   TeamsQuery,
+  TeamsQueryTeamFragment,
   useCurrentUserQuery,
   useDeleteTeamMutation,
   useLeaveTeamMutation,
@@ -22,13 +23,7 @@ import theme from "../../style/theme"
 import AddUser from "./AddUser"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 
-function TeamInfo({
-  team,
-  isOwn,
-}: {
-  team: TeamsQuery["currentUser"]["owns"][0]["team"]
-  isOwn: boolean
-}) {
+function TeamInfo({ team, isOwn }: { team: TeamsQueryTeamFragment; isOwn: boolean }) {
   const [editModalVisible, setEditModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
   const [leaveConfirmationVisible, setLeaveConfirmationVisible] = useState(false)

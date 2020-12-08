@@ -1,20 +1,17 @@
 import React from "react"
 import TextInput from "../common/form/TextInput"
 import {
-  Board,
   BoardDocument,
   BoardQuery,
-  Card,
-  List,
+  BoardQueryResult,
   MutationCreateListArgs,
   useCreateListMutation,
-  User,
 } from "../../../generated/graphql"
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import { Button } from "antd"
 
-const NewListButton = ({ board }: { board: BoardQuery["board"] }) => {
+const NewListButton = ({ board }: { board: BoardQueryResult }) => {
   const [createList, { loading, data }] = useCreateListMutation()
 
   const onSubmit = async (formData: MutationCreateListArgs) => {

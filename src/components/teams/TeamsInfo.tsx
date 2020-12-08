@@ -1,20 +1,8 @@
 import React from "react"
-import { TeamInfoFragment, TeamsQuery } from "../../../generated/graphql"
-import { Button, Card } from "antd"
-import BoardInfo from "./BoardInfo"
-import { BoardGrid } from "./teams.styled"
-import NewBoardButton from "./NewBoardButton"
-import { CardInner } from "../board/board.styled"
-import { EditOutlined } from "@ant-design/icons"
+import { TeamsQueryTeamFragment } from "../../../generated/graphql"
 import TeamInfo from "./TeamInfo"
 
-const TeamsInfo = ({
-  teams,
-  isOwn,
-}: {
-  teams: Array<TeamsQuery["currentUser"]["owns"][0]["team"]>
-  isOwn?: boolean
-}) => {
+const TeamsInfo = ({ teams, isOwn }: { teams: Array<TeamsQueryTeamFragment>; isOwn?: boolean }) => {
   return (
     <div style={{ paddingTop: "10px" }}>
       {[...teams]

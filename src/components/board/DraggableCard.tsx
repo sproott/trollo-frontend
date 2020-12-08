@@ -3,6 +3,9 @@ import { Draggable } from "react-beautiful-dnd"
 import {
   BoardDocument,
   BoardQuery,
+  BoardQueryCardFragment,
+  ParticipantUserFragment,
+  TeamsQueryParticipantFragment,
   useDeleteCardMutation,
   useRenameCardMutation,
   useUpdateCardDescriptionMutation,
@@ -16,16 +19,15 @@ import produce from "immer"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 import EditableTextArea from "../common/form/EditableTextArea"
 import AssigneeSelect from "./AssigneeSelect"
-import Avatar from "../common/Avatar"
 
 const DraggableCard = ({
   card,
   boardId,
   participants,
 }: {
-  card: BoardQuery["board"]["lists"][0]["cards"][0]
+  card: BoardQueryCardFragment
   boardId: string
-  participants: BoardQuery["board"]["team"]["participants"]
+  participants: Array<ParticipantUserFragment>
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
@@ -64,7 +66,6 @@ const DraggableCard = ({
     setConfirmationVisible(false)
     setModalVisible(false)
   }
-
   const rename = async (newName: string) => {
     await renameMutate({
       variables: {
@@ -87,7 +88,6 @@ const DraggableCard = ({
       },
     })
   }
-
   const updateDescription = async (newDescription: string) => {
     await updateDescriptionMutate({
       variables: {

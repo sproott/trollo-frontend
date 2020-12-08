@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form"
 import {
   BoardDocument,
   BoardQuery,
+  ParticipantUserFragment,
   useAssignUserMutation,
+  UserInfoFragment,
   useUnassignUserMutation,
 } from "../../../generated/graphql"
 import Box from "../common/Box"
@@ -23,8 +25,8 @@ function AssigneeSelect({
 }: {
   boardId: string
   cardId: string
-  assignee: BoardQuery["board"]["lists"][0]["cards"][0]["assignee"]
-  participants: BoardQuery["board"]["team"]["participants"]
+  assignee: UserInfoFragment
+  participants: ParticipantUserFragment
 }) {
   const [assignUser] = useAssignUserMutation()
   const [unassignUser] = useUnassignUserMutation()

@@ -1,6 +1,8 @@
 import {
   BoardDocument,
   BoardQuery,
+  BoardQueryListFragment,
+  BoardQueryResult,
   useDeleteListMutation,
   useRenameListMutation,
 } from "../../../generated/graphql"
@@ -19,8 +21,8 @@ const DraggableDroppableList = ({
   board,
   list,
 }: {
-  board: BoardQuery["board"]
-  list: BoardQuery["board"]["lists"][0]
+  board: BoardQueryResult
+  list: BoardQueryListFragment
 }) => {
   const { id: boardId } = board
   const [modalVisible, setModalVisible] = useState(false)
@@ -53,7 +55,6 @@ const DraggableDroppableList = ({
     setConfirmationVisible(false)
     setModalVisible(false)
   }
-
   const onConfirm = async (newName: string) => {
     await rename({
       variables: {

@@ -4,9 +4,9 @@ import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
 import {
   MutationCreateBoardArgs,
-  TeamInfoFragment,
   TeamsDocument,
   TeamsQuery,
+  TeamsQueryTeamFragment,
   useCreateBoardMutation,
 } from "../../../generated/graphql"
 import produce from "immer"
@@ -16,7 +16,7 @@ import TextInput from "../common/form/TextInput"
 const NewBoardButton = ({
   team: { id: teamId, name: teamName },
 }: {
-  team: TeamsQuery["currentUser"]["owns"][0]["team"]
+  team: TeamsQueryTeamFragment
 }) => {
   const [createBoard, { loading, data }] = useCreateBoardMutation()
 
