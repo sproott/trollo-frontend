@@ -13,7 +13,7 @@ const Select = ({
   style,
 }: {
   defaultValue: string
-  selectItems: Array<SelectItem>
+  selectItems: SelectItem[]
   onChange: (value: string) => void
   style?: CSSProperties
 }) => {

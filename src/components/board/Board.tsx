@@ -156,7 +156,7 @@ const Board = ({ boardId }: { boardId: string }) => {
             data: produce(teams, (x) => {
               const team = x.currentUser.owns
                 .map((p) => p.team)
-                .find((t) => t.boards.findIndex((b) => b.id === boardId) !== -1)
+                .find((t) => !!t.boards.find((b) => b.id === boardId))
               team.boards.splice(
                 team.boards.findIndex((b) => b.id === boardId),
                 1

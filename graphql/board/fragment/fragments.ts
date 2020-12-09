@@ -6,3 +6,17 @@ export const TeamsQueryBoard = gql`
     name
   }
 `
+
+export const BoardQueryBoard = gql`
+  fragment BoardQueryBoard on Board {
+    id
+    name
+    isOwn
+    lists {
+      ...BoardQueryList
+    }
+    team {
+      ...BoardQueryTeam
+    }
+  }
+`

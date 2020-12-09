@@ -3,7 +3,7 @@ import TextInput from "../common/form/TextInput"
 import {
   BoardDocument,
   BoardQuery,
-  BoardQueryResult,
+  BoardQueryBoardFragment,
   MutationCreateListArgs,
   useCreateListMutation,
 } from "../../../generated/graphql"
@@ -11,7 +11,7 @@ import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import { Button } from "antd"
 
-const NewListButton = ({ board }: { board: BoardQueryResult }) => {
+const NewListButton = ({ board }: { board: BoardQueryBoardFragment }) => {
   const [createList, { loading, data }] = useCreateListMutation()
 
   const onSubmit = async (formData: MutationCreateListArgs) => {

@@ -1,8 +1,8 @@
 import React from "react"
-import { TeamsQueryTeamFragment } from "../../../generated/graphql"
+import { TeamInfoFragment } from "../../../generated/graphql"
 import TeamInfo from "./TeamInfo"
 
-const TeamsInfo = ({ teams, isOwn }: { teams: Array<TeamsQueryTeamFragment>; isOwn?: boolean }) => {
+const TeamsInfo = ({ teams, isOwn }: { teams: TeamInfoFragment[]; isOwn?: boolean }) => {
   return (
     <div style={{ paddingTop: "10px" }}>
       {[...teams]

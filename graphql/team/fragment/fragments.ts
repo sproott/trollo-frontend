@@ -9,8 +9,8 @@ export const BoardQueryTeam = gql`
   }
 `
 
-export const TeamsQueryTeam = gql`
-  fragment TeamsQueryTeam on Team {
+export const TeamInfo = gql`
+  fragment TeamInfo on Team {
     id
     name
     boards {

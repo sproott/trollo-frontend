@@ -7,7 +7,7 @@ import { Button, Card, Col, Modal } from "antd"
 import {
   TeamsDocument,
   TeamsQuery,
-  TeamsQueryTeamFragment,
+  TeamInfoFragment,
   useCurrentUserQuery,
   useDeleteTeamMutation,
   useLeaveTeamMutation,
@@ -24,7 +24,7 @@ import theme from "../../style/theme"
 import AddUser from "./AddUser"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 
-function TeamInfo({ team, isOwn }: { team: TeamsQueryTeamFragment; isOwn: boolean }) {
+function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
   const [editModalVisible, setEditModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
   const [leaveConfirmationVisible, setLeaveConfirmationVisible] = useState(false)
@@ -42,17 +42,6 @@ function TeamInfo({ team, isOwn }: { team: TeamsQueryTeamFragment; isOwn: boolea
       variables: {
         name: newName,
         teamId: team.id,
-      },
-      update: (store, { data }) => {
-        if (data.renameTeam.success && !data.renameTeam.exists) {
-          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
-          store.writeQuery<TeamsQuery>({
-            query: TeamsDocument,
-            data: produce(teams, (x) => {
-              x.currentUser.owns.map((p) => p.team).find((t) => t.id === team.id).name = newName
-            }),
-          })
-        }
       },
     })
   }
@@ -107,22 +96,6 @@ function TeamInfo({ team, isOwn }: { team: TeamsQueryTeamFragment; isOwn: boolea
     await deleteTeamMutate({
       variables: {
         id: team.id,
-      },
-      update: (store, { data }) => {
-        if (!!data.deleteTeam) {
-          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
-
-          store.writeQuery<TeamsQuery>({
-            query: TeamsDocument,
-            data: produce(teams, (x) => {
-              const ownParticipants = x.currentUser.owns
-              ownParticipants.splice(
-                ownParticipants.findIndex((p) => p.team.id === team.id),
-                1
-              )
-            }),
-          })
-        }
       },
     })
     setConfirmationVisible(false)

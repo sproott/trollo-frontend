@@ -26,7 +26,7 @@ function AssigneeSelect({
   boardId: string
   cardId: string
   assignee: UserInfoFragment
-  participants: ParticipantUserFragment
+  participants: ParticipantUserFragment[]
 }) {
   const [assignUser] = useAssignUserMutation()
   const [unassignUser] = useUnassignUserMutation()

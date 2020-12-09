@@ -9,8 +9,8 @@ import {
   ParticipantUserFragment,
   TeamsDocument,
   TeamsQuery,
-  TeamsQueryTeamFragment,
-  TeamsQueryTeamFragmentDoc,
+  TeamInfoFragment,
+  TeamInfoFragmentDoc,
   useAddUserMutation,
   useCurrentUserQuery,
   UserInfoFragment,
@@ -33,9 +33,6 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
   const { handleSubmit, reset: resetForm } = useFormMethods
   const [addUser] = useAddUserMutation()
   const [error, setError] = useState<string>()
-  const {
-    data: { currentUser },
-  } = useCurrentUserQuery()
 
   useEffect(() => {
     if (containerVisible === false) {
@@ -56,19 +53,21 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
       },
       update: (store, { data }) => {
         if (!!data.addUser.userId) {
-          const team = store.readFragment<TeamsQueryTeamFragment>({
-            fragment: TeamsQueryTeamFragmentDoc,
-            fragmentName: "TeamsQueryTeam",
+          const team = store.readFragment<TeamInfoFragment>({
+            fragment: TeamInfoFragmentDoc,
+            fragmentName: "TeamInfo",
             id: "Team:" + teamId,
           })
 
-          store.writeFragment<TeamsQueryTeamFragment>({
-            fragment: TeamsQueryTeamFragmentDoc,
-            fragmentName: "TeamsQueryTeam",
+          store.writeFragment<TeamInfoFragment>({
+            fragment: TeamInfoFragmentDoc,
+            fragmentName: "TeamInfo",
             id: "Team:" + teamId,
             data: produce(team, (x) => {
               x.participants.push({
+                __typename: "Participant",
                 user: {
+                  __typename: "User",
                   id: data.addUser.userId,
                   username: data.addUser.username,
                 },

@@ -3,7 +3,7 @@ import { gql } from "@apollo/client/core"
 export const ParticipantTeam = gql`
   fragment ParticipantTeam on Participant {
     team {
-      ...TeamsQueryTeam
+      ...TeamInfo
     }
   }
 `

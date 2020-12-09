@@ -6,18 +6,14 @@ import {
   MutationCreateBoardArgs,
   TeamsDocument,
   TeamsQuery,
-  TeamsQueryTeamFragment,
+  TeamInfoFragment,
   useCreateBoardMutation,
 } from "../../../generated/graphql"
 import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import TextInput from "../common/form/TextInput"
 
-const NewBoardButton = ({
-  team: { id: teamId, name: teamName },
-}: {
-  team: TeamsQueryTeamFragment
-}) => {
+const NewBoardButton = ({ team: { id: teamId, name: teamName } }: { team: TeamInfoFragment }) => {
   const [createBoard, { loading, data }] = useCreateBoardMutation()
 
   const onSubmit = async (formData: MutationCreateBoardArgs) => {

@@ -285,10 +285,19 @@ export type MutationMakeAdminArgs = {
 
 export type Subscription = {
   __typename?: "Subscription"
+  teamDeleted: Scalars["String"]
   teamRenamed: Team
 }
 
 export type TeamsQueryBoardFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
+
+export type BoardQueryBoardFragment = { __typename?: "Board" } & Pick<
+  Board,
+  "id" | "name" | "isOwn"
+> & {
+    lists: Array<{ __typename?: "List" } & BoardQueryListFragment>
+    team: { __typename?: "Team" } & BoardQueryTeamFragment
+  }
 
 export type CreateBoardMutationVariables = Exact<{
   teamId: Scalars["String"]
@@ -321,10 +330,7 @@ export type BoardQueryVariables = Exact<{
 }>
 
 export type BoardQuery = { __typename?: "Query" } & {
-  board: { __typename?: "Board" } & Pick<Board, "id" | "name" | "isOwn"> & {
-      lists: Array<{ __typename?: "List" } & BoardQueryListFragment>
-      team: { __typename?: "Team" } & BoardQueryTeamFragment
-    }
+  board: { __typename?: "Board" } & BoardQueryBoardFragment
 }
 
 export type BoardQueryCardFragment = { __typename?: "Card" } & Pick<
@@ -433,7 +439,7 @@ export type RenameListMutation = { __typename?: "Mutation" } & {
 }
 
 export type ParticipantTeamFragment = { __typename?: "Participant" } & {
-  team: { __typename?: "Team" } & TeamsQueryTeamFragment
+  team: { __typename?: "Team" } & TeamInfoFragment
 }
 
 export type ParticipantUserFragment = { __typename?: "Participant" } & {
@@ -444,7 +450,7 @@ export type BoardQueryTeamFragment = { __typename?: "Team" } & Pick<Team, "id"> 
     participants: Array<{ __typename?: "Participant" } & ParticipantUserFragment>
   }
 
-export type TeamsQueryTeamFragment = { __typename?: "Team" } & Pick<Team, "id" | "name"> & {
+export type TeamInfoFragment = { __typename?: "Team" } & Pick<Team, "id" | "name"> & {
     boards: Array<{ __typename?: "Board" } & TeamsQueryBoardFragment>
     participants: Array<{ __typename?: "Participant" } & ParticipantUserFragment>
   }
@@ -467,7 +473,7 @@ export type CreateTeamMutationVariables = Exact<{
 
 export type CreateTeamMutation = { __typename?: "Mutation" } & {
   createTeam: { __typename?: "CreateTeamResponse" } & Pick<CreateTeamResponse, "exists"> & {
-      team?: Maybe<{ __typename?: "Team" } & Pick<Team, "id" | "name">>
+      team?: Maybe<{ __typename?: "Team" } & TeamInfoFragment>
     }
 }
 
@@ -498,6 +504,13 @@ export type RenameTeamMutationVariables = Exact<{
 export type RenameTeamMutation = { __typename?: "Mutation" } & {
   renameTeam: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
 }
+
+export type TeamDeletedSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type TeamDeletedSubscription = { __typename?: "Subscription" } & Pick<
+  Subscription,
+  "teamDeleted"
+>
 
 export type TeamRenamedSubscriptionVariables = Exact<{ [key: string]: never }>
 
@@ -593,14 +606,29 @@ export const BoardQueryTeamFragmentDoc = gql`
   }
   ${ParticipantUserFragmentDoc}
 `
+export const BoardQueryBoardFragmentDoc = gql`
+  fragment BoardQueryBoard on Board {
+    id
+    name
+    isOwn
+    lists {
+      ...BoardQueryList
+    }
+    team {
+      ...BoardQueryTeam
+    }
+  }
+  ${BoardQueryListFragmentDoc}
+  ${BoardQueryTeamFragmentDoc}
+`
 export const TeamsQueryBoardFragmentDoc = gql`
   fragment TeamsQueryBoard on Board {
     id
     name
   }
 `
-export const TeamsQueryTeamFragmentDoc = gql`
-  fragment TeamsQueryTeam on Team {
+export const TeamInfoFragmentDoc = gql`
+  fragment TeamInfo on Team {
     id
     name
     boards {
@@ -616,10 +644,10 @@ export const TeamsQueryTeamFragmentDoc = gql`
 export const ParticipantTeamFragmentDoc = gql`
   fragment ParticipantTeam on Participant {
     team {
-      ...TeamsQueryTeam
+      ...TeamInfo
     }
   }
-  ${TeamsQueryTeamFragmentDoc}
+  ${TeamInfoFragmentDoc}
 `
 export const UserTeamsInfoFragmentDoc = gql`
   fragment UserTeamsInfo on User {
@@ -771,21 +799,12 @@ export type RenameBoardMutationOptions = Apollo.BaseMutationOptions<
   RenameBoardMutationVariables
 >
 export const BoardDocument = gql`
-  query Board($id: String!) {
-    board(id: $id) {
-      id
-      name
-      isOwn
-      lists {
-        ...BoardQueryList
-      }
-      team {
-        ...BoardQueryTeam
-      }
+    query Board($id: String!) {
+        board(id: $id) {
+            ...BoardQueryBoard
+        }
     }
-  }
-  ${BoardQueryListFragmentDoc}
-  ${BoardQueryTeamFragmentDoc}
+    ${BoardQueryBoardFragmentDoc}
 `
 
 /**
@@ -1359,15 +1378,15 @@ export type AddUserMutationOptions = Apollo.BaseMutationOptions<
   AddUserMutationVariables
 >
 export const CreateTeamDocument = gql`
-  mutation CreateTeam($name: String!) {
-    createTeam(name: $name) {
-      team {
-        id
-        name
-      }
-      exists
+    mutation CreateTeam($name: String!) {
+        createTeam(name: $name) {
+            team {
+                ...TeamInfo
+            }
+            exists
+        }
     }
-  }
+    ${TeamInfoFragmentDoc}
 `
 export type CreateTeamMutationFn = Apollo.MutationFunction<
   CreateTeamMutation,
@@ -1575,17 +1594,48 @@ export function useRenameTeamMutation(
 
 export type RenameTeamMutationHookResult = ReturnType<typeof useRenameTeamMutation>
 export type RenameTeamMutationResult = Apollo.MutationResult<RenameTeamMutation>
-export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<
-  RenameTeamMutation,
-  RenameTeamMutationVariables
->
-export const TeamRenamedDocument = gql`
-  subscription TeamRenamed {
-    teamRenamed {
-      id
-      name
+export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<RenameTeamMutation,
+  RenameTeamMutationVariables>
+export const TeamDeletedDocument = gql`
+    subscription TeamDeleted {
+        teamDeleted
     }
-  }
+`
+
+/**
+ * __useTeamDeletedSubscription__
+ *
+ * To run a query within a React component, call `useTeamDeletedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTeamDeletedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTeamDeletedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTeamDeletedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<TeamDeletedSubscription,
+    TeamDeletedSubscriptionVariables>
+) {
+  return Apollo.useSubscription<TeamDeletedSubscription, TeamDeletedSubscriptionVariables>(
+    TeamDeletedDocument,
+    baseOptions
+  )
+}
+
+export type TeamDeletedSubscriptionHookResult = ReturnType<typeof useTeamDeletedSubscription>
+export type TeamDeletedSubscriptionResult = Apollo.SubscriptionResult<TeamDeletedSubscription>
+export const TeamRenamedDocument = gql`
+    subscription TeamRenamed {
+        teamRenamed {
+            id
+            name
+        }
+    }
 `
 
 /**

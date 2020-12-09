@@ -1,6 +1,7 @@
 import {
   BoardDocument,
   BoardQuery,
+  BoardQueryBoardFragment,
   BoardQueryListFragment,
   BoardQueryResult,
   useDeleteListMutation,
@@ -21,7 +22,7 @@ const DraggableDroppableList = ({
   board,
   list,
 }: {
-  board: BoardQueryResult
+  board: BoardQueryBoardFragment
   list: BoardQueryListFragment
 }) => {
   const { id: boardId } = board

@@ -5,6 +5,7 @@ import {
   MutationCreateTeamArgs,
   TeamsDocument,
   TeamsQuery,
+  TeamInfoFragment,
   useCreateTeamMutation,
 } from "../../../generated/graphql"
 import produce from "immer"
@@ -24,8 +25,8 @@ const NewTeamButton = () => {
           store.writeQuery<TeamsQuery>({
             query: TeamsDocument,
             data: produce(boards, (x) => {
-              // @ts-ignore
-              x.currentUser.owns.push({ team: data.createTeam.team })
+              console.log(data.createTeam.team)
+              x.currentUser.owns.push({ __typename: "Participant", team: data.createTeam.team })
             }),
           })
         }

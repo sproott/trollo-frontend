@@ -2,34 +2,58 @@ import React, { useEffect } from "react"
 import { H0, H1 } from "../common/Text"
 import { Content } from "../common/page.styled"
 import { Col, Divider, Row, Skeleton } from "antd"
-import { BoardGrid } from "./teams.styled"
 import TeamsInfo from "./TeamsInfo"
 import Box from "../common/Box"
 import NewTeamButton from "./NewTeamButton"
-import { useTeamsQuery } from "../../../generated/graphql"
+import {
+  ParticipantTeamFragment,
+  TeamDeletedDocument,
+  TeamDeletedSubscription,
+  TeamRenamedDocument,
+  TeamRenamedSubscription,
+  useTeamsQuery,
+} from "../../../generated/graphql"
+import produce from "immer"
 
-const SkeletonButton = () => <Skeleton.Button active style={{ width: "100px", height: "80px" }} />
-
-const MySkeleton = () => (
-  <>
-    <Skeleton active paragraph={{ rows: 0 }} />
-    <BoardGrid>
-      <SkeletonButton />
-      <SkeletonButton />
-      <SkeletonButton />
-    </BoardGrid>
-  </>
-)
-
-const LoadingComp = () => (
-  <>
-    <MySkeleton />
-    <MySkeleton />
-  </>
-)
+const getIfContainsTeam = (
+  participants: ParticipantTeamFragment[],
+  teamId: string
+): ParticipantTeamFragment[] | undefined => {
+  return !!participants.flatMap((p) => p.team).find((t) => t.id === teamId)
+    ? participants
+    : undefined
+}
 
 const Teams = () => {
-  const { data, loading } = useTeamsQuery()
+  const { data, loading, subscribeToMore } = useTeamsQuery()
+
+  useEffect(() => {
+    subscribeToMore<TeamRenamedSubscription>({
+      document: TeamRenamedDocument,
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          const participant = x.currentUser.owns
+            .concat(x.currentUser.participatesIn)
+            .find((p) => p.team.id === data.teamRenamed.id)
+          participant.team = { ...participant.team, ...data.teamRenamed }
+        })
+      },
+    })
+    subscribeToMore<TeamDeletedSubscription>({
+      document: TeamDeletedDocument,
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          const participants =
+            getIfContainsTeam(x.currentUser.owns, data.teamDeleted) ??
+            getIfContainsTeam(x.currentUser.participatesIn, data.teamDeleted)
+          participants!.splice(
+            participants.findIndex((p) => p.team.id === data.teamDeleted),
+            1
+          )
+        })
+      },
+    })
+  }, [])
 
   return (
     <Content>

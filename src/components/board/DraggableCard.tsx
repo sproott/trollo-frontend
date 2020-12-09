@@ -5,7 +5,6 @@ import {
   BoardQuery,
   BoardQueryCardFragment,
   ParticipantUserFragment,
-  TeamsQueryParticipantFragment,
   useDeleteCardMutation,
   useRenameCardMutation,
   useUpdateCardDescriptionMutation,
@@ -27,7 +26,7 @@ const DraggableCard = ({
 }: {
   card: BoardQueryCardFragment
   boardId: string
-  participants: Array<ParticipantUserFragment>
+  participants: ParticipantUserFragment[]
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
