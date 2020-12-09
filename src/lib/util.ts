@@ -1,5 +1,5 @@
 export const isBrowser = () => {
-  return typeof window !== "undefined"
+  return process.browser
 }
 
 export const isProduction = () => {

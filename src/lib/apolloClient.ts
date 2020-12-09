@@ -1,8 +1,10 @@
 import { useMemo } from "react"
-import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client"
+import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject, split } from "@apollo/client"
 import { isBrowser } from "./util"
 import getConfig from "next/config"
 import typePolicies from "./typePolicies"
+import { WebSocketLink } from "@apollo/client/link/ws"
+import { getMainDefinition } from "@apollo/client/utilities"
 
 const API_URL = getConfig()?.publicRuntimeConfig?.API_URL as string
 
@@ -12,15 +14,38 @@ export type Options = {
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
+const createHttpLink = (cookie: string) =>
+  new HttpLink({
+    uri: !!API_URL ? "https://" + API_URL : "http://localhost:4000/graphql",
+    credentials: "include",
+    headers: {
+      cookie: cookie ?? "",
+    },
+  })
+
+const createWsLink = (cookie: string) =>
+  new WebSocketLink({
+    uri: !!API_URL ? "ws://" + API_URL : "ws://localhost:4000/graphql",
+    options: {
+      reconnect: true,
+      connectionParams: {
+        headers: {
+          cookie: cookie ?? "",
+        },
+      },
+    },
+  })
+
 function createLink(cookie: string) {
   if (isBrowser()) {
-    return new HttpLink({
-      uri: API_URL ?? "http://localhost:4000/graphql",
-      credentials: "include",
-      headers: {
-        cookie: cookie ?? "",
+    return split(
+      ({ query }) => {
+        const definition = getMainDefinition(query)
+        return definition.kind === "OperationDefinition" && definition.operation === "subscription"
       },
-    })
+      createWsLink(cookie),
+      createHttpLink(cookie)
+    )
   }
 }
 

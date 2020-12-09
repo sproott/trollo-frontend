@@ -283,6 +283,11 @@ export type MutationMakeAdminArgs = {
   username: Scalars["String"]
 }
 
+export type Subscription = {
+  __typename?: "Subscription"
+  teamRenamed: Team
+}
+
 export type TeamsQueryBoardFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
 
 export type CreateBoardMutationVariables = Exact<{
@@ -492,6 +497,12 @@ export type RenameTeamMutationVariables = Exact<{
 
 export type RenameTeamMutation = { __typename?: "Mutation" } & {
   renameTeam: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
+}
+
+export type TeamRenamedSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type TeamRenamedSubscription = { __typename?: "Subscription" } & {
+  teamRenamed: { __typename?: "Team" } & Pick<Team, "id" | "name">
 }
 
 export type UserInfoFragment = { __typename?: "User" } & Pick<User, "id" | "username">
@@ -1568,6 +1579,44 @@ export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<
   RenameTeamMutation,
   RenameTeamMutationVariables
 >
+export const TeamRenamedDocument = gql`
+  subscription TeamRenamed {
+    teamRenamed {
+      id
+      name
+    }
+  }
+`
+
+/**
+ * __useTeamRenamedSubscription__
+ *
+ * To run a query within a React component, call `useTeamRenamedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTeamRenamedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTeamRenamedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTeamRenamedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    TeamRenamedSubscription,
+    TeamRenamedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<TeamRenamedSubscription, TeamRenamedSubscriptionVariables>(
+    TeamRenamedDocument,
+    baseOptions
+  )
+}
+
+export type TeamRenamedSubscriptionHookResult = ReturnType<typeof useTeamRenamedSubscription>
+export type TeamRenamedSubscriptionResult = Apollo.SubscriptionResult<TeamRenamedSubscription>
 export const LoginDocument = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
