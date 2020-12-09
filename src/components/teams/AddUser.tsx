@@ -5,9 +5,22 @@ import Box from "../common/Box"
 import { Form } from "antd"
 import TextInput from "../common/form/TextInput"
 import { useForm } from "react-hook-form"
-import { TeamsDocument, TeamsQuery, useAddUserMutation } from "../../../generated/graphql"
+import {
+  ParticipantUserFragment,
+  TeamsDocument,
+  TeamsQuery,
+  TeamsQueryTeamFragment,
+  TeamsQueryTeamFragmentDoc,
+  useAddUserMutation,
+  useCurrentUserQuery,
+  UserInfoFragment,
+  UserInfoFragmentDoc,
+  UserTeamsInfoFragment,
+  UserTeamsInfoFragmentDoc,
+} from "../../../generated/graphql"
 import produce from "immer"
 import { CloseOutlined } from "@ant-design/icons"
+import { UserTeamsInfo } from "../../../graphql/user/fragment/fragments"
 
 type FormData = {
   username: string
@@ -20,6 +33,9 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
   const { handleSubmit, reset: resetForm } = useFormMethods
   const [addUser] = useAddUserMutation()
   const [error, setError] = useState<string>()
+  const {
+    data: { currentUser },
+  } = useCurrentUserQuery()
 
   useEffect(() => {
     if (containerVisible === false) {
@@ -40,20 +56,23 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
       },
       update: (store, { data }) => {
         if (!!data.addUser.userId) {
-          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
+          const team = store.readFragment<TeamsQueryTeamFragment>({
+            fragment: TeamsQueryTeamFragmentDoc,
+            fragmentName: "TeamsQueryTeam",
+            id: "Team:" + teamId,
+          })
 
-          store.writeQuery<TeamsQuery>({
-            query: TeamsDocument,
-            data: produce(teams, (x) => {
-              x.currentUser.owns
-                .map((p) => p.team)
-                .find((t) => t.id === teamId)
-                .participants.push({
-                  user: {
-                    username: data.addUser.username,
-                    id: data.addUser.userId,
-                  },
-                })
+          store.writeFragment<TeamsQueryTeamFragment>({
+            fragment: TeamsQueryTeamFragmentDoc,
+            fragmentName: "TeamsQueryTeam",
+            id: "Team:" + teamId,
+            data: produce(team, (x) => {
+              x.participants.push({
+                user: {
+                  id: data.addUser.userId,
+                  username: data.addUser.username,
+                },
+              })
             }),
           })
           resetForm()

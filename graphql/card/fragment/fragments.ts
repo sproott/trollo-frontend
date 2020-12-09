@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client/core"
 
-export const fragments = gql`
+export const BoardQueryCard = gql`
   fragment BoardQueryCard on Card {
     id
     name

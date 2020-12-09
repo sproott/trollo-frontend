@@ -18,12 +18,7 @@ const CurrentUserAvatar = () => {
       await logout({
         update: (store, { data }) => {
           if (!!data.logout) {
-            store.writeQuery<CurrentUserQuery>({
-              query: CurrentUserDocument,
-              data: {
-                currentUser: null,
-              },
-            })
+            store.reset()
           }
         },
       })

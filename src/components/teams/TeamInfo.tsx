@@ -13,6 +13,7 @@ import {
   useLeaveTeamMutation,
   useRemoveUserMutation,
   useRenameTeamMutation,
+  useTeamRenamedSubscription,
 } from "../../../generated/graphql"
 import EditableText from "../common/form/EditableText"
 import produce from "immer"
@@ -36,7 +37,7 @@ function TeamInfo({ team, isOwn }: { team: TeamsQueryTeamFragment; isOwn: boolea
       currentUser: { id: userId },
     },
   } = useCurrentUserQuery()
-  const onConfirm = async (newName: string) => {
+  const renameTeam = async (newName: string) => {
     await rename({
       variables: {
         name: newName,
@@ -170,7 +171,7 @@ function TeamInfo({ team, isOwn }: { team: TeamsQueryTeamFragment; isOwn: boolea
           <EditableText
             label="Name"
             text={team.name}
-            onConfirm={onConfirm}
+            onConfirm={renameTeam}
             containerVisible={editModalVisible}
             error={data?.renameTeam.exists && "Team with this name already exists"}
             success={data?.renameTeam.success}

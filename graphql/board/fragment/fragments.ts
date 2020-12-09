@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client/core"
 
-export const fragments = gql`
+export const TeamsQueryBoard = gql`
   fragment TeamsQueryBoard on Board {
     id
     name
