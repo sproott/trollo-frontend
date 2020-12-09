@@ -799,12 +799,12 @@ export type RenameBoardMutationOptions = Apollo.BaseMutationOptions<
   RenameBoardMutationVariables
 >
 export const BoardDocument = gql`
-    query Board($id: String!) {
-        board(id: $id) {
-            ...BoardQueryBoard
-        }
+  query Board($id: String!) {
+    board(id: $id) {
+      ...BoardQueryBoard
     }
-    ${BoardQueryBoardFragmentDoc}
+  }
+  ${BoardQueryBoardFragmentDoc}
 `
 
 /**
@@ -1378,15 +1378,15 @@ export type AddUserMutationOptions = Apollo.BaseMutationOptions<
   AddUserMutationVariables
 >
 export const CreateTeamDocument = gql`
-    mutation CreateTeam($name: String!) {
-        createTeam(name: $name) {
-            team {
-                ...TeamInfo
-            }
-            exists
-        }
+  mutation CreateTeam($name: String!) {
+    createTeam(name: $name) {
+      team {
+        ...TeamInfo
+      }
+      exists
     }
-    ${TeamInfoFragmentDoc}
+  }
+  ${TeamInfoFragmentDoc}
 `
 export type CreateTeamMutationFn = Apollo.MutationFunction<
   CreateTeamMutation,
@@ -1594,12 +1594,14 @@ export function useRenameTeamMutation(
 
 export type RenameTeamMutationHookResult = ReturnType<typeof useRenameTeamMutation>
 export type RenameTeamMutationResult = Apollo.MutationResult<RenameTeamMutation>
-export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<RenameTeamMutation,
-  RenameTeamMutationVariables>
+export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<
+  RenameTeamMutation,
+  RenameTeamMutationVariables
+>
 export const TeamDeletedDocument = gql`
-    subscription TeamDeleted {
-        teamDeleted
-    }
+  subscription TeamDeleted {
+    teamDeleted
+  }
 `
 
 /**
@@ -1618,8 +1620,10 @@ export const TeamDeletedDocument = gql`
  * });
  */
 export function useTeamDeletedSubscription(
-  baseOptions?: Apollo.SubscriptionHookOptions<TeamDeletedSubscription,
-    TeamDeletedSubscriptionVariables>
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    TeamDeletedSubscription,
+    TeamDeletedSubscriptionVariables
+  >
 ) {
   return Apollo.useSubscription<TeamDeletedSubscription, TeamDeletedSubscriptionVariables>(
     TeamDeletedDocument,

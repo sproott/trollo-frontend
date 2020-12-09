@@ -1,16 +1,19 @@
-import styled from "styled-components"
+import styled, { StyledComponent } from "styled-components"
+import * as React from "react"
 
 export type TextProps = {
   color?: string
   textAlign?: "center" | "left" | "right" | "justify"
 }
 
-const styledWithTextProps = (tagName: any) => {
+const styledWithTextProps = <C extends keyof JSX.IntrinsicElements | React.ComponentType<any>>(
+  tagName: C
+) => {
   return styled(tagName)<TextProps>`
     color: ${({ color }) => color ?? "black"};
     text-align: ${({ textAlign }) => textAlign ?? "left"};
     margin-bottom: 0;
-  `
+  ` as StyledComponent<C, any, object & TextProps, string | number | symbol>
 }
 
 export const H0 = styled(styledWithTextProps("h1"))`
