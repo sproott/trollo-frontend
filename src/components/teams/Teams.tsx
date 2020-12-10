@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
-import { H0, H1 } from "../common/Text"
+import { H0 } from "../common/Text"
 import { Content } from "../common/page.styled"
-import { Col, Divider, Row, Skeleton } from "antd"
+import { Col, Divider, Row } from "antd"
 import TeamsInfo from "./TeamsInfo"
 import Box from "../common/Box"
 import NewTeamButton from "./NewTeamButton"
@@ -11,6 +11,8 @@ import {
   TeamDeletedSubscription,
   TeamRenamedDocument,
   TeamRenamedSubscription,
+  TeamUserAddedDocument,
+  TeamUserAddedSubscription,
   useTeamsQuery,
 } from "../../../generated/graphql"
 import produce from "immer"
@@ -19,9 +21,7 @@ const getIfContainsTeam = (
   participants: ParticipantTeamFragment[],
   teamId: string
 ): ParticipantTeamFragment[] | undefined => {
-  return !!participants.flatMap((p) => p.team).find((t) => t.id === teamId)
-    ? participants
-    : undefined
+  return !!participants.map((p) => p.team).find((t) => t.id === teamId) ? participants : undefined
 }
 
 const Teams = () => {
@@ -50,6 +50,21 @@ const Teams = () => {
             participants.findIndex((p) => p.team.id === data.teamDeleted),
             1
           )
+        })
+      },
+    })
+    subscribeToMore<TeamUserAddedSubscription>({
+      // user is added automatically for the team participants by Apollo
+      document: TeamUserAddedDocument,
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          console.log("SUB")
+          if (data.teamUserAdded.user.id === x.currentUser.id) {
+            x.currentUser.participatesIn.push({
+              __typename: "Participant",
+              team: data.teamUserAdded.team,
+            })
+          }
         })
       },
     })

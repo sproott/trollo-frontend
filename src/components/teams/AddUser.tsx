@@ -5,22 +5,7 @@ import Box from "../common/Box"
 import { Form } from "antd"
 import TextInput from "../common/form/TextInput"
 import { useForm } from "react-hook-form"
-import {
-  ParticipantUserFragment,
-  TeamsDocument,
-  TeamsQuery,
-  TeamInfoFragment,
-  TeamInfoFragmentDoc,
-  useAddUserMutation,
-  useCurrentUserQuery,
-  UserInfoFragment,
-  UserInfoFragmentDoc,
-  UserTeamsInfoFragment,
-  UserTeamsInfoFragmentDoc,
-} from "../../../generated/graphql"
-import produce from "immer"
-import { CloseOutlined } from "@ant-design/icons"
-import { UserTeamsInfo } from "../../../graphql/user/fragment/fragments"
+import { useAddUserMutation } from "../../../generated/graphql"
 
 type FormData = {
   username: string
@@ -53,27 +38,6 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
       },
       update: (store, { data }) => {
         if (!!data.addUser.userId) {
-          const team = store.readFragment<TeamInfoFragment>({
-            fragment: TeamInfoFragmentDoc,
-            fragmentName: "TeamInfo",
-            id: "Team:" + teamId,
-          })
-
-          store.writeFragment<TeamInfoFragment>({
-            fragment: TeamInfoFragmentDoc,
-            fragmentName: "TeamInfo",
-            id: "Team:" + teamId,
-            data: produce(team, (x) => {
-              x.participants.push({
-                __typename: "Participant",
-                user: {
-                  __typename: "User",
-                  id: data.addUser.userId,
-                  username: data.addUser.username,
-                },
-              })
-            }),
-          })
           resetForm()
           setError(undefined)
         } else if (data.addUser.doesNotExist) {

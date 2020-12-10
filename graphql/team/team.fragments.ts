@@ -21,3 +21,18 @@ export const TeamInfo = gql`
     }
   }
 `
+
+export const removeUser = gql`
+  mutation RemoveUser($teamId: String!, $userId: String!) {
+    removeUser(teamId: $teamId, userId: $userId)
+  }
+`
+
+export const renameTeam = gql`
+  mutation RenameTeam($name: String!, $teamId: String!) {
+    renameTeam(name: $name, teamId: $teamId) {
+      success
+      exists
+    }
+  }
+`

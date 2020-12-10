@@ -8,3 +8,11 @@ export const currentUser = gql`
     }
   }
 `
+
+export const teams = gql`
+  query Teams {
+    currentUser {
+      ...UserTeamsInfo
+    }
+  }
+`
