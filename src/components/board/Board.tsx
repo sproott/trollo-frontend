@@ -36,7 +36,7 @@ const Board = ({ boardId }: { boardId: string }) => {
   const [deleteBoardMutate, { data: deleteMutationData }] = useDeleteBoardMutation()
   const router = useRouter()
 
-  const onConfirm = async (newName: string) => {
+  const renameBoard = async (newName: string) => {
     await rename({
       variables: {
         name: newName,
@@ -222,7 +222,7 @@ const Board = ({ boardId }: { boardId: string }) => {
           <EditableText
             label="Name"
             text={data.board.name}
-            onConfirm={onConfirm}
+            onConfirm={renameBoard}
             containerVisible={modalVisible}
             error={renameMutationData?.renameBoard.exists && "Board with this name already exists"}
             success={renameMutationData?.renameBoard.success}

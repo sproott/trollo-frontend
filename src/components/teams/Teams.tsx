@@ -6,6 +6,13 @@ import TeamsInfo from "./TeamsInfo"
 import Box from "../common/Box"
 import NewTeamButton from "./NewTeamButton"
 import {
+  BoardCreatedDocument,
+  BoardCreatedSubscription,
+  BoardDeletedDocument,
+  BoardDeletedSubscription,
+  BoardQueryBoardFragment,
+  BoardRenamedDocument,
+  BoardRenamedSubscription,
   ParticipantTeamFragment,
   TeamDeletedDocument,
   TeamDeletedSubscription,
@@ -18,12 +25,22 @@ import {
   useTeamsQuery,
 } from "../../../generated/graphql"
 import produce from "immer"
+import { removeNestedValue } from "../../lib/util"
 
 const getIfContainsTeam = (
   participants: ParticipantTeamFragment[],
   teamId: string
 ): ParticipantTeamFragment[] | undefined => {
   return !!participants.map((p) => p.team).find((t) => t.id === teamId) ? participants : undefined
+}
+
+const getIfContainsBoard = (
+  participants: ParticipantTeamFragment[],
+  boardId: string
+): ParticipantTeamFragment[] | undefined => {
+  return !!participants.flatMap((p) => p.team.boards).find((b) => b.id === boardId)
+    ? participants
+    : undefined
 }
 
 const Teams = () => {
@@ -89,6 +106,47 @@ const Teams = () => {
               1
             )
           }
+        })
+      },
+    })
+    subscribeToMore<BoardCreatedSubscription>({
+      document: BoardCreatedDocument,
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          const team = x.currentUser.owns
+            .concat(x.currentUser.participatesIn)
+            .map((p) => p.team)
+            .find((t) => t.id === data.boardCreated.teamId)
+          team.boards.push(data.boardCreated.board)
+        })
+      },
+    })
+    subscribeToMore<BoardRenamedSubscription>({
+      document: BoardRenamedDocument,
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          const participants = data.boardRenamed.isOwn
+            ? x.currentUser.owns
+            : x.currentUser.participatesIn
+          const board = participants
+            .flatMap((p) => p.team.boards)
+            .find((b) => b.id === data.boardRenamed.id)
+          Object.assign(board, data.boardRenamed)
+        })
+      },
+    })
+    subscribeToMore<BoardDeletedSubscription>({
+      document: BoardDeletedDocument,
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          const participants =
+            getIfContainsBoard(x.currentUser.owns, data.boardDeleted) ??
+            getIfContainsBoard(x.currentUser.participatesIn, data.boardDeleted)
+          removeNestedValue(
+            participants,
+            ["team", "boards"],
+            (b: BoardQueryBoardFragment) => b.id === data.boardDeleted
+          )
         })
       },
     })

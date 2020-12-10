@@ -677,6 +677,49 @@
         },
         {
           "kind": "OBJECT",
+          "name": "BoardCreatedPayload",
+          "description": null,
+          "fields": [
+            {
+              "name": "teamId",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "board",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Board",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "CreateCardResponse",
           "description": null,
           "fields": [
@@ -2171,6 +2214,54 @@
           "description": null,
           "fields": [
             {
+              "name": "boardCreated",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "BoardCreatedPayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "boardRenamed",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Board",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "boardDeleted",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "teamDeleted",
               "description": null,
               "args": [],
@@ -3229,9 +3320,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-12-10T10:21:54.723Z",
-      "endTime": "2020-12-10T10:21:54.765Z",
-      "duration": 41656504,
+      "startTime": "2020-12-10T16:06:01.711Z",
+      "endTime": "2020-12-10T16:06:01.725Z",
+      "duration": 14110153,
       "execution": {
         "resolvers": []
       }

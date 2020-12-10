@@ -4,12 +4,9 @@ import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
 import {
   MutationCreateBoardArgs,
-  TeamsDocument,
-  TeamsQuery,
   TeamInfoFragment,
   useCreateBoardMutation,
 } from "../../../generated/graphql"
-import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import TextInput from "../common/form/TextInput"
 
@@ -19,20 +16,6 @@ const NewBoardButton = ({ team: { id: teamId, name: teamName } }: { team: TeamIn
   const onSubmit = async (formData: MutationCreateBoardArgs) => {
     await createBoard({
       variables: { teamId, ...formData },
-      update: (store, { data }) => {
-        if (!data.createBoard.exists) {
-          const boards = store.readQuery<TeamsQuery>({ query: TeamsDocument })
-
-          store.writeQuery<TeamsQuery>({
-            query: TeamsDocument,
-            data: produce(boards, (x) => {
-              x.currentUser.owns
-                .find((p) => p.team.id === teamId)
-                .team.boards.push(data.createBoard.board)
-            }),
-          })
-        }
-      },
     })
   }
 

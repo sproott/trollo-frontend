@@ -78,6 +78,12 @@ export type RenameResponse = {
   exists?: Maybe<Scalars["Boolean"]>
 }
 
+export type BoardCreatedPayload = {
+  __typename?: "BoardCreatedPayload"
+  teamId: Scalars["String"]
+  board: Board
+}
+
 export type CreateCardResponse = {
   __typename?: "CreateCardResponse"
   card?: Maybe<Card>
@@ -297,6 +303,9 @@ export type MutationMakeAdminArgs = {
 
 export type Subscription = {
   __typename?: "Subscription"
+  boardCreated: BoardCreatedPayload
+  boardRenamed: Board
+  boardDeleted: Scalars["String"]
   teamDeleted: Scalars["String"]
   teamRenamed: Team
   teamUserAdded: TeamUserAddedPayload
@@ -346,6 +355,27 @@ export type BoardQueryVariables = Exact<{
 export type BoardQuery = { __typename?: "Query" } & {
   board: { __typename?: "Board" } & BoardQueryBoardFragment
 }
+
+export type BoardCreatedSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type BoardCreatedSubscription = { __typename?: "Subscription" } & {
+  boardCreated: { __typename?: "BoardCreatedPayload" } & Pick<BoardCreatedPayload, "teamId"> & {
+      board: { __typename?: "Board" } & Pick<Board, "id" | "name" | "isOwn">
+    }
+}
+
+export type BoardRenamedSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type BoardRenamedSubscription = { __typename?: "Subscription" } & {
+  boardRenamed: { __typename?: "Board" } & Pick<Board, "id" | "name" | "isOwn">
+}
+
+export type BoardDeletedSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type BoardDeletedSubscription = { __typename?: "Subscription" } & Pick<
+  Subscription,
+  "boardDeleted"
+>
 
 export type BoardQueryCardFragment = { __typename?: "Card" } & Pick<
   Card,
@@ -870,6 +900,122 @@ export function useBoardLazyQuery(
 export type BoardQueryHookResult = ReturnType<typeof useBoardQuery>
 export type BoardLazyQueryHookResult = ReturnType<typeof useBoardLazyQuery>
 export type BoardQueryResult = Apollo.QueryResult<BoardQuery, BoardQueryVariables>
+export const BoardCreatedDocument = gql`
+  subscription BoardCreated {
+    boardCreated {
+      board {
+        id
+        name
+        isOwn
+      }
+      teamId
+    }
+  }
+`
+
+/**
+ * __useBoardCreatedSubscription__
+ *
+ * To run a query within a React component, call `useBoardCreatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useBoardCreatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBoardCreatedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBoardCreatedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    BoardCreatedSubscription,
+    BoardCreatedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<BoardCreatedSubscription, BoardCreatedSubscriptionVariables>(
+    BoardCreatedDocument,
+    baseOptions
+  )
+}
+
+export type BoardCreatedSubscriptionHookResult = ReturnType<typeof useBoardCreatedSubscription>
+export type BoardCreatedSubscriptionResult = Apollo.SubscriptionResult<BoardCreatedSubscription>
+export const BoardRenamedDocument = gql`
+  subscription BoardRenamed {
+    boardRenamed {
+      id
+      name
+      isOwn
+    }
+  }
+`
+
+/**
+ * __useBoardRenamedSubscription__
+ *
+ * To run a query within a React component, call `useBoardRenamedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useBoardRenamedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBoardRenamedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBoardRenamedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    BoardRenamedSubscription,
+    BoardRenamedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<BoardRenamedSubscription, BoardRenamedSubscriptionVariables>(
+    BoardRenamedDocument,
+    baseOptions
+  )
+}
+
+export type BoardRenamedSubscriptionHookResult = ReturnType<typeof useBoardRenamedSubscription>
+export type BoardRenamedSubscriptionResult = Apollo.SubscriptionResult<BoardRenamedSubscription>
+export const BoardDeletedDocument = gql`
+  subscription BoardDeleted {
+    boardDeleted
+  }
+`
+
+/**
+ * __useBoardDeletedSubscription__
+ *
+ * To run a query within a React component, call `useBoardDeletedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useBoardDeletedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBoardDeletedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBoardDeletedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    BoardDeletedSubscription,
+    BoardDeletedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<BoardDeletedSubscription, BoardDeletedSubscriptionVariables>(
+    BoardDeletedDocument,
+    baseOptions
+  )
+}
+
+export type BoardDeletedSubscriptionHookResult = ReturnType<typeof useBoardDeletedSubscription>
+export type BoardDeletedSubscriptionResult = Apollo.SubscriptionResult<BoardDeletedSubscription>
 export const UpdateCardDescriptionDocument = gql`
   mutation UpdateCardDescription($description: String!, $cardId: String!) {
     updateCardDescription(description: $description, cardId: $cardId)
