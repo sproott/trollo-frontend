@@ -1734,8 +1734,10 @@ export const TeamUserAddedDocument = gql`
  * });
  */
 export function useTeamUserAddedSubscription(
-  baseOptions?: Apollo.SubscriptionHookOptions<TeamUserAddedSubscription,
-    TeamUserAddedSubscriptionVariables>
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    TeamUserAddedSubscription,
+    TeamUserAddedSubscriptionVariables
+  >
 ) {
   return Apollo.useSubscription<TeamUserAddedSubscription, TeamUserAddedSubscriptionVariables>(
     TeamUserAddedDocument,
@@ -1746,12 +1748,12 @@ export function useTeamUserAddedSubscription(
 export type TeamUserAddedSubscriptionHookResult = ReturnType<typeof useTeamUserAddedSubscription>
 export type TeamUserAddedSubscriptionResult = Apollo.SubscriptionResult<TeamUserAddedSubscription>
 export const TeamUserRemovedDocument = gql`
-    subscription TeamUserRemoved {
-        teamUserRemoved {
-            teamId
-            userId
-        }
+  subscription TeamUserRemoved {
+    teamUserRemoved {
+      teamId
+      userId
     }
+  }
 `
 
 /**
@@ -1770,8 +1772,10 @@ export const TeamUserRemovedDocument = gql`
  * });
  */
 export function useTeamUserRemovedSubscription(
-  baseOptions?: Apollo.SubscriptionHookOptions<TeamUserRemovedSubscription,
-    TeamUserRemovedSubscriptionVariables>
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    TeamUserRemovedSubscription,
+    TeamUserRemovedSubscriptionVariables
+  >
 ) {
   return Apollo.useSubscription<TeamUserRemovedSubscription, TeamUserRemovedSubscriptionVariables>(
     TeamUserRemovedDocument,
@@ -1779,16 +1783,18 @@ export function useTeamUserRemovedSubscription(
   )
 }
 
-export type TeamUserRemovedSubscriptionHookResult = ReturnType<typeof useTeamUserRemovedSubscription>
+export type TeamUserRemovedSubscriptionHookResult = ReturnType<
+  typeof useTeamUserRemovedSubscription
+>
 export type TeamUserRemovedSubscriptionResult = Apollo.SubscriptionResult<TeamUserRemovedSubscription>
 export const LoginDocument = gql`
-    mutation Login($input: LoginInput!) {
-        login(input: $input) {
-            id
-            username
-            email
-        }
+  mutation Login($input: LoginInput!) {
+    login(input: $input) {
+      id
+      username
+      email
     }
+  }
 `
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>
 

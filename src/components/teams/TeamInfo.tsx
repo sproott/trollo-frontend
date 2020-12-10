@@ -5,8 +5,6 @@ import BoardInfo from "./BoardInfo"
 import NewBoardButton from "./NewBoardButton"
 import { Button, Card, Col, Modal } from "antd"
 import {
-  TeamsDocument,
-  TeamsQuery,
   TeamInfoFragment,
   useCurrentUserQuery,
   useDeleteTeamMutation,
@@ -15,7 +13,6 @@ import {
   useRenameTeamMutation,
 } from "../../../generated/graphql"
 import EditableText from "../common/form/EditableText"
-import produce from "immer"
 import Box from "../common/Box"
 import Avatar from "../common/Avatar"
 import { Div, H3 } from "../common/Text"
@@ -55,22 +52,6 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
   const leaveTeam = async () => {
     leaveTeamMutate({
       variables: { teamId: team.id },
-      update: (store, { data }) => {
-        if (data.leaveTeam) {
-          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
-
-          store.writeQuery<TeamsQuery>({
-            query: TeamsDocument,
-            data: produce(teams, (x) => {
-              const participants = x.currentUser.participatesIn
-              participants.splice(
-                participants.findIndex((p) => p.team.id === team.id),
-                1
-              )
-            }),
-          })
-        }
-      },
     })
   }
   const deleteTeam = async () => {
