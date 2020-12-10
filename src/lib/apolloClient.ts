@@ -25,7 +25,7 @@ const createHttpLink = (cookie: string) =>
 
 const createWsLink = (cookie: string) =>
   new WebSocketLink({
-    uri: !!API_URL ? "ws://" + API_URL : "ws://localhost:4000/graphql",
+    uri: !!API_URL ? "wss://" + API_URL : "ws://localhost:4000/graphql",
     options: {
       reconnect: true,
       connectionParams: {
