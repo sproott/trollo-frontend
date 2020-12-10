@@ -884,6 +884,49 @@
         },
         {
           "kind": "OBJECT",
+          "name": "TeamUserRemovedPayload",
+          "description": null,
+          "fields": [
+            {
+              "name": "teamId",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userId",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "RegisterError",
           "description": null,
           "fields": [
@@ -2174,6 +2217,22 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "teamUserRemoved",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TeamUserRemovedPayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -3170,9 +3229,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-12-10T08:09:13.011Z",
-      "endTime": "2020-12-10T08:09:13.016Z",
-      "duration": 4648945,
+      "startTime": "2020-12-10T10:21:54.723Z",
+      "endTime": "2020-12-10T10:21:54.765Z",
+      "duration": 41656504,
       "execution": {
         "resolvers": []
       }

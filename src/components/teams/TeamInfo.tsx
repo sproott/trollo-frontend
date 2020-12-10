@@ -13,7 +13,6 @@ import {
   useLeaveTeamMutation,
   useRemoveUserMutation,
   useRenameTeamMutation,
-  useTeamRenamedSubscription,
 } from "../../../generated/graphql"
 import EditableText from "../common/form/EditableText"
 import produce from "immer"
@@ -50,24 +49,6 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
       variables: {
         userId,
         teamId: team.id,
-      },
-      update: (store, { data }) => {
-        if (!!data.removeUser) {
-          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
-
-          store.writeQuery<TeamsQuery>({
-            query: TeamsDocument,
-            data: produce(teams, (x) => {
-              const participants = x.currentUser.owns
-                .map((p) => p.team)
-                .find((t) => t.id === team.id).participants
-              participants.splice(
-                participants.findIndex((p) => p.user.id === userId),
-                1
-              )
-            }),
-          })
-        }
       },
     })
   }

@@ -27,3 +27,12 @@ export const teamUserAdded = gql`
     }
   }
 `
+
+export const teamUserRemoved = gql`
+  subscription TeamUserRemoved {
+    teamUserRemoved {
+      teamId
+      userId
+    }
+  }
+`

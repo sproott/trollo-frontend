@@ -13,6 +13,8 @@ import {
   TeamRenamedSubscription,
   TeamUserAddedDocument,
   TeamUserAddedSubscription,
+  TeamUserRemovedDocument,
+  TeamUserRemovedSubscription,
   useTeamsQuery,
 } from "../../../generated/graphql"
 import produce from "immer"
@@ -58,12 +60,34 @@ const Teams = () => {
       document: TeamUserAddedDocument,
       updateQuery: (prev, { subscriptionData: { data } }) => {
         return produce(prev, (x) => {
-          console.log("SUB")
           if (data.teamUserAdded.user.id === x.currentUser.id) {
             x.currentUser.participatesIn.push({
               __typename: "Participant",
               team: data.teamUserAdded.team,
             })
+          }
+        })
+      },
+    })
+    subscribeToMore<TeamUserRemovedSubscription>({
+      document: TeamUserRemovedDocument,
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          if (data.teamUserRemoved.userId === x.currentUser.id) {
+            x.currentUser.participatesIn.splice(
+              x.currentUser.participatesIn.findIndex(
+                (p) => p.team.id === data.teamUserRemoved.teamId
+              ),
+              1
+            )
+          } else {
+            const participants = x.currentUser.owns
+              .map((p) => p.team)
+              .find((t) => t.id === data.teamUserRemoved.teamId).participants
+            participants.splice(
+              participants.findIndex((p) => p.user.id === data.teamUserRemoved.userId),
+              1
+            )
           }
         })
       },

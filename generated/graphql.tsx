@@ -110,6 +110,12 @@ export type TeamUserAddedPayload = {
   user: User
 }
 
+export type TeamUserRemovedPayload = {
+  __typename?: "TeamUserRemovedPayload"
+  teamId: Scalars["String"]
+  userId: Scalars["String"]
+}
+
 export type RegisterError = {
   __typename?: "RegisterError"
   email?: Maybe<Scalars["Boolean"]>
@@ -294,6 +300,7 @@ export type Subscription = {
   teamDeleted: Scalars["String"]
   teamRenamed: Team
   teamUserAdded: TeamUserAddedPayload
+  teamUserRemoved: TeamUserRemovedPayload
 }
 
 export type TeamsQueryBoardFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
@@ -514,8 +521,10 @@ export type LeaveTeamMutation = { __typename?: "Mutation" } & Pick<Mutation, "le
 
 export type TeamDeletedSubscriptionVariables = Exact<{ [key: string]: never }>
 
-export type TeamDeletedSubscription = { __typename?: "Subscription" } & Pick<Subscription,
-  "teamDeleted">
+export type TeamDeletedSubscription = { __typename?: "Subscription" } & Pick<
+  Subscription,
+  "teamDeleted"
+>
 
 export type TeamRenamedSubscriptionVariables = Exact<{ [key: string]: never }>
 
@@ -532,12 +541,21 @@ export type TeamUserAddedSubscription = { __typename?: "Subscription" } & {
   }
 }
 
+export type TeamUserRemovedSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type TeamUserRemovedSubscription = { __typename?: "Subscription" } & {
+  teamUserRemoved: { __typename?: "TeamUserRemovedPayload" } & Pick<
+    TeamUserRemovedPayload,
+    "teamId" | "userId"
+  >
+}
+
 export type UserInfoFragment = { __typename?: "User" } & Pick<User, "id" | "username">
 
 export type UserTeamsInfoFragment = { __typename?: "User" } & Pick<User, "id"> & {
-  owns: Array<{ __typename?: "Participant" } & ParticipantTeamFragment>
-  participatesIn: Array<{ __typename?: "Participant" } & ParticipantTeamFragment>
-}
+    owns: Array<{ __typename?: "Participant" } & ParticipantTeamFragment>
+    participatesIn: Array<{ __typename?: "Participant" } & ParticipantTeamFragment>
+  }
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput
@@ -1648,12 +1666,12 @@ export function useTeamDeletedSubscription(
 export type TeamDeletedSubscriptionHookResult = ReturnType<typeof useTeamDeletedSubscription>
 export type TeamDeletedSubscriptionResult = Apollo.SubscriptionResult<TeamDeletedSubscription>
 export const TeamRenamedDocument = gql`
-    subscription TeamRenamed {
-        teamRenamed {
-            id
-            name
-        }
+  subscription TeamRenamed {
+    teamRenamed {
+      id
+      name
     }
+  }
 `
 
 /**
@@ -1674,7 +1692,8 @@ export const TeamRenamedDocument = gql`
 export function useTeamRenamedSubscription(
   baseOptions?: Apollo.SubscriptionHookOptions<
     TeamRenamedSubscription,
-    TeamRenamedSubscriptionVariables>
+    TeamRenamedSubscriptionVariables
+  >
 ) {
   return Apollo.useSubscription<TeamRenamedSubscription, TeamRenamedSubscriptionVariables>(
     TeamRenamedDocument,
@@ -1685,18 +1704,18 @@ export function useTeamRenamedSubscription(
 export type TeamRenamedSubscriptionHookResult = ReturnType<typeof useTeamRenamedSubscription>
 export type TeamRenamedSubscriptionResult = Apollo.SubscriptionResult<TeamRenamedSubscription>
 export const TeamUserAddedDocument = gql`
-    subscription TeamUserAdded {
-        teamUserAdded {
-            team {
-                ...TeamInfo
-            }
-            user {
-                ...UserInfo
-            }
-        }
+  subscription TeamUserAdded {
+    teamUserAdded {
+      team {
+        ...TeamInfo
+      }
+      user {
+        ...UserInfo
+      }
     }
-    ${TeamInfoFragmentDoc}
-    ${UserInfoFragmentDoc}
+  }
+  ${TeamInfoFragmentDoc}
+  ${UserInfoFragmentDoc}
 `
 
 /**
@@ -1726,6 +1745,42 @@ export function useTeamUserAddedSubscription(
 
 export type TeamUserAddedSubscriptionHookResult = ReturnType<typeof useTeamUserAddedSubscription>
 export type TeamUserAddedSubscriptionResult = Apollo.SubscriptionResult<TeamUserAddedSubscription>
+export const TeamUserRemovedDocument = gql`
+    subscription TeamUserRemoved {
+        teamUserRemoved {
+            teamId
+            userId
+        }
+    }
+`
+
+/**
+ * __useTeamUserRemovedSubscription__
+ *
+ * To run a query within a React component, call `useTeamUserRemovedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTeamUserRemovedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTeamUserRemovedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTeamUserRemovedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<TeamUserRemovedSubscription,
+    TeamUserRemovedSubscriptionVariables>
+) {
+  return Apollo.useSubscription<TeamUserRemovedSubscription, TeamUserRemovedSubscriptionVariables>(
+    TeamUserRemovedDocument,
+    baseOptions
+  )
+}
+
+export type TeamUserRemovedSubscriptionHookResult = ReturnType<typeof useTeamUserRemovedSubscription>
+export type TeamUserRemovedSubscriptionResult = Apollo.SubscriptionResult<TeamUserRemovedSubscription>
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
         login(input: $input) {
