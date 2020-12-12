@@ -14,8 +14,8 @@ export const boardCreated = gql`
 `
 
 export const boardRenamed = gql`
-  subscription BoardRenamed {
-    boardRenamed {
+  subscription BoardRenamed($boardId: String) {
+    boardRenamed(boardId: $boardId) {
       id
       name
       isOwn
@@ -24,7 +24,7 @@ export const boardRenamed = gql`
 `
 
 export const boardDeleted = gql`
-  subscription BoardDeleted {
-    boardDeleted
+  subscription BoardDeleted($boardId: String) {
+    boardDeleted(boardId: $boardId)
   }
 `

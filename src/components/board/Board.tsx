@@ -1,9 +1,12 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
+  BoardDeletedDocument,
+  BoardDeletedSubscription,
   BoardDocument,
   BoardQuery,
-  TeamsDocument,
-  TeamsQuery,
+  BoardRenamedDocument,
+  BoardRenamedSubscription,
+  BoardRenamedSubscriptionVariables,
   useBoardQuery,
   useDeleteBoardMutation,
   useMoveCardMutation,
@@ -29,32 +32,41 @@ const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
   const [deleted, setDeleted] = useState(false)
-  const { data, error, loading } = useBoardQuery({ variables: { id: boardId } })
+  const { data, error, loading, refetch, subscribeToMore } = useBoardQuery({
+    variables: { id: boardId },
+  })
   const [moveCard] = useMoveCardMutation()
   const [moveList] = useMoveListMutation()
   const [rename, { data: renameMutationData }] = useRenameBoardMutation()
   const [deleteBoardMutate, { data: deleteMutationData }] = useDeleteBoardMutation()
   const router = useRouter()
 
+  useEffect(() => {
+    refetch()
+    subscribeToMore<BoardRenamedSubscription, BoardRenamedSubscriptionVariables>({
+      document: BoardRenamedDocument,
+      variables: { boardId },
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          Object.assign(x.board, data.boardRenamed)
+        })
+      },
+    })
+    subscribeToMore<BoardDeletedSubscription>({
+      document: BoardDeletedDocument,
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          x.board = null
+        })
+      },
+    })
+  }, [])
+
   const renameBoard = async (newName: string) => {
     await rename({
       variables: {
         name: newName,
         boardId: data.board.id,
-      },
-      update: (store, { data }) => {
-        if (data.renameBoard.success && !data.renameBoard.exists) {
-          const board = store.readQuery<BoardQuery>({
-            query: BoardDocument,
-            variables: { id: boardId },
-          })
-          store.writeQuery<BoardQuery>({
-            query: BoardDocument,
-            data: produce(board, (x) => {
-              x.board.name = newName
-            }),
-          })
-        }
       },
     })
   }
@@ -148,35 +160,17 @@ const Board = ({ boardId }: { boardId: string }) => {
   const deleteBoard = async () => {
     await deleteBoardMutate({
       variables: { id: boardId },
-      update: (store, { data }) => {
-        if (data.deleteBoard) {
-          const teams = store.readQuery<TeamsQuery>({ query: TeamsDocument })
-          store.writeQuery<TeamsQuery>({
-            query: TeamsDocument,
-            data: produce(teams, (x) => {
-              const team = x.currentUser.owns
-                .map((p) => p.team)
-                .find((t) => !!t.boards.find((b) => b.id === boardId))
-              team.boards.splice(
-                team.boards.findIndex((b) => b.id === boardId),
-                1
-              )
-            }),
-          })
-        }
-
-        setDeleted(true)
-      },
     })
     setConfirmationVisible(false)
     setModalVisible(false)
+    setDeleted(true)
   }
 
-  if ((!!deleteMutationData?.deleteBoard && deleted) || error || (!loading && !data)) {
+  if ((!!deleteMutationData?.deleteBoard && deleted) || error || (!loading && !data?.board)) {
     router.replace("/")
   }
 
-  return !data ? (
+  return !data?.board ? (
     <Spinner />
   ) : (
     <Content>
@@ -223,7 +217,6 @@ const Board = ({ boardId }: { boardId: string }) => {
             label="Name"
             text={data.board.name}
             onConfirm={renameBoard}
-            containerVisible={modalVisible}
             error={renameMutationData?.renameBoard.exists && "Board with this name already exists"}
             success={renameMutationData?.renameBoard.success}
           />

@@ -107,7 +107,6 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
             label="Name"
             text={team.name}
             onConfirm={renameTeam}
-            containerVisible={editModalVisible}
             error={data?.renameTeam.exists && "Team with this name already exists"}
             success={data?.renameTeam.success}
           />
@@ -147,7 +146,7 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
                 </Col>
               </Box>
             )}
-            <AddUser teamId={team.id} containerVisible={editModalVisible} />
+            <AddUser teamId={team.id} />
           </Box>
         </Box>
       </Modal>

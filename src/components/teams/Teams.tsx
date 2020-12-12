@@ -10,7 +10,6 @@ import {
   BoardCreatedSubscription,
   BoardDeletedDocument,
   BoardDeletedSubscription,
-  BoardQueryBoardFragment,
   BoardRenamedDocument,
   BoardRenamedSubscription,
   ParticipantTeamFragment,
@@ -25,7 +24,7 @@ import {
   useTeamsQuery,
 } from "../../../generated/graphql"
 import produce from "immer"
-import { removeNestedValue } from "../../lib/util"
+import { removeNestedValue } from "../../lib/nestedPathUtil"
 
 const getIfContainsTeam = (
   participants: ParticipantTeamFragment[],
@@ -44,9 +43,10 @@ const getIfContainsBoard = (
 }
 
 const Teams = () => {
-  const { data, loading, subscribeToMore } = useTeamsQuery()
+  const { data, loading, refetch, subscribeToMore } = useTeamsQuery()
 
   useEffect(() => {
+    refetch()
     subscribeToMore<TeamRenamedSubscription>({
       document: TeamRenamedDocument,
       updateQuery: (prev, { subscriptionData: { data } }) => {
@@ -142,11 +142,7 @@ const Teams = () => {
           const participants =
             getIfContainsBoard(x.currentUser.owns, data.boardDeleted) ??
             getIfContainsBoard(x.currentUser.participatesIn, data.boardDeleted)
-          removeNestedValue(
-            participants,
-            ["team", "boards"],
-            (b: BoardQueryBoardFragment) => b.id === data.boardDeleted
-          )
+          removeNestedValue(participants, ["team", "boards"], (b) => b.id === data.boardDeleted)
         })
       },
     })

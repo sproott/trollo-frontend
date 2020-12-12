@@ -144,7 +144,6 @@ const DraggableDroppableList = ({
             label="Name"
             text={list.name}
             onConfirm={onConfirm}
-            containerVisible={modalVisible}
             error={data?.renameList.exists && "List with this name already exists"}
             success={data?.renameList.success}
           />

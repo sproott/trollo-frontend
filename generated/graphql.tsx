@@ -312,6 +312,14 @@ export type Subscription = {
   teamUserRemoved: TeamUserRemovedPayload
 }
 
+export type SubscriptionBoardRenamedArgs = {
+  boardId?: Maybe<Scalars["String"]>
+}
+
+export type SubscriptionBoardDeletedArgs = {
+  boardId?: Maybe<Scalars["String"]>
+}
+
 export type TeamsQueryBoardFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
 
 export type BoardQueryBoardFragment = { __typename?: "Board" } & Pick<
@@ -364,13 +372,17 @@ export type BoardCreatedSubscription = { __typename?: "Subscription" } & {
     }
 }
 
-export type BoardRenamedSubscriptionVariables = Exact<{ [key: string]: never }>
+export type BoardRenamedSubscriptionVariables = Exact<{
+  boardId?: Maybe<Scalars["String"]>
+}>
 
 export type BoardRenamedSubscription = { __typename?: "Subscription" } & {
   boardRenamed: { __typename?: "Board" } & Pick<Board, "id" | "name" | "isOwn">
 }
 
-export type BoardDeletedSubscriptionVariables = Exact<{ [key: string]: never }>
+export type BoardDeletedSubscriptionVariables = Exact<{
+  boardId?: Maybe<Scalars["String"]>
+}>
 
 export type BoardDeletedSubscription = { __typename?: "Subscription" } & Pick<
   Subscription,
@@ -943,8 +955,8 @@ export function useBoardCreatedSubscription(
 export type BoardCreatedSubscriptionHookResult = ReturnType<typeof useBoardCreatedSubscription>
 export type BoardCreatedSubscriptionResult = Apollo.SubscriptionResult<BoardCreatedSubscription>
 export const BoardRenamedDocument = gql`
-  subscription BoardRenamed {
-    boardRenamed {
+  subscription BoardRenamed($boardId: String) {
+    boardRenamed(boardId: $boardId) {
       id
       name
       isOwn
@@ -964,6 +976,7 @@ export const BoardRenamedDocument = gql`
  * @example
  * const { data, loading, error } = useBoardRenamedSubscription({
  *   variables: {
+ *      boardId: // value for 'boardId'
  *   },
  * });
  */
@@ -982,9 +995,9 @@ export function useBoardRenamedSubscription(
 export type BoardRenamedSubscriptionHookResult = ReturnType<typeof useBoardRenamedSubscription>
 export type BoardRenamedSubscriptionResult = Apollo.SubscriptionResult<BoardRenamedSubscription>
 export const BoardDeletedDocument = gql`
-  subscription BoardDeleted {
-    boardDeleted
-  }
+    subscription BoardDeleted($boardId: String) {
+        boardDeleted(boardId: $boardId)
+    }
 `
 
 /**
@@ -999,6 +1012,7 @@ export const BoardDeletedDocument = gql`
  * @example
  * const { data, loading, error } = useBoardDeletedSubscription({
  *   variables: {
+ *      boardId: // value for 'boardId'
  *   },
  * });
  */

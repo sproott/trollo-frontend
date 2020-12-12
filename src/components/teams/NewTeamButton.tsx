@@ -25,7 +25,6 @@ const NewTeamButton = () => {
           store.writeQuery<TeamsQuery>({
             query: TeamsDocument,
             data: produce(boards, (x) => {
-              console.log(data.createTeam.team)
               x.currentUser.owns.push({
                 __typename: "Participant",
                 team: data.createTeam.team as TeamInfoFragment,

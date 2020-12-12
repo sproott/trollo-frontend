@@ -145,7 +145,6 @@ const DraggableCard = ({
             label="Name"
             text={card.name}
             onConfirm={rename}
-            containerVisible={modalVisible}
             error={renameData?.renameCard.exists && "Card with this name already exists"}
             success={renameData?.renameCard.success}
           />

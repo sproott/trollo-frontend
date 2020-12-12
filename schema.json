@@ -2232,7 +2232,18 @@
             {
               "name": "boardRenamed",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "boardId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -2248,7 +2259,18 @@
             {
               "name": "boardDeleted",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "boardId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -3320,9 +3342,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2020-12-10T16:06:01.711Z",
-      "endTime": "2020-12-10T16:06:01.725Z",
-      "duration": 14110153,
+      "startTime": "2020-12-12T18:08:50.419Z",
+      "endTime": "2020-12-12T18:08:50.446Z",
+      "duration": 26372686,
       "execution": {
         "resolvers": []
       }

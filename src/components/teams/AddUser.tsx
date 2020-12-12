@@ -11,7 +11,7 @@ type FormData = {
   username: string
 }
 
-function AddUser({ teamId, containerVisible }: { teamId: string; containerVisible?: boolean }) {
+function AddUser({ teamId }: { teamId: string }) {
   const useFormMethods = useForm<FormData>({
     defaultValues: { username: "" },
   })
@@ -19,12 +19,13 @@ function AddUser({ teamId, containerVisible }: { teamId: string; containerVisibl
   const [addUser] = useAddUserMutation()
   const [error, setError] = useState<string>()
 
-  useEffect(() => {
-    if (containerVisible === false) {
+  useEffect(
+    () => () => {
       setError(undefined)
       resetForm()
-    }
-  }, [containerVisible])
+    },
+    []
+  )
 
   const onSubmit = ({ username }: FormData) => {
     if (!username || username.length === 0) {
