@@ -4,10 +4,24 @@ import {
   BoardDeletedSubscription,
   BoardDocument,
   BoardQuery,
+  BoardQueryListFragment,
   BoardRenamedDocument,
   BoardRenamedSubscription,
   BoardRenamedSubscriptionVariables,
+  ListCreatedDocument,
+  ListCreatedSubscription,
+  ListCreatedSubscriptionVariables,
+  ListDeletedDocument,
+  ListDeletedSubscription,
+  ListDeletedSubscriptionVariables,
+  ListMovedDocument,
+  ListMovedSubscription,
+  ListMovedSubscriptionVariables,
+  ListRenamedDocument,
+  ListRenamedSubscription,
+  ListRenamedSubscriptionVariables,
   useBoardQuery,
+  useCurrentUserQuery,
   useDeleteBoardMutation,
   useMoveCardMutation,
   useMoveListMutation,
@@ -27,6 +41,7 @@ import EditableText from "../common/form/EditableText"
 import { Button, Modal } from "antd"
 import { DroppableType } from "../../constants/DroppableType"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
+import { removeNestedValue } from "../../lib/nestedPathUtil"
 
 const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -35,6 +50,11 @@ const Board = ({ boardId }: { boardId: string }) => {
   const { data, error, loading, refetch, subscribeToMore } = useBoardQuery({
     variables: { id: boardId },
   })
+  const {
+    data: {
+      currentUser: { id: userId },
+    },
+  } = useCurrentUserQuery()
   const [moveCard] = useMoveCardMutation()
   const [moveList] = useMoveListMutation()
   const [rename, { data: renameMutationData }] = useRenameBoardMutation()
@@ -57,6 +77,59 @@ const Board = ({ boardId }: { boardId: string }) => {
       updateQuery: (prev, { subscriptionData: { data } }) => {
         return produce(prev, (x) => {
           x.board = null
+        })
+      },
+    })
+    subscribeToMore<ListCreatedSubscription, ListCreatedSubscriptionVariables>({
+      document: ListCreatedDocument,
+      variables: { boardId },
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          x.board.lists.push(data.listCreated as BoardQueryListFragment)
+        })
+      },
+    })
+    subscribeToMore<ListRenamedSubscription, ListRenamedSubscriptionVariables>({
+      document: ListRenamedDocument,
+      variables: { boardId },
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          Object.assign(
+            x.board.lists.find((l) => l.id === data.listRenamed.id),
+            data.listRenamed
+          )
+        })
+      },
+    })
+    subscribeToMore<ListMovedSubscription, ListMovedSubscriptionVariables>({
+      document: ListMovedDocument,
+      variables: { boardId },
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          if (userId !== data.listMoved.userId) {
+            // remove list from source
+            const [list] = x.board.lists.splice(data.listMoved.sourceIndex, 1)
+
+            // insert list in destination
+            x.board.lists.splice(data.listMoved.destinationIndex, 0, list)
+
+            // reindex lists
+            x.board.lists.forEach((list, index) => (list.index = index))
+          }
+        })
+      },
+    })
+    subscribeToMore<ListDeletedSubscription, ListDeletedSubscriptionVariables>({
+      document: ListDeletedDocument,
+      variables: { boardId },
+      updateQuery: (prev, { subscriptionData: { data } }) => {
+        return produce(prev, (x) => {
+          removeNestedValue(
+            x,
+            ["board", "lists"],
+            (list: BoardQueryListFragment) => list.id === data.listDeleted
+          )
+          x.board.lists.forEach((list, index) => (list.index = index))
         })
       },
     })

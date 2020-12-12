@@ -41,8 +41,8 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
       },
     })
   }
-  const removeUser = (userId: string) => {
-    removeUserMutate({
+  const removeUser = async (userId: string) => {
+    await removeUserMutate({
       variables: {
         userId,
         teamId: team.id,
@@ -50,7 +50,7 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
     })
   }
   const leaveTeam = async () => {
-    leaveTeamMutate({
+    await leaveTeamMutate({
       variables: { teamId: team.id },
     })
   }

@@ -1,9 +1,6 @@
 import {
-  BoardDocument,
-  BoardQuery,
   BoardQueryBoardFragment,
   BoardQueryListFragment,
-  BoardQueryResult,
   useDeleteListMutation,
   useRenameListMutation,
 } from "../../../generated/graphql"
@@ -15,7 +12,6 @@ import NewCardButton from "./NewCardButton"
 import { DroppableType } from "../../constants/DroppableType"
 import Box from "../common/Box"
 import EditableText from "../common/form/EditableText"
-import produce from "immer"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 
 const DraggableDroppableList = ({
@@ -34,24 +30,6 @@ const DraggableDroppableList = ({
   const deleteList = async () => {
     await deleteListMutate({
       variables: { id: list.id },
-      update: (store, { data }) => {
-        if (data.deleteList) {
-          const board = store.readQuery<BoardQuery>({
-            query: BoardDocument,
-            variables: { id: boardId },
-          })
-          store.writeQuery<BoardQuery>({
-            query: BoardDocument,
-            data: produce(board, (x) => {
-              x.board.lists.splice(
-                x.board.lists.findIndex((l) => l.id === list.id),
-                1
-              )
-              x.board.lists.forEach((list, index) => (list.index = index))
-            }),
-          })
-        }
-      },
     })
     setConfirmationVisible(false)
     setModalVisible(false)
@@ -61,20 +39,6 @@ const DraggableDroppableList = ({
       variables: {
         name: newName,
         listId: list.id,
-      },
-      update: (store, { data }) => {
-        if (data.renameList.success && !data.renameList.exists) {
-          const board = store.readQuery<BoardQuery>({
-            query: BoardDocument,
-            variables: { id: boardId },
-          })
-          store.writeQuery<BoardQuery>({
-            query: BoardDocument,
-            data: produce(board, (x) => {
-              x.board.lists.find((l) => l.id === list.id).name = newName
-            }),
-          })
-        }
       },
     })
   }

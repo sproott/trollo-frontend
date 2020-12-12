@@ -96,6 +96,14 @@ export type CreateListResponse = {
   exists?: Maybe<Scalars["Boolean"]>
 }
 
+export type ListMovedPayload = {
+  __typename?: "ListMovedPayload"
+  list: List
+  sourceIndex: Scalars["Float"]
+  destinationIndex: Scalars["Float"]
+  userId: Scalars["String"]
+}
+
 export type CreateTeamResponse = {
   __typename?: "CreateTeamResponse"
   team?: Maybe<Team>
@@ -306,6 +314,10 @@ export type Subscription = {
   boardCreated: BoardCreatedPayload
   boardRenamed: Board
   boardDeleted: Scalars["String"]
+  listCreated: List
+  listMoved: ListMovedPayload
+  listRenamed: List
+  listDeleted: Scalars["String"]
   teamDeleted: Scalars["String"]
   teamRenamed: Team
   teamUserAdded: TeamUserAddedPayload
@@ -318,6 +330,22 @@ export type SubscriptionBoardRenamedArgs = {
 
 export type SubscriptionBoardDeletedArgs = {
   boardId?: Maybe<Scalars["String"]>
+}
+
+export type SubscriptionListCreatedArgs = {
+  boardId: Scalars["String"]
+}
+
+export type SubscriptionListMovedArgs = {
+  boardId: Scalars["String"]
+}
+
+export type SubscriptionListRenamedArgs = {
+  boardId: Scalars["String"]
+}
+
+export type SubscriptionListDeletedArgs = {
+  boardId: Scalars["String"]
 }
 
 export type TeamsQueryBoardFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
@@ -493,6 +521,44 @@ export type RenameListMutationVariables = Exact<{
 export type RenameListMutation = { __typename?: "Mutation" } & {
   renameList: { __typename?: "RenameResponse" } & Pick<RenameResponse, "success" | "exists">
 }
+
+export type ListCreatedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type ListCreatedSubscription = { __typename?: "Subscription" } & {
+  listCreated: { __typename?: "List" } & Pick<List, "id" | "name" | "index">
+}
+
+export type ListRenamedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type ListRenamedSubscription = { __typename?: "Subscription" } & {
+  listRenamed: { __typename?: "List" } & Pick<List, "id" | "name">
+}
+
+export type ListMovedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type ListMovedSubscription = { __typename?: "Subscription" } & {
+  listMoved: { __typename?: "ListMovedPayload" } & Pick<
+    ListMovedPayload,
+    "sourceIndex" | "destinationIndex" | "userId"
+  > & {
+      list: { __typename?: "List" } & Pick<List, "id" | "index">
+    }
+}
+
+export type ListDeletedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type ListDeletedSubscription = { __typename?: "Subscription" } & Pick<
+  Subscription,
+  "listDeleted"
+>
 
 export type ParticipantTeamFragment = { __typename?: "Participant" } & {
   team: { __typename?: "Team" } & TeamInfoFragment
@@ -995,9 +1061,9 @@ export function useBoardRenamedSubscription(
 export type BoardRenamedSubscriptionHookResult = ReturnType<typeof useBoardRenamedSubscription>
 export type BoardRenamedSubscriptionResult = Apollo.SubscriptionResult<BoardRenamedSubscription>
 export const BoardDeletedDocument = gql`
-    subscription BoardDeleted($boardId: String) {
-        boardDeleted(boardId: $boardId)
-    }
+  subscription BoardDeleted($boardId: String) {
+    boardDeleted(boardId: $boardId)
+  }
 `
 
 /**
@@ -1527,6 +1593,162 @@ export type RenameListMutationOptions = Apollo.BaseMutationOptions<
   RenameListMutation,
   RenameListMutationVariables
 >
+export const ListCreatedDocument = gql`
+  subscription ListCreated($boardId: String!) {
+    listCreated(boardId: $boardId) {
+      id
+      name
+      index
+    }
+  }
+`
+
+/**
+ * __useListCreatedSubscription__
+ *
+ * To run a query within a React component, call `useListCreatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useListCreatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListCreatedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useListCreatedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    ListCreatedSubscription,
+    ListCreatedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<ListCreatedSubscription, ListCreatedSubscriptionVariables>(
+    ListCreatedDocument,
+    baseOptions
+  )
+}
+
+export type ListCreatedSubscriptionHookResult = ReturnType<typeof useListCreatedSubscription>
+export type ListCreatedSubscriptionResult = Apollo.SubscriptionResult<ListCreatedSubscription>
+export const ListRenamedDocument = gql`
+  subscription ListRenamed($boardId: String!) {
+    listRenamed(boardId: $boardId) {
+      id
+      name
+    }
+  }
+`
+
+/**
+ * __useListRenamedSubscription__
+ *
+ * To run a query within a React component, call `useListRenamedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useListRenamedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListRenamedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useListRenamedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    ListRenamedSubscription,
+    ListRenamedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<ListRenamedSubscription, ListRenamedSubscriptionVariables>(
+    ListRenamedDocument,
+    baseOptions
+  )
+}
+
+export type ListRenamedSubscriptionHookResult = ReturnType<typeof useListRenamedSubscription>
+export type ListRenamedSubscriptionResult = Apollo.SubscriptionResult<ListRenamedSubscription>
+export const ListMovedDocument = gql`
+  subscription ListMoved($boardId: String!) {
+    listMoved(boardId: $boardId) {
+      list {
+        id
+        index
+      }
+      sourceIndex
+      destinationIndex
+      userId
+    }
+  }
+`
+
+/**
+ * __useListMovedSubscription__
+ *
+ * To run a query within a React component, call `useListMovedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useListMovedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListMovedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useListMovedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<ListMovedSubscription, ListMovedSubscriptionVariables>
+) {
+  return Apollo.useSubscription<ListMovedSubscription, ListMovedSubscriptionVariables>(
+    ListMovedDocument,
+    baseOptions
+  )
+}
+
+export type ListMovedSubscriptionHookResult = ReturnType<typeof useListMovedSubscription>
+export type ListMovedSubscriptionResult = Apollo.SubscriptionResult<ListMovedSubscription>
+export const ListDeletedDocument = gql`
+  subscription ListDeleted($boardId: String!) {
+    listDeleted(boardId: $boardId)
+  }
+`
+
+/**
+ * __useListDeletedSubscription__
+ *
+ * To run a query within a React component, call `useListDeletedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useListDeletedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListDeletedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useListDeletedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    ListDeletedSubscription,
+    ListDeletedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<ListDeletedSubscription, ListDeletedSubscriptionVariables>(
+    ListDeletedDocument,
+    baseOptions
+  )
+}
+
+export type ListDeletedSubscriptionHookResult = ReturnType<typeof useListDeletedSubscription>
+export type ListDeletedSubscriptionResult = Apollo.SubscriptionResult<ListDeletedSubscription>
 export const RemoveUserDocument = gql`
   mutation RemoveUser($teamId: String!, $userId: String!) {
     removeUser(teamId: $teamId, userId: $userId)
