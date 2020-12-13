@@ -13,7 +13,6 @@ import {
   useLoginMutation,
 } from "../../../generated/graphql"
 import { H4 } from "../common/Text"
-import { useRouter } from "next/router"
 import Box from "../common/Box"
 
 const layout = {
@@ -21,9 +20,8 @@ const layout = {
 } as FormProps
 
 const LoginForm = () => {
-  const [login, { loading, error: gqlError, data }] = useLoginMutation()
+  const [login, { error: gqlError }] = useLoginMutation()
   const [submitted, setSubmitted] = useState(false)
-  const router = useRouter()
 
   const useFormMethods = useForm<LoginInput>({
     defaultValues: {
@@ -51,8 +49,6 @@ const LoginForm = () => {
       setSubmitted(false)
       return
     }
-
-    await router.replace("/")
   }
 
   const { handleSubmit } = useFormMethods
