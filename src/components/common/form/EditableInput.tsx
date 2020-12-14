@@ -38,7 +38,7 @@ function EditableText({ text, label, onConfirm, success, children }: EditableInp
     mode: "onBlur",
     reValidateMode: "onBlur",
   })
-  const { handleSubmit, errors, reset } = useFormMethods
+  const { handleSubmit, reset } = useFormMethods
 
   const edit = () => {
     setReopened(true)
@@ -55,7 +55,6 @@ function EditableText({ text, label, onConfirm, success, children }: EditableInp
     setReopened(false)
   }
 
-  useEffect(() => () => setEditing(false), [])
   useEffect(() => {
     if (editing) reset({ text })
   }, [editing])

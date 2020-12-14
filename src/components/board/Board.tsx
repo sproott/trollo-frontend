@@ -67,6 +67,8 @@ import { Button, Modal } from "antd"
 import { DroppableType } from "../../constants/DroppableType"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 import { findNestedValue, removeNestedValue } from "../../lib/nestedPathUtil"
+import Link from "next/link"
+import { ArrowBack } from "./board.styled"
 
 const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -392,6 +394,9 @@ const Board = ({ boardId }: { boardId: string }) => {
     <Content>
       <Box flex justifyContent="space-between">
         <Box flex justifyContent="space-between" alignItems="center" gap="20px">
+          <Link href="/">
+            <ArrowBack />
+          </Link>
           <H0>{data.board.name}</H0>
           {data.board.isOwn && (
             <EditOutlined

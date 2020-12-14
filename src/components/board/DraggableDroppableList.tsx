@@ -52,9 +52,9 @@ const DraggableDroppableList = ({
             style={{
               ...provided.draggableProps.style,
             }}
-            xs={12}
-            sm={10}
-            md={8}
+            xs={24}
+            sm={18}
+            md={12}
             lg={6}
             xl={4}
           >

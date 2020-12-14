@@ -21,8 +21,7 @@ export const TryItArrow = styled(ArrowRightOutlined)`
   font-size: 32px;
   cursor: pointer;
   padding-left: 10px;
-
-  transition: 0.3s;
+  transition: 0.3s ease;
 
   :hover {
     color: ${theme.blue[0]};
