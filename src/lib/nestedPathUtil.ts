@@ -106,9 +106,11 @@ export function removeNestedValue<
   TKey2 extends GetKey<TBase2>
 >(base: TBase1, keys: [TKey1, TKey2], findCondition: (obj: TResult) => boolean): void
 // @ts-ignore
-export function removeNestedValue<TBase1,
+export function removeNestedValue<
+  TBase1,
   TResult extends GetNextType<TBase1, TKey1>,
-  TKey1 extends GetKey<TBase1>>(base: TBase1, keys: [TKey1], findCondition: (obj: TResult) => boolean): void {
+  TKey1 extends GetKey<TBase1>
+>(base: TBase1, keys: [TKey1], findCondition: (obj: TResult) => boolean): void {
   const arr = findParentOfNestedValue(base, keys, findCondition)
   arr.splice(arr.findIndex(findCondition), 1)
 }

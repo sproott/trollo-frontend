@@ -2462,17 +2462,17 @@ export function useTeamRenamedSubscription(
 export type TeamRenamedSubscriptionHookResult = ReturnType<typeof useTeamRenamedSubscription>
 export type TeamRenamedSubscriptionResult = Apollo.SubscriptionResult<TeamRenamedSubscription>
 export const TeamUserAddedDocument = gql`
-    subscription TeamUserAdded($teamId: String) {
-        teamUserAdded(teamId: $teamId) {
-            team {
-                ...TeamInfo
-            }
-            user {
-                ...UserInfo
-            }
-        }
+  subscription TeamUserAdded($teamId: String) {
+    teamUserAdded(teamId: $teamId) {
+      team {
+        ...TeamInfo
+      }
+      user {
+        ...UserInfo
+      }
     }
-    ${TeamInfoFragmentDoc}
+  }
+  ${TeamInfoFragmentDoc}
   ${UserInfoFragmentDoc}
 `
 
