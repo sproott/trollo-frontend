@@ -16,8 +16,9 @@ function AddUser({ teamId }: { teamId: string }) {
     defaultValues: { username: "" },
   })
   const { handleSubmit, reset: resetForm } = useFormMethods
-  const [addUser] = useAddUserMutation()
+  const [addUser, { data, loading }] = useAddUserMutation()
   const [error, setError] = useState<string>()
+  const [submitted, setSubmitted] = useState(false)
 
   useEffect(
     () => () => {
@@ -27,30 +28,33 @@ function AddUser({ teamId }: { teamId: string }) {
     []
   )
 
-  const onSubmit = ({ username }: FormData) => {
+  const onSubmit = async ({ username }: FormData) => {
     if (!username || username.length === 0) {
       setError(undefined)
       return
     }
-    addUser({
+    await addUser({
       variables: {
         username,
         teamId,
       },
-      update: (store, { data }) => {
-        if (!!data.addUser.userId) {
-          resetForm()
-          setError(undefined)
-        } else if (data.addUser.doesNotExist) {
-          setError("User doesn't exist")
-          return
-        } else if (data.addUser.alreadyInTeam) {
-          setError("User already in team")
-        } else {
-          setError("Cannot add self")
-        }
-      },
     })
+    setSubmitted(true)
+  }
+
+  if (submitted && !loading && !!data) {
+    if (!!data.addUser.userId) {
+      resetForm()
+      setError(undefined)
+    } else if (data.addUser.doesNotExist) {
+      setError("User doesn't exist")
+      return
+    } else if (data.addUser.alreadyInTeam) {
+      setError("User already in team")
+    } else {
+      setError("Cannot add self")
+    }
+    setSubmitted(false)
   }
 
   return (

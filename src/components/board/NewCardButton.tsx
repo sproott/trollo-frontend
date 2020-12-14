@@ -1,43 +1,22 @@
 import React from "react"
 import TextInput from "../common/form/TextInput"
 import {
-  BoardDocument,
-  BoardQuery,
   BoardQueryListFragment,
-  Card,
-  List,
   MutationCreateCardArgs,
   useCreateCardMutation,
-  User,
 } from "../../../generated/graphql"
-import produce from "immer"
 import ModalForm from "../common/form/ModalForm"
 import { CreateCardButton } from "./board.styled"
 import { PlusOutlined } from "@ant-design/icons"
 import { Centered } from "../common/Centered"
 import TextArea from "../common/form/TextArea"
 
-const NewCardButton = ({ boardId, list }: { boardId: string; list: BoardQueryListFragment }) => {
+const NewCardButton = ({ list }: { list: BoardQueryListFragment }) => {
   const [createCard, { loading, data }] = useCreateCardMutation()
 
   const onSubmit = async (formData: MutationCreateCardArgs) => {
     await createCard({
       variables: { listId: list.id, ...formData },
-      update: (store, { data }) => {
-        if (!data.createCard.exists) {
-          const boardData = store.readQuery<BoardQuery>({
-            query: BoardDocument,
-            variables: { id: boardId },
-          })
-
-          store.writeQuery<BoardQuery>({
-            query: BoardDocument,
-            data: produce(boardData, (x) => {
-              x.board.lists.find((l) => l.id === list.id).cards.push(data.createCard.card)
-            }),
-          })
-        }
-      },
     })
   }
 

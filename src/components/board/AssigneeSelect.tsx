@@ -1,9 +1,6 @@
 import React from "react"
-import Select, { SelectItem } from "../common/form/Select"
-import { useForm } from "react-hook-form"
+import Select from "../common/form/Select"
 import {
-  BoardDocument,
-  BoardQuery,
   ParticipantUserFragment,
   useAssignUserMutation,
   UserInfoFragment,
@@ -11,19 +8,12 @@ import {
 } from "../../../generated/graphql"
 import Box from "../common/Box"
 import { Div } from "../common/Text"
-import produce from "immer"
-
-type FormData = {
-  assignee: SelectItem
-}
 
 function AssigneeSelect({
-  boardId,
   cardId,
   assignee,
   participants,
 }: {
-  boardId: string
   cardId: string
   assignee: UserInfoFragment
   participants: ParticipantUserFragment[]
@@ -31,48 +21,14 @@ function AssigneeSelect({
   const [assignUser] = useAssignUserMutation()
   const [unassignUser] = useUnassignUserMutation()
 
-  const onChange = (userId: string) => {
+  const onChange = async (userId: string) => {
     if (userId != null) {
-      assignUser({
+      await assignUser({
         variables: { cardId: cardId, userId },
-        update: (store, { data: mutationData }) => {
-          if (mutationData.assignUser) {
-            const board = store.readQuery<BoardQuery>({
-              query: BoardDocument,
-              variables: { id: boardId },
-            })
-            const username = participants.map((p) => p.user).find((u) => u.id === userId).username
-            store.writeQuery<BoardQuery>({
-              query: BoardDocument,
-              variables: { id: boardId },
-              data: produce(board, (x) => {
-                x.board.lists.flatMap((l) => l.cards).find((c) => c.id === cardId).assignee = {
-                  id: userId,
-                  username,
-                }
-              }),
-            })
-          }
-        },
       })
     } else {
-      unassignUser({
+      await unassignUser({
         variables: { cardId: cardId },
-        update: (store, { data: mutationData }) => {
-          if (mutationData.unassignUser) {
-            const board = store.readQuery<BoardQuery>({
-              query: BoardDocument,
-              variables: { id: boardId },
-            })
-            store.writeQuery<BoardQuery>({
-              query: BoardDocument,
-              variables: { id: boardId },
-              data: produce(board, (x) => {
-                x.board.lists.flatMap((l) => l.cards).find((c) => c.id === cardId).assignee = null
-              }),
-            })
-          }
-        },
       })
     }
   }
@@ -81,7 +37,7 @@ function AssigneeSelect({
     <Box flex fullWidth alignItems="center" gap="7px">
       <Div>Assignee: </Div>
       <Select
-        defaultValue={assignee?.id}
+        value={assignee?.id}
         selectItems={[
           { value: null, label: "" },
           ...participants

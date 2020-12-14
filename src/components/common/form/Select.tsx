@@ -7,25 +7,17 @@ export type SelectItem = {
 }
 
 const Select = ({
-  defaultValue,
+  value,
   selectItems,
   onChange,
   style,
 }: {
-  defaultValue: string
+  value: string
   selectItems: SelectItem[]
   onChange: (value: string) => void
   style?: CSSProperties
 }) => {
-  return (
-    <_Select defaultValue={defaultValue} onChange={onChange} style={style}>
-      {selectItems.map((selectItem) => (
-        <_Select.Option key={selectItem.value} value={selectItem.value}>
-          {selectItem.label}
-        </_Select.Option>
-      ))}
-    </_Select>
-  )
+  return <_Select value={value} onChange={onChange} style={style} options={selectItems} />
 }
 
 export default Select

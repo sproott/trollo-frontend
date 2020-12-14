@@ -1,8 +1,6 @@
 import React, { useState } from "react"
 import { Draggable } from "react-beautiful-dnd"
 import {
-  BoardDocument,
-  BoardQuery,
   BoardQueryCardFragment,
   ParticipantUserFragment,
   useDeleteCardMutation,
@@ -11,21 +9,18 @@ import {
 } from "../../../generated/graphql"
 import { LineClamp } from "../common/Text"
 import { CardInner } from "./board.styled"
-import { Button, Modal, Select } from "antd"
+import { Button, Modal } from "antd"
 import Box from "../common/Box"
 import EditableText from "../common/form/EditableText"
-import produce from "immer"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 import EditableTextArea from "../common/form/EditableTextArea"
 import AssigneeSelect from "./AssigneeSelect"
 
 const DraggableCard = ({
   card,
-  boardId,
   participants,
 }: {
   card: BoardQueryCardFragment
-  boardId: string
   participants: ParticipantUserFragment[]
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -40,27 +35,6 @@ const DraggableCard = ({
   const deleteCard = async () => {
     await deleteCardMutate({
       variables: { id: card.id },
-      update: (store, { data }) => {
-        if (data.deleteCard) {
-          const board = store.readQuery<BoardQuery>({
-            query: BoardDocument,
-            variables: { id: boardId },
-          })
-          store.writeQuery<BoardQuery>({
-            query: BoardDocument,
-            data: produce(board, (x) => {
-              const cards = x.board.lists.find(
-                (l) => l.cards.findIndex((c) => c.id === card.id) !== -1
-              ).cards
-              cards.splice(
-                cards.findIndex((c) => c.id === card.id),
-                1
-              )
-              cards.forEach((card, index) => (card.index = index))
-            }),
-          })
-        }
-      },
     })
     setConfirmationVisible(false)
     setModalVisible(false)
@@ -71,20 +45,6 @@ const DraggableCard = ({
         name: newName,
         cardId: card.id,
       },
-      update: (store, { data }) => {
-        if (data.renameCard.success && !data.renameCard.exists) {
-          const board = store.readQuery<BoardQuery>({
-            query: BoardDocument,
-            variables: { id: boardId },
-          })
-          store.writeQuery<BoardQuery>({
-            query: BoardDocument,
-            data: produce(board, (x) => {
-              x.board.lists.flatMap((l) => l.cards).find((c) => c.id === card.id).name = newName
-            }),
-          })
-        }
-      },
     })
   }
   const updateDescription = async (newDescription: string) => {
@@ -92,22 +52,6 @@ const DraggableCard = ({
       variables: {
         description: newDescription,
         cardId: card.id,
-      },
-      update: (store, { data }) => {
-        if (data.updateCardDescription) {
-          const board = store.readQuery<BoardQuery>({
-            query: BoardDocument,
-            variables: { id: boardId },
-          })
-          store.writeQuery<BoardQuery>({
-            query: BoardDocument,
-            data: produce(board, (x) => {
-              x.board.lists
-                .flatMap((l) => l.cards)
-                .find((c) => c.id === card.id).description = newDescription
-            }),
-          })
-        }
       },
     })
   }
@@ -139,6 +83,7 @@ const DraggableCard = ({
             Delete card
           </Button>
         }
+        destroyOnClose
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
@@ -155,12 +100,7 @@ const DraggableCard = ({
             success={updateDescriptionData?.updateCardDescription}
             optional
           />
-          <AssigneeSelect
-            assignee={card.assignee}
-            boardId={boardId}
-            cardId={card.id}
-            participants={participants}
-          />
+          <AssigneeSelect assignee={card.assignee} cardId={card.id} participants={participants} />
         </Box>
       </Modal>
       <ConfirmDeleteModal

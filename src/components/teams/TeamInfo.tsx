@@ -101,6 +101,7 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
             Delete team
           </Button>
         }
+        destroyOnClose
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText

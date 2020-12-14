@@ -4,10 +4,29 @@ import {
   BoardDeletedSubscription,
   BoardDocument,
   BoardQuery,
+  BoardQueryCardFragment,
   BoardQueryListFragment,
   BoardRenamedDocument,
   BoardRenamedSubscription,
   BoardRenamedSubscriptionVariables,
+  CardCreatedDocument,
+  CardCreatedSubscription,
+  CardCreatedSubscriptionVariables,
+  CardDeletedDocument,
+  CardDeletedSubscription,
+  CardDeletedSubscriptionVariables,
+  CardMovedDocument,
+  CardMovedSubscription,
+  CardMovedSubscriptionVariables,
+  CardUpdatedDocument,
+  CardUpdatedSubscription,
+  CardUpdatedSubscriptionVariables,
+  CardUserAssignedDocument,
+  CardUserAssignedSubscription,
+  CardUserAssignedSubscriptionVariables,
+  CardUserUnassignedDocument,
+  CardUserUnassignedSubscription,
+  CardUserUnassignedSubscriptionVariables,
   ListCreatedDocument,
   ListCreatedSubscription,
   ListCreatedSubscriptionVariables,
@@ -20,6 +39,12 @@ import {
   ListRenamedDocument,
   ListRenamedSubscription,
   ListRenamedSubscriptionVariables,
+  TeamUserAddedDocument,
+  TeamUserAddedSubscription,
+  TeamUserAddedSubscriptionVariables,
+  TeamUserRemovedDocument,
+  TeamUserRemovedSubscription,
+  TeamUserRemovedSubscriptionVariables,
   useBoardQuery,
   useCurrentUserQuery,
   useDeleteBoardMutation,
@@ -41,7 +66,7 @@ import EditableText from "../common/form/EditableText"
 import { Button, Modal } from "antd"
 import { DroppableType } from "../../constants/DroppableType"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
-import { removeNestedValue } from "../../lib/nestedPathUtil"
+import { findNestedValue, removeNestedValue } from "../../lib/nestedPathUtil"
 
 const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -59,54 +84,58 @@ const Board = ({ boardId }: { boardId: string }) => {
   const [moveList] = useMoveListMutation()
   const [rename, { data: renameMutationData }] = useRenameBoardMutation()
   const [deleteBoardMutate, { data: deleteMutationData }] = useDeleteBoardMutation()
+  const [subscribed, setSubscribed] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     refetch()
-    subscribeToMore<BoardRenamedSubscription, BoardRenamedSubscriptionVariables>({
-      document: BoardRenamedDocument,
-      variables: { boardId },
-      updateQuery: (prev, { subscriptionData: { data } }) => {
-        return produce(prev, (x) => {
-          Object.assign(x.board, data.boardRenamed)
-        })
-      },
-    })
-    subscribeToMore<BoardDeletedSubscription>({
-      document: BoardDeletedDocument,
-      updateQuery: (prev, { subscriptionData: { data } }) => {
-        return produce(prev, (x) => {
-          x.board = null
-        })
-      },
-    })
-    subscribeToMore<ListCreatedSubscription, ListCreatedSubscriptionVariables>({
-      document: ListCreatedDocument,
-      variables: { boardId },
-      updateQuery: (prev, { subscriptionData: { data } }) => {
-        return produce(prev, (x) => {
-          x.board.lists.push(data.listCreated as BoardQueryListFragment)
-        })
-      },
-    })
-    subscribeToMore<ListRenamedSubscription, ListRenamedSubscriptionVariables>({
-      document: ListRenamedDocument,
-      variables: { boardId },
-      updateQuery: (prev, { subscriptionData: { data } }) => {
-        return produce(prev, (x) => {
-          Object.assign(
-            x.board.lists.find((l) => l.id === data.listRenamed.id),
-            data.listRenamed
-          )
-        })
-      },
-    })
-    subscribeToMore<ListMovedSubscription, ListMovedSubscriptionVariables>({
-      document: ListMovedDocument,
-      variables: { boardId },
-      updateQuery: (prev, { subscriptionData: { data } }) => {
-        return produce(prev, (x) => {
-          if (userId !== data.listMoved.userId) {
+  }, [])
+
+  useEffect(() => {
+    if (!subscribed && !!data?.board) {
+      subscribeToMore<BoardRenamedSubscription, BoardRenamedSubscriptionVariables>({
+        document: BoardRenamedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            Object.assign(x.board, data.boardRenamed)
+          })
+        },
+      })
+      subscribeToMore<BoardDeletedSubscription>({
+        document: BoardDeletedDocument,
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            x.board = null
+          })
+        },
+      })
+      subscribeToMore<ListCreatedSubscription, ListCreatedSubscriptionVariables>({
+        document: ListCreatedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            x.board.lists.push(data.listCreated as BoardQueryListFragment)
+          })
+        },
+      })
+      subscribeToMore<ListRenamedSubscription, ListRenamedSubscriptionVariables>({
+        document: ListRenamedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            Object.assign(
+              x.board.lists.find((l) => l.id === data.listRenamed.id),
+              data.listRenamed
+            )
+          })
+        },
+      })
+      subscribeToMore<ListMovedSubscription, ListMovedSubscriptionVariables>({
+        document: ListMovedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
             // remove list from source
             const [list] = x.board.lists.splice(data.listMoved.sourceIndex, 1)
 
@@ -115,25 +144,139 @@ const Board = ({ boardId }: { boardId: string }) => {
 
             // reindex lists
             x.board.lists.forEach((list, index) => (list.index = index))
-          }
-        })
-      },
-    })
-    subscribeToMore<ListDeletedSubscription, ListDeletedSubscriptionVariables>({
-      document: ListDeletedDocument,
-      variables: { boardId },
-      updateQuery: (prev, { subscriptionData: { data } }) => {
-        return produce(prev, (x) => {
-          removeNestedValue(
-            x,
-            ["board", "lists"],
-            (list: BoardQueryListFragment) => list.id === data.listDeleted
-          )
-          x.board.lists.forEach((list, index) => (list.index = index))
-        })
-      },
-    })
-  }, [])
+          })
+        },
+      })
+      subscribeToMore<ListDeletedSubscription, ListDeletedSubscriptionVariables>({
+        document: ListDeletedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            removeNestedValue(
+              x,
+              ["board", "lists"],
+              (list: BoardQueryListFragment) => list.id === data.listDeleted
+            )
+            x.board.lists.forEach((list, index) => (list.index = index))
+          })
+        },
+      })
+      subscribeToMore<CardCreatedSubscription, CardCreatedSubscriptionVariables>({
+        document: CardCreatedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            x.board.lists
+              .find((l) => l.id === data.cardCreated.listId)
+              .cards.push(data.cardCreated.card as BoardQueryCardFragment)
+          })
+        },
+      })
+      subscribeToMore<CardUpdatedSubscription, CardUpdatedSubscriptionVariables>({
+        document: CardUpdatedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            Object.assign(
+              findNestedValue(x.board, ["lists", "cards"], (c) => c.id === data.cardUpdated.id),
+              data.cardUpdated
+            )
+          })
+        },
+      })
+      subscribeToMore<CardMovedSubscription, CardMovedSubscriptionVariables>({
+        document: CardMovedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            // find the source and destination lists
+            const sourceList = x.board.lists.find(
+              (l) => !!l.cards.find((c) => c.id === data.cardMoved.card.id)
+            )
+
+            const destinationList =
+              sourceList.id === data.cardMoved.destinationListId
+                ? sourceList
+                : x.board.lists.find((list) => list.id === data.cardMoved.destinationListId)
+
+            // remove card from source
+            const [card] = sourceList.cards.splice(data.cardMoved.sourceIndex, 1)
+
+            // insert card in destination
+            destinationList.cards.splice(data.cardMoved.destinationIndex, 0, card)
+
+            // reindex cards in lists
+            sourceList.cards.forEach((card, index) => (card.index = index))
+            destinationList.cards.forEach((card, index) => (card.index = index))
+          })
+        },
+      })
+      subscribeToMore<CardDeletedSubscription, CardDeletedSubscriptionVariables>({
+        document: CardDeletedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            removeNestedValue(x.board, ["lists", "cards"], (c) => c.id === data.cardDeleted.cardId)
+          })
+        },
+      })
+      subscribeToMore<CardUserAssignedSubscription, CardUserAssignedSubscriptionVariables>({
+        document: CardUserAssignedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            const card = findNestedValue(
+              x.board,
+              ["lists", "cards"],
+              (c) => c.id === data.cardUserAssigned.cardId
+            )
+            card.assignee = data.cardUserAssigned.user
+          })
+        },
+      })
+      subscribeToMore<CardUserUnassignedSubscription, CardUserUnassignedSubscriptionVariables>({
+        document: CardUserUnassignedDocument,
+        variables: { boardId },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            const card = findNestedValue(
+              x.board,
+              ["lists", "cards"],
+              (c) => c.id === data.cardUserUnassigned.cardId
+            )
+            card.assignee = null
+          })
+        },
+      })
+      subscribeToMore<TeamUserAddedSubscription, TeamUserAddedSubscriptionVariables>({
+        document: TeamUserAddedDocument,
+        variables: { teamId: data.board.team.id },
+      })
+      subscribeToMore<TeamUserRemovedSubscription, TeamUserRemovedSubscriptionVariables>({
+        document: TeamUserRemovedDocument,
+        variables: { teamId: data.board.team.id },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            if (userId === data.teamUserRemoved.userId) {
+              x.board = null
+            } else {
+              removeNestedValue(
+                x.board,
+                ["team", "participants"],
+                (p) => p.user.id === data.teamUserRemoved.userId
+              )
+              x.board.lists
+                .flatMap((l) => l.cards)
+                .forEach((c) => {
+                  if (c.assignee?.id === data.teamUserRemoved.userId) c.assignee = null
+                })
+            }
+          })
+        },
+      })
+      setSubscribed(true)
+    }
+  }, [data])
 
   const renameBoard = async (newName: string) => {
     await rename({
@@ -284,6 +427,7 @@ const Board = ({ boardId }: { boardId: string }) => {
             Delete board
           </Button>
         }
+        destroyOnClose
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText

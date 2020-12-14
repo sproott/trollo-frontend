@@ -90,6 +90,35 @@ export type CreateCardResponse = {
   exists?: Maybe<Scalars["Boolean"]>
 }
 
+export type CardCreatedPayload = {
+  __typename?: "CardCreatedPayload"
+  card: Card
+  listId: Scalars["String"]
+  boardId: Scalars["String"]
+}
+
+export type CardMovedPayload = {
+  __typename?: "CardMovedPayload"
+  card: Card
+  destinationListId: Scalars["String"]
+  sourceIndex: Scalars["Float"]
+  destinationIndex: Scalars["Float"]
+  boardId: Scalars["String"]
+}
+
+export type CardUserAssignedPayload = {
+  __typename?: "CardUserAssignedPayload"
+  cardId: Scalars["String"]
+  boardId: Scalars["String"]
+  user: User
+}
+
+export type CardIdBoardIdPayload = {
+  __typename?: "CardIdBoardIdPayload"
+  cardId: Scalars["String"]
+  boardId: Scalars["String"]
+}
+
 export type CreateListResponse = {
   __typename?: "CreateListResponse"
   list?: Maybe<List>
@@ -101,7 +130,6 @@ export type ListMovedPayload = {
   list: List
   sourceIndex: Scalars["Float"]
   destinationIndex: Scalars["Float"]
-  userId: Scalars["String"]
 }
 
 export type CreateTeamResponse = {
@@ -314,6 +342,12 @@ export type Subscription = {
   boardCreated: BoardCreatedPayload
   boardRenamed: Board
   boardDeleted: Scalars["String"]
+  cardCreated: CardCreatedPayload
+  cardMoved: CardMovedPayload
+  cardUpdated: Card
+  cardDeleted: CardIdBoardIdPayload
+  cardUserAssigned: CardUserAssignedPayload
+  cardUserUnassigned: CardIdBoardIdPayload
   listCreated: List
   listMoved: ListMovedPayload
   listRenamed: List
@@ -332,6 +366,30 @@ export type SubscriptionBoardDeletedArgs = {
   boardId?: Maybe<Scalars["String"]>
 }
 
+export type SubscriptionCardCreatedArgs = {
+  boardId: Scalars["String"]
+}
+
+export type SubscriptionCardMovedArgs = {
+  boardId: Scalars["String"]
+}
+
+export type SubscriptionCardUpdatedArgs = {
+  boardId: Scalars["String"]
+}
+
+export type SubscriptionCardDeletedArgs = {
+  boardId: Scalars["String"]
+}
+
+export type SubscriptionCardUserAssignedArgs = {
+  boardId: Scalars["String"]
+}
+
+export type SubscriptionCardUserUnassignedArgs = {
+  boardId: Scalars["String"]
+}
+
 export type SubscriptionListCreatedArgs = {
   boardId: Scalars["String"]
 }
@@ -346,6 +404,14 @@ export type SubscriptionListRenamedArgs = {
 
 export type SubscriptionListDeletedArgs = {
   boardId: Scalars["String"]
+}
+
+export type SubscriptionTeamUserAddedArgs = {
+  teamId?: Maybe<Scalars["String"]>
+}
+
+export type SubscriptionTeamUserRemovedArgs = {
+  teamId?: Maybe<Scalars["String"]>
 }
 
 export type TeamsQueryBoardFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
@@ -482,6 +548,66 @@ export type UnassignUserMutationVariables = Exact<{
 
 export type UnassignUserMutation = { __typename?: "Mutation" } & Pick<Mutation, "unassignUser">
 
+export type CardCreatedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type CardCreatedSubscription = { __typename?: "Subscription" } & {
+  cardCreated: { __typename?: "CardCreatedPayload" } & Pick<CardCreatedPayload, "listId"> & {
+      card: { __typename?: "Card" } & Pick<Card, "id" | "name" | "description">
+    }
+}
+
+export type CardMovedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type CardMovedSubscription = { __typename?: "Subscription" } & {
+  cardMoved: { __typename?: "CardMovedPayload" } & Pick<
+    CardMovedPayload,
+    "sourceIndex" | "destinationIndex" | "destinationListId"
+  > & {
+      card: { __typename?: "Card" } & Pick<Card, "id" | "index">
+    }
+}
+
+export type CardUpdatedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type CardUpdatedSubscription = { __typename?: "Subscription" } & {
+  cardUpdated: { __typename?: "Card" } & Pick<Card, "id" | "name" | "description">
+}
+
+export type CardDeletedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type CardDeletedSubscription = { __typename?: "Subscription" } & {
+  cardDeleted: { __typename?: "CardIdBoardIdPayload" } & Pick<CardIdBoardIdPayload, "cardId">
+}
+
+export type CardUserAssignedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type CardUserAssignedSubscription = { __typename?: "Subscription" } & {
+  cardUserAssigned: { __typename?: "CardUserAssignedPayload" } & Pick<
+    CardUserAssignedPayload,
+    "cardId" | "boardId"
+  > & {
+      user: { __typename?: "User" } & UserInfoFragment
+    }
+}
+
+export type CardUserUnassignedSubscriptionVariables = Exact<{
+  boardId: Scalars["String"]
+}>
+
+export type CardUserUnassignedSubscription = { __typename?: "Subscription" } & {
+  cardUserUnassigned: { __typename?: "CardIdBoardIdPayload" } & Pick<CardIdBoardIdPayload, "cardId">
+}
+
 export type BoardQueryListFragment = { __typename?: "List" } & Pick<
   List,
   "id" | "name" | "index"
@@ -545,7 +671,7 @@ export type ListMovedSubscriptionVariables = Exact<{
 export type ListMovedSubscription = { __typename?: "Subscription" } & {
   listMoved: { __typename?: "ListMovedPayload" } & Pick<
     ListMovedPayload,
-    "sourceIndex" | "destinationIndex" | "userId"
+    "sourceIndex" | "destinationIndex"
   > & {
       list: { __typename?: "List" } & Pick<List, "id" | "index">
     }
@@ -640,7 +766,9 @@ export type TeamRenamedSubscription = { __typename?: "Subscription" } & {
   teamRenamed: { __typename?: "Team" } & Pick<Team, "id" | "name">
 }
 
-export type TeamUserAddedSubscriptionVariables = Exact<{ [key: string]: never }>
+export type TeamUserAddedSubscriptionVariables = Exact<{
+  teamId?: Maybe<Scalars["String"]>
+}>
 
 export type TeamUserAddedSubscription = { __typename?: "Subscription" } & {
   teamUserAdded: { __typename?: "TeamUserAddedPayload" } & {
@@ -649,7 +777,9 @@ export type TeamUserAddedSubscription = { __typename?: "Subscription" } & {
   }
 }
 
-export type TeamUserRemovedSubscriptionVariables = Exact<{ [key: string]: never }>
+export type TeamUserRemovedSubscriptionVariables = Exact<{
+  teamId?: Maybe<Scalars["String"]>
+}>
 
 export type TeamUserRemovedSubscription = { __typename?: "Subscription" } & {
   teamUserRemoved: { __typename?: "TeamUserRemovedPayload" } & Pick<
@@ -1413,6 +1543,253 @@ export type UnassignUserMutationOptions = Apollo.BaseMutationOptions<
   UnassignUserMutation,
   UnassignUserMutationVariables
 >
+export const CardCreatedDocument = gql`
+  subscription CardCreated($boardId: String!) {
+    cardCreated(boardId: $boardId) {
+      card {
+        id
+        name
+        description
+      }
+      listId
+    }
+  }
+`
+
+/**
+ * __useCardCreatedSubscription__
+ *
+ * To run a query within a React component, call `useCardCreatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCardCreatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCardCreatedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useCardCreatedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    CardCreatedSubscription,
+    CardCreatedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<CardCreatedSubscription, CardCreatedSubscriptionVariables>(
+    CardCreatedDocument,
+    baseOptions
+  )
+}
+
+export type CardCreatedSubscriptionHookResult = ReturnType<typeof useCardCreatedSubscription>
+export type CardCreatedSubscriptionResult = Apollo.SubscriptionResult<CardCreatedSubscription>
+export const CardMovedDocument = gql`
+  subscription CardMoved($boardId: String!) {
+    cardMoved(boardId: $boardId) {
+      card {
+        id
+        index
+      }
+      sourceIndex
+      destinationIndex
+      destinationListId
+    }
+  }
+`
+
+/**
+ * __useCardMovedSubscription__
+ *
+ * To run a query within a React component, call `useCardMovedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCardMovedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCardMovedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useCardMovedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<CardMovedSubscription, CardMovedSubscriptionVariables>
+) {
+  return Apollo.useSubscription<CardMovedSubscription, CardMovedSubscriptionVariables>(
+    CardMovedDocument,
+    baseOptions
+  )
+}
+
+export type CardMovedSubscriptionHookResult = ReturnType<typeof useCardMovedSubscription>
+export type CardMovedSubscriptionResult = Apollo.SubscriptionResult<CardMovedSubscription>
+export const CardUpdatedDocument = gql`
+  subscription CardUpdated($boardId: String!) {
+    cardUpdated(boardId: $boardId) {
+      id
+      name
+      description
+    }
+  }
+`
+
+/**
+ * __useCardUpdatedSubscription__
+ *
+ * To run a query within a React component, call `useCardUpdatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCardUpdatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCardUpdatedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useCardUpdatedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    CardUpdatedSubscription,
+    CardUpdatedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<CardUpdatedSubscription, CardUpdatedSubscriptionVariables>(
+    CardUpdatedDocument,
+    baseOptions
+  )
+}
+
+export type CardUpdatedSubscriptionHookResult = ReturnType<typeof useCardUpdatedSubscription>
+export type CardUpdatedSubscriptionResult = Apollo.SubscriptionResult<CardUpdatedSubscription>
+export const CardDeletedDocument = gql`
+  subscription CardDeleted($boardId: String!) {
+    cardDeleted(boardId: $boardId) {
+      cardId
+    }
+  }
+`
+
+/**
+ * __useCardDeletedSubscription__
+ *
+ * To run a query within a React component, call `useCardDeletedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCardDeletedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCardDeletedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useCardDeletedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    CardDeletedSubscription,
+    CardDeletedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<CardDeletedSubscription, CardDeletedSubscriptionVariables>(
+    CardDeletedDocument,
+    baseOptions
+  )
+}
+
+export type CardDeletedSubscriptionHookResult = ReturnType<typeof useCardDeletedSubscription>
+export type CardDeletedSubscriptionResult = Apollo.SubscriptionResult<CardDeletedSubscription>
+export const CardUserAssignedDocument = gql`
+  subscription CardUserAssigned($boardId: String!) {
+    cardUserAssigned(boardId: $boardId) {
+      cardId
+      boardId
+      user {
+        ...UserInfo
+      }
+    }
+  }
+  ${UserInfoFragmentDoc}
+`
+
+/**
+ * __useCardUserAssignedSubscription__
+ *
+ * To run a query within a React component, call `useCardUserAssignedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCardUserAssignedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCardUserAssignedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useCardUserAssignedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    CardUserAssignedSubscription,
+    CardUserAssignedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<
+    CardUserAssignedSubscription,
+    CardUserAssignedSubscriptionVariables
+  >(CardUserAssignedDocument, baseOptions)
+}
+
+export type CardUserAssignedSubscriptionHookResult = ReturnType<
+  typeof useCardUserAssignedSubscription
+>
+export type CardUserAssignedSubscriptionResult = Apollo.SubscriptionResult<CardUserAssignedSubscription>
+export const CardUserUnassignedDocument = gql`
+  subscription CardUserUnassigned($boardId: String!) {
+    cardUserUnassigned(boardId: $boardId) {
+      cardId
+    }
+  }
+`
+
+/**
+ * __useCardUserUnassignedSubscription__
+ *
+ * To run a query within a React component, call `useCardUserUnassignedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCardUserUnassignedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCardUserUnassignedSubscription({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useCardUserUnassignedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    CardUserUnassignedSubscription,
+    CardUserUnassignedSubscriptionVariables
+  >
+) {
+  return Apollo.useSubscription<
+    CardUserUnassignedSubscription,
+    CardUserUnassignedSubscriptionVariables
+  >(CardUserUnassignedDocument, baseOptions)
+}
+
+export type CardUserUnassignedSubscriptionHookResult = ReturnType<
+  typeof useCardUserUnassignedSubscription
+>
+export type CardUserUnassignedSubscriptionResult = Apollo.SubscriptionResult<CardUserUnassignedSubscription>
 export const CreateListDocument = gql`
   mutation createList($boardId: String!, $name: String!) {
     createList(boardId: $boardId, name: $name) {
@@ -1681,7 +2058,6 @@ export const ListMovedDocument = gql`
       }
       sourceIndex
       destinationIndex
-      userId
     }
   }
 `
@@ -2086,17 +2462,17 @@ export function useTeamRenamedSubscription(
 export type TeamRenamedSubscriptionHookResult = ReturnType<typeof useTeamRenamedSubscription>
 export type TeamRenamedSubscriptionResult = Apollo.SubscriptionResult<TeamRenamedSubscription>
 export const TeamUserAddedDocument = gql`
-  subscription TeamUserAdded {
-    teamUserAdded {
-      team {
-        ...TeamInfo
-      }
-      user {
-        ...UserInfo
-      }
+    subscription TeamUserAdded($teamId: String) {
+        teamUserAdded(teamId: $teamId) {
+            team {
+                ...TeamInfo
+            }
+            user {
+                ...UserInfo
+            }
+        }
     }
-  }
-  ${TeamInfoFragmentDoc}
+    ${TeamInfoFragmentDoc}
   ${UserInfoFragmentDoc}
 `
 
@@ -2112,6 +2488,7 @@ export const TeamUserAddedDocument = gql`
  * @example
  * const { data, loading, error } = useTeamUserAddedSubscription({
  *   variables: {
+ *      teamId: // value for 'teamId'
  *   },
  * });
  */
@@ -2130,12 +2507,12 @@ export function useTeamUserAddedSubscription(
 export type TeamUserAddedSubscriptionHookResult = ReturnType<typeof useTeamUserAddedSubscription>
 export type TeamUserAddedSubscriptionResult = Apollo.SubscriptionResult<TeamUserAddedSubscription>
 export const TeamUserRemovedDocument = gql`
-  subscription TeamUserRemoved {
-    teamUserRemoved {
-      teamId
-      userId
+    subscription TeamUserRemoved($teamId: String) {
+        teamUserRemoved(teamId: $teamId) {
+            teamId
+            userId
+        }
     }
-  }
 `
 
 /**
@@ -2150,6 +2527,7 @@ export const TeamUserRemovedDocument = gql`
  * @example
  * const { data, loading, error } = useTeamUserRemovedSubscription({
  *   variables: {
+ *      teamId: // value for 'teamId'
  *   },
  * });
  */

@@ -21,7 +21,6 @@ const DraggableDroppableList = ({
   board: BoardQueryBoardFragment
   list: BoardQueryListFragment
 }) => {
-  const { id: boardId } = board
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
   const [rename, { data }] = useRenameListMutation()
@@ -80,7 +79,6 @@ const DraggableDroppableList = ({
                       <DraggableCard
                         key={card.id}
                         card={card}
-                        boardId={boardId}
                         participants={board.team.participants}
                       />
                     ))}
@@ -88,7 +86,7 @@ const DraggableDroppableList = ({
                   </div>
                 )}
               </Droppable>
-              <NewCardButton boardId={boardId} list={list} />
+              <NewCardButton list={list} />
             </AntdCard>
           </Col>
         )}
@@ -102,6 +100,7 @@ const DraggableDroppableList = ({
             Delete list
           </Button>
         }
+        destroyOnClose
       >
         <Box flex flexDirection="column" gap="15px">
           <EditableText
