@@ -29,20 +29,23 @@ function AddUser({ teamId }: { teamId: string }) {
   )
 
   const onSubmit = async ({ username }: FormData) => {
-    if (!username || username.length === 0) {
-      setError(undefined)
-      return
+    if (!submitted) {
+      if (!username || username.length === 0) {
+        setError(undefined)
+        return
+      }
+      await addUser({
+        variables: {
+          username,
+          teamId,
+        },
+      })
+      setSubmitted(true)
     }
-    await addUser({
-      variables: {
-        username,
-        teamId,
-      },
-    })
-    setSubmitted(true)
   }
 
   if (submitted && !loading && !!data) {
+    setSubmitted(false)
     if (!!data.addUser.userId) {
       resetForm()
       setError(undefined)
@@ -54,7 +57,6 @@ function AddUser({ teamId }: { teamId: string }) {
     } else {
       setError("Cannot add self")
     }
-    setSubmitted(false)
   }
 
   return (
