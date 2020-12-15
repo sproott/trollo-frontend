@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import {
   BoardDeletedDocument,
   BoardDeletedSubscription,
+  BoardDeletedSubscriptionVariables,
   BoardDocument,
   BoardQuery,
   BoardQueryCardFragment,
@@ -104,8 +105,9 @@ const Board = ({ boardId }: { boardId: string }) => {
           })
         },
       })
-      subscribeToMore<BoardDeletedSubscription>({
+      subscribeToMore<BoardDeletedSubscription, BoardDeletedSubscriptionVariables>({
         document: BoardDeletedDocument,
+        variables: { boardId },
         updateQuery: (prev, { subscriptionData: { data } }) => {
           return produce(prev, (x) => {
             x.board = null
