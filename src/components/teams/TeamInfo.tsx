@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { CloseOutlined, EditOutlined, ExportOutlined } from "@ant-design/icons"
+import { CloseOutlined } from "@ant-design/icons"
 import { BoardGrid } from "./teams.styled"
 import BoardInfo from "./BoardInfo"
 import NewBoardButton from "./NewBoardButton"
@@ -67,21 +67,12 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
   return (
     <>
       <Card
-        title={team.name}
-        style={{ marginBottom: "10px" }}
-        extra={
-          isOwn ? (
-            <EditOutlined
-              onClick={setEditModalVisible.bind(this, true)}
-              style={{ padding: "0 20px" }}
-            />
-          ) : (
-            <ExportOutlined
-              onClick={setLeaveConfirmationVisible.bind(this, true)}
-              style={{ padding: "0 20px", color: "red" }}
-            />
-          )
+        title={
+          <div style={{ cursor: "pointer" }} onClick={setEditModalVisible.bind(this, true)}>
+            {team.name}
+          </div>
         }
+        style={{ marginBottom: "10px" }}
       >
         <BoardGrid style={{ padding: "10px 10px 0 10px" }}>
           {[...team.boards]
@@ -97,20 +88,28 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
         title={`Edit team ${team.name}`}
         onCancel={setEditModalVisible.bind(this, false)}
         footer={
-          <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
-            Delete team
-          </Button>
+          isOwn ? (
+            <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
+              Delete team
+            </Button>
+          ) : (
+            <Button type="primary" danger onClick={setLeaveConfirmationVisible.bind(this, true)}>
+              Leave team
+            </Button>
+          )
         }
         destroyOnClose
       >
         <Box flex flexDirection="column" gap="15px">
-          <EditableText
-            label="Name"
-            text={team.name}
-            onConfirm={renameTeam}
-            error={data?.renameTeam.exists && "Team with this name already exists"}
-            success={data?.renameTeam.success}
-          />
+          {isOwn && (
+            <EditableText
+              label="Name"
+              text={team.name}
+              onConfirm={renameTeam}
+              error={data?.renameTeam.exists && "Team with this name already exists"}
+              success={data?.renameTeam.success}
+            />
+          )}
           <Box flex flexDirection="column" gap="5px">
             <H3>Users:</H3>
             {team.participants.length > 1 && (
@@ -138,7 +137,7 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
                                 />
                                 <Div>{user.username}</Div>
                               </Box>
-                              <CloseOutlined onClick={removeUser.bind(this, user.id)} />
+                              {isOwn && <CloseOutlined onClick={removeUser.bind(this, user.id)} />}
                             </Box>
                           )
                         )
@@ -147,7 +146,7 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
                 </Col>
               </Box>
             )}
-            <AddUser teamId={team.id} />
+            {isOwn && <AddUser teamId={team.id} />}
           </Box>
         </Box>
       </Modal>
