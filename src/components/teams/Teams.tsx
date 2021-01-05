@@ -1,10 +1,3 @@
-import React, { useEffect } from "react"
-import { H0 } from "../common/Text"
-import { Content } from "../common/page.styled"
-import { Col, Divider, Row } from "antd"
-import TeamsInfo from "./TeamsInfo"
-import Box from "../common/Box"
-import NewTeamButton from "./NewTeamButton"
 import {
   BoardCreatedDocument,
   BoardCreatedSubscription,
@@ -23,6 +16,14 @@ import {
   TeamUserRemovedSubscription,
   useTeamsQuery,
 } from "../../../generated/graphql"
+import { Col, Divider, Row } from "antd"
+import React, { useEffect } from "react"
+
+import Box from "../common/Box"
+import { Content } from "../common/page.styled"
+import { H0 } from "../common/Text"
+import NewTeamButton from "./NewTeamButton"
+import TeamsInfo from "./TeamsInfo"
 import produce from "immer"
 import { removeNestedValue } from "../../lib/nestedPathUtil"
 
@@ -154,7 +155,7 @@ const Teams = () => {
         <Col xs={24} sm={22} md={20} lg={16} xl={12}>
           {data?.currentUser && !loading && (
             <>
-              <Box flex justifyContent="space-between">
+              <Box flex justifyContent="space-between" alignItems="center">
                 <H0>Your teams</H0>
                 <NewTeamButton />
               </Box>

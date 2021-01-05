@@ -1,13 +1,14 @@
-import React from "react"
-import { CreateBoardButton } from "./teams.styled"
-import { PlusOutlined } from "@ant-design/icons"
-import { Centered } from "../common/Centered"
 import {
   MutationCreateBoardArgs,
   TeamInfoFragment,
   useCreateBoardMutation,
 } from "../../../generated/graphql"
+
+import { Centered } from "../common/Centered"
+import { CreateBoardButton } from "./teams.styled"
 import ModalForm from "../common/form/ModalForm"
+import { PlusOutlined } from "@ant-design/icons"
+import React from "react"
 import TextInput from "../common/form/TextInput"
 
 const NewBoardButton = ({ team: { id: teamId, name: teamName } }: { team: TeamInfoFragment }) => {
@@ -35,7 +36,7 @@ const NewBoardButton = ({ team: { id: teamId, name: teamName } }: { team: TeamIn
           label="Name"
           name="name"
           error={
-            useFormMethods.errors.name?.message ||
+            useFormMethods.errors.name?.message ??
             (!reset && data?.createBoard.exists && "Board with this name already exists")
           }
           useFormMethods={useFormMethods}

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react"
 import {
   BoardDeletedDocument,
   BoardDeletedSubscription,
@@ -53,23 +52,25 @@ import {
   useMoveListMutation,
   useRenameBoardMutation,
 } from "../../../generated/graphql"
-import { useRouter } from "next/router"
-import Spinner from "../loading/Spinner"
-import { Content } from "../common/page.styled"
-import { H0 } from "../common/Text"
-import { DragDropContext, Droppable, DropResult, ResponderProvided } from "react-beautiful-dnd"
-import DraggableDroppableList from "./DraggableDroppableList"
-import produce from "immer"
+import { Button, Modal } from "antd"
+import { DragDropContext, DropResult, Droppable, ResponderProvided } from "react-beautiful-dnd"
+import React, { useEffect, useState } from "react"
+import { findNestedValue, removeNestedValue } from "../../lib/nestedPathUtil"
+
+import { ArrowBack } from "./board.styled"
 import Box from "../common/Box"
-import NewListButton from "./NewListButton"
+import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
+import { Content } from "../common/page.styled"
+import DraggableDroppableList from "./DraggableDroppableList"
+import { DroppableType } from "../../constants/DroppableType"
 import { EditOutlined } from "@ant-design/icons"
 import EditableText from "../common/form/EditableText"
-import { Button, Modal } from "antd"
-import { DroppableType } from "../../constants/DroppableType"
-import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
-import { findNestedValue, removeNestedValue } from "../../lib/nestedPathUtil"
+import { H0 } from "../common/Text"
 import Link from "next/link"
-import { ArrowBack } from "./board.styled"
+import NewListButton from "./NewListButton"
+import Spinner from "../loading/Spinner"
+import produce from "immer"
+import { useRouter } from "next/router"
 
 const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -394,7 +395,7 @@ const Board = ({ boardId }: { boardId: string }) => {
     <Spinner />
   ) : (
     <Content>
-      <Box flex justifyContent="space-between">
+      <Box flex justifyContent="space-between" alignItems="center">
         <Box flex justifyContent="space-between" alignItems="center" gap="20px">
           <Link href="/">
             <ArrowBack />

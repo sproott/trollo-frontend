@@ -1,6 +1,6 @@
+import { ArrowLeftOutlined } from "@ant-design/icons"
 import styled from "styled-components"
 import theme from "../../style/theme"
-import { ArrowLeftOutlined } from "@ant-design/icons"
 
 const InnerBase = styled.div`
   border-radius: 5px;
@@ -51,10 +51,5 @@ export const CreateCardButton = styled(InnerBase)`
 export const ArrowBack = styled(ArrowLeftOutlined)`
   font-size: 24px;
   cursor: pointer;
-  transition: 0.3s ease;
   width: 30px;
-
-  :hover {
-    font-size: 28px;
-  }
 `

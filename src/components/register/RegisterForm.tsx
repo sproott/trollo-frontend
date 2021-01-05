@@ -1,21 +1,22 @@
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
 import { Col, Form, Row } from "antd"
-import TextInput from "../common/form/TextInput"
-import PasswordInput from "../common/form/PasswordInput"
-import { FormProps } from "antd/es/form"
-import SubmitButton from "../common/form/SubmitButton"
-import { HorizontallyCentered } from "../common/Centered"
 import {
   CurrentUserDocument,
   CurrentUserQuery,
   RegisterInput,
   useRegisterMutation,
 } from "../../../generated/graphql"
-import { H4 } from "../common/Text"
-import { useRouter } from "next/router"
+import React, { useState } from "react"
+
 import Box from "../common/Box"
 import { Constants } from "../../constants/Constants"
+import { FormProps } from "antd/es/form"
+import { H4 } from "../common/Text"
+import { HorizontallyCentered } from "../common/Centered"
+import PasswordInput from "../common/form/PasswordInput"
+import SubmitButton from "../common/form/SubmitButton"
+import TextInput from "../common/form/TextInput"
+import { useForm } from "react-hook-form"
+import { useRouter } from "next/router"
 
 const layout = {
   layout: "vertical",
@@ -85,15 +86,16 @@ const RegisterForm = () => {
               label="Username"
               name="username"
               error={
-                errors.username?.message || (!!registerError?.username && "Username already exists")
+                errors.username?.message ?? (!!registerError?.username && "Username already exists")
               }
+              rules={{ pattern: { value: /^[^@]*$/, message: "Username cannot contain @" } }}
               useFormMethods={useFormMethods}
               maxLength={20}
             />
             <TextInput
               label="E-mail"
               name="email"
-              error={errors.email?.message || (!!registerError?.email && "E-mail already exists")}
+              error={errors.email?.message ?? (!!registerError?.email && "E-mail already exists")}
               useFormMethods={useFormMethods}
               rules={{ pattern: { value: Constants.EMAIL_REGEX, message: "E-mail is invalid" } }}
               maxLength={254}
@@ -103,7 +105,9 @@ const RegisterForm = () => {
               name="password"
               error={errors.password?.message}
               useFormMethods={useFormMethods}
-              rules={{ min: { value: 8, message: "Password must be at least 8 characters long" } }}
+              rules={{
+                minLength: { value: 8, message: "Password must be at least 8 characters long" },
+              }}
               maxLength={32}
             />
             <Box padding="20px 0 0 0">

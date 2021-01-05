@@ -1,15 +1,16 @@
-import React from "react"
-import TextInput from "../common/form/TextInput"
 import {
   BoardQueryListFragment,
   MutationCreateCardArgs,
   useCreateCardMutation,
 } from "../../../generated/graphql"
-import ModalForm from "../common/form/ModalForm"
-import { CreateCardButton } from "./board.styled"
-import { PlusOutlined } from "@ant-design/icons"
+
 import { Centered } from "../common/Centered"
+import { CreateCardButton } from "./board.styled"
+import ModalForm from "../common/form/ModalForm"
+import { PlusOutlined } from "@ant-design/icons"
+import React from "react"
 import TextArea from "../common/form/TextArea"
+import TextInput from "../common/form/TextInput"
 
 const NewCardButton = ({ list }: { list: BoardQueryListFragment }) => {
   const [createCard, { loading, data }] = useCreateCardMutation()
@@ -38,7 +39,7 @@ const NewCardButton = ({ list }: { list: BoardQueryListFragment }) => {
             label="Name"
             name="name"
             error={
-              useFormMethods.errors.name?.message ||
+              useFormMethods.errors.name?.message ??
               (!reset && data?.createCard.exists && "Card with this name already exists")
             }
             useFormMethods={useFormMethods}

@@ -1,16 +1,17 @@
-import React from "react"
-import { PlusOutlined } from "@ant-design/icons"
-import TextInput from "../common/form/TextInput"
 import {
   MutationCreateTeamArgs,
+  TeamInfoFragment,
   TeamsDocument,
   TeamsQuery,
-  TeamInfoFragment,
   useCreateTeamMutation,
 } from "../../../generated/graphql"
-import produce from "immer"
-import ModalForm from "../common/form/ModalForm"
+
 import { Button } from "antd"
+import ModalForm from "../common/form/ModalForm"
+import { PlusOutlined } from "@ant-design/icons"
+import React from "react"
+import TextInput from "../common/form/TextInput"
+import produce from "immer"
 
 const NewTeamButton = () => {
   const [createTeam, { loading, data }] = useCreateTeamMutation()
@@ -53,7 +54,7 @@ const NewTeamButton = () => {
             label="Name"
             name="name"
             error={
-              useFormMethods.errors.name?.message ||
+              useFormMethods.errors.name?.message ??
               (!reset && data?.createTeam.exists && "Team with this name already exists")
             }
             useFormMethods={useFormMethods}

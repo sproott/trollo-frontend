@@ -1,12 +1,13 @@
-import React from "react"
-import TextInput from "../common/form/TextInput"
 import {
   BoardQueryBoardFragment,
   MutationCreateListArgs,
   useCreateListMutation,
 } from "../../../generated/graphql"
-import ModalForm from "../common/form/ModalForm"
+
 import { Button } from "antd"
+import ModalForm from "../common/form/ModalForm"
+import React from "react"
+import TextInput from "../common/form/TextInput"
 
 const NewListButton = ({ board }: { board: BoardQueryBoardFragment }) => {
   const [createList, { loading, data }] = useCreateListMutation()
@@ -33,7 +34,7 @@ const NewListButton = ({ board }: { board: BoardQueryBoardFragment }) => {
           label="Name"
           name="name"
           error={
-            useFormMethods.errors.name?.message ||
+            useFormMethods.errors.name?.message ??
             (!reset && data?.createList.exists && "List with this name already exists")
           }
           useFormMethods={useFormMethods}

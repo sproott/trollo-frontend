@@ -1,5 +1,6 @@
 import { Controller, FieldName, UseFormMethods } from "react-hook-form"
 import React, { CSSProperties, ReactElement } from "react"
+
 import { Form } from "antd"
 import { RegisterOptions } from "react-hook-form/dist/types/validator"
 
@@ -41,7 +42,7 @@ const ControlledFormItem = <TInput extends object>({
       )}
       control={useFormMethods.control}
       rules={{
-        required: !optional && { value: true, message: `${label} is required` },
+        required: !optional && `${label} is required`,
         ...rules,
       }}
       name={name}
