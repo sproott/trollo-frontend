@@ -1,10 +1,14 @@
-import { gql } from "@apollo/client/core"
+import gql from "graphql-tag"
 
 export const BoardQueryTeam = gql`
   fragment BoardQueryTeam on Team {
     id
+    name
     participants {
       ...ParticipantUser
+    }
+    flairs {
+      ...FlairInfo
     }
   }
 `

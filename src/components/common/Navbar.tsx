@@ -1,12 +1,12 @@
+import Box from "./util/Box"
+import { Button } from "./Navbar.styled"
+import CurrentUserAvatar from "./CurrentUserAvatar"
+import { Header } from "./page.styled"
+import Link from "next/link"
+import Logo from "./Logo"
 import React from "react"
 import { Space } from "antd"
-import Box from "./Box"
-import Link from "next/link"
 import { useCurrentUserQuery } from "../../../generated/graphql"
-import { Header } from "./page.styled"
-import Logo from "./Logo"
-import CurrentUserAvatar from "./CurrentUserAvatar"
-import { Button } from "./Navbar.styled"
 
 type NavbarProps = {
   hideUserInfo?: boolean

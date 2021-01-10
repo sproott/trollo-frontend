@@ -1,5 +1,3 @@
-import React, { useState } from "react"
-import { Draggable } from "react-beautiful-dnd"
 import {
   BoardQueryCardFragment,
   ParticipantUserFragment,
@@ -7,14 +5,20 @@ import {
   useRenameCardMutation,
   useUpdateCardDescriptionMutation,
 } from "../../../generated/graphql"
-import { LineClamp } from "../common/Text"
-import { CardInner } from "./board.styled"
 import { Button, Modal } from "antd"
-import Box from "../common/Box"
-import EditableText from "../common/form/EditableText"
-import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
-import EditableTextArea from "../common/form/EditableTextArea"
+import { CardInner, FlairBox } from "./board.styled"
+import { Div, LineClamp } from "../common/util/Text"
+import React, { useContext, useState } from "react"
+
 import AssigneeSelect from "./AssigneeSelect"
+import { BoardContext } from "./Board"
+import Box from "../common/util/Box"
+import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
+import { Draggable } from "react-beautiful-dnd"
+import { EditFlairs } from "./EditFlairs"
+import EditableText from "../common/form/EditableText"
+import EditableTextArea from "../common/form/EditableTextArea"
+import { FlairFromFragment } from "./FlairFromFragment"
 
 const DraggableCard = ({
   card,
@@ -31,6 +35,7 @@ const DraggableCard = ({
     { data: updateDescriptionData },
   ] = useUpdateCardDescriptionMutation()
   const [deleteCardMutate] = useDeleteCardMutation()
+  const { flairs: teamFlairs } = useContext(BoardContext)
 
   const deleteCard = async () => {
     await deleteCardMutate({
@@ -101,6 +106,17 @@ const DraggableCard = ({
             optional
           />
           <AssigneeSelect assignee={card.assignee} cardId={card.id} participants={participants} />
+          <Box flex alignItems="center" gap="10px">
+            <Div>Flairs: </Div>
+            <EditFlairs cardFlairs={card.flairs} teamFlairs={teamFlairs} />
+          </Box>
+          <FlairBox>
+            {[...card.flairs]
+              .sort((f1, f2) => f1.name.localeCompare(f2.name))
+              .map((f) => (
+                <FlairFromFragment key={f.id} flair={f} nonEditable />
+              ))}
+          </FlairBox>
         </Box>
       </Modal>
       <ConfirmDeleteModal

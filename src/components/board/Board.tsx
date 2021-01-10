@@ -6,6 +6,7 @@ import {
   BoardQuery,
   BoardQueryCardFragment,
   BoardQueryListFragment,
+  BoardQueryTeamFragment,
   BoardRenamedDocument,
   BoardRenamedSubscription,
   BoardRenamedSubscriptionVariables,
@@ -27,6 +28,15 @@ import {
   CardUserUnassignedDocument,
   CardUserUnassignedSubscription,
   CardUserUnassignedSubscriptionVariables,
+  FlairCreatedDocument,
+  FlairCreatedSubscription,
+  FlairCreatedSubscriptionVariables,
+  FlairDeletedDocument,
+  FlairDeletedSubscription,
+  FlairDeletedSubscriptionVariables,
+  FlairUpdatedDocument,
+  FlairUpdatedSubscription,
+  FlairUpdatedSubscriptionVariables,
   ListCreatedDocument,
   ListCreatedSubscription,
   ListCreatedSubscriptionVariables,
@@ -54,23 +64,26 @@ import {
 } from "../../../generated/graphql"
 import { Button, Modal } from "antd"
 import { DragDropContext, DropResult, Droppable, ResponderProvided } from "react-beautiful-dnd"
-import React, { useEffect, useState } from "react"
+import React, { createContext, useEffect, useState } from "react"
 import { findNestedValue, removeNestedValue } from "../../lib/nestedPathUtil"
 
 import { ArrowBack } from "./board.styled"
-import Box from "../common/Box"
+import Box from "../common/util/Box"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 import { Content } from "../common/page.styled"
 import DraggableDroppableList from "./DraggableDroppableList"
 import { DroppableType } from "../../constants/DroppableType"
 import { EditOutlined } from "@ant-design/icons"
 import EditableText from "../common/form/EditableText"
-import { H0 } from "../common/Text"
+import { H0 } from "../common/util/Text"
 import Link from "next/link"
 import NewListButton from "./NewListButton"
 import Spinner from "../loading/Spinner"
+import _ from "lodash"
 import produce from "immer"
 import { useRouter } from "next/router"
+
+export const BoardContext = createContext<BoardQueryTeamFragment | undefined>(undefined)
 
 const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -109,7 +122,7 @@ const Board = ({ boardId }: { boardId: string }) => {
       subscribeToMore<BoardDeletedSubscription, BoardDeletedSubscriptionVariables>({
         document: BoardDeletedDocument,
         variables: { boardId },
-        updateQuery: (prev, { subscriptionData: { data } }) => {
+        updateQuery: (prev, _) => {
           return produce(prev, (x) => {
             x.board = null
           })
@@ -279,6 +292,41 @@ const Board = ({ boardId }: { boardId: string }) => {
           })
         },
       })
+      subscribeToMore<FlairCreatedSubscription, FlairCreatedSubscriptionVariables>({
+        document: FlairCreatedDocument,
+        variables: { teamId: data.board.team.id },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            x.board.team.flairs.push(data.flairCreated)
+          })
+        },
+      })
+      subscribeToMore<FlairUpdatedSubscription, FlairUpdatedSubscriptionVariables>({
+        document: FlairUpdatedDocument,
+        variables: { teamId: data.board.team.id },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            Object.assign(
+              x.board.team.flairs.find((f) => f.id === data.flairUpdated.id),
+              data.flairUpdated
+            )
+            x.board.lists
+              .flatMap((l) => l.cards)
+              .flatMap((c) => c.flairs)
+              .filter((f) => f.id === data.flairUpdated.id)
+              .forEach((f) => Object.assign(f, data.flairUpdated))
+          })
+        },
+      })
+      subscribeToMore<FlairDeletedSubscription, FlairDeletedSubscriptionVariables>({
+        document: FlairDeletedDocument,
+        variables: { teamId: data.board.team.id },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            _.remove(x.board.team.flairs, (f) => f.id === data.flairDeleted.flairId)
+          })
+        },
+      })
       setSubscribed(true)
     }
   }, [data])
@@ -291,7 +339,7 @@ const Board = ({ boardId }: { boardId: string }) => {
       },
     })
   }
-  const onDragEnd = async (result: DropResult, provided: ResponderProvided) => {
+  const onDragEnd = async (result: DropResult, _: ResponderProvided) => {
     const { source, destination, draggableId, type } = result
     if (type === DroppableType.LIST) {
       if (
@@ -394,66 +442,74 @@ const Board = ({ boardId }: { boardId: string }) => {
   return !data?.board ? (
     <Spinner />
   ) : (
-    <Content>
-      <Box flex justifyContent="space-between" alignItems="center">
-        <Box flex justifyContent="space-between" alignItems="center" gap="20px">
-          <Link href="/">
-            <ArrowBack />
-          </Link>
-          <H0>{data.board.name}</H0>
-          {data.board.isOwn && (
-            <EditOutlined
-              onClick={setModalVisible.bind(this, true)}
-              style={{ padding: "15px 20px" }}
-            />
-          )}
-        </Box>
-        <NewListButton board={data.board} />
-      </Box>
-      <div
-        style={{ flex: 1, display: "flex", overflow: "auto", height: "100%", paddingTop: "10px" }}
-      >
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId={data.board.id} type={DroppableType.BOARD} direction="horizontal">
-            {(provided, snapshot) => (
-              <Box flex fullWidth {...provided.droppableProps} ref={provided.innerRef}>
-                {data.board.lists.map((list) => (
-                  <DraggableDroppableList board={data.board} key={list.id} list={list} />
-                ))}
-                {provided.placeholder}
-              </Box>
+    <BoardContext.Provider value={data.board.team}>
+      <Content>
+        <Box flex justifyContent="space-between" alignItems="center">
+          <Box flex justifyContent="space-between" alignItems="center" gap="20px">
+            <Link href="/">
+              <ArrowBack />
+            </Link>
+            <H0>{data.board.name}</H0>
+            {data.board.isOwn && (
+              <EditOutlined
+                onClick={setModalVisible.bind(this, true)}
+                style={{ padding: "15px 20px" }}
+              />
             )}
-          </Droppable>
-        </DragDropContext>
-      </div>
-      <Modal
-        visible={modalVisible}
-        title={`Edit board ${data.board.name}`}
-        onCancel={setModalVisible.bind(this, false)}
-        footer={
-          <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
-            Delete board
-          </Button>
-        }
-        destroyOnClose
-      >
-        <Box flex flexDirection="column" gap="15px">
-          <EditableText
-            label="Name"
-            text={data.board.name}
-            onConfirm={renameBoard}
-            error={renameMutationData?.renameBoard.exists && "Board with this name already exists"}
-            success={renameMutationData?.renameBoard.success}
-          />
+          </Box>
+          <NewListButton board={data.board} />
         </Box>
-      </Modal>
-      <ConfirmDeleteModal
-        title="Do you really want to delete this board?"
-        visible={confirmationVisible}
-        onCancel={setConfirmationVisible.bind(this, false)}
-        onOk={deleteBoard}
-      />
-    </Content>
+        <div
+          style={{ flex: 1, display: "flex", overflow: "auto", height: "100%", paddingTop: "10px" }}
+        >
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable
+              droppableId={data.board.id}
+              type={DroppableType.BOARD}
+              direction="horizontal"
+            >
+              {(provided, _) => (
+                <Box flex fullWidth {...provided.droppableProps} ref={provided.innerRef}>
+                  {data.board.lists.map((list) => (
+                    <DraggableDroppableList board={data.board} key={list.id} list={list} />
+                  ))}
+                  {provided.placeholder}
+                </Box>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
+        <Modal
+          visible={modalVisible}
+          title={`Edit board ${data.board.name}`}
+          onCancel={setModalVisible.bind(this, false)}
+          footer={
+            <Button type="primary" danger onClick={setConfirmationVisible.bind(this, true)}>
+              Delete board
+            </Button>
+          }
+          destroyOnClose
+        >
+          <Box flex flexDirection="column" gap="15px">
+            <EditableText
+              label="Name"
+              text={data.board.name}
+              onConfirm={renameBoard}
+              error={
+                renameMutationData?.renameBoard.exists && "Board with this name already exists"
+              }
+              success={renameMutationData?.renameBoard.success}
+            />
+          </Box>
+        </Modal>
+        <ConfirmDeleteModal
+          title="Do you really want to delete this board?"
+          visible={confirmationVisible}
+          onCancel={setConfirmationVisible.bind(this, false)}
+          onOk={deleteBoard}
+        />
+      </Content>
+    </BoardContext.Provider>
   )
 }
 

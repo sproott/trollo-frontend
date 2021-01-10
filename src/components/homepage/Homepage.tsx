@@ -1,10 +1,11 @@
-import { Col } from "antd"
-import React from "react"
-import Box from "../common/Box"
-import { CenteredContent } from "../common/page.styled"
-import theme from "../../style/theme"
 import { HomepageHeader, HomepageLink, TryItArrow } from "./homepage.styled"
+
+import Box from "../common/util/Box"
+import { CenteredContent } from "../common/page.styled"
+import { Col } from "antd"
 import Link from "next/link"
+import React from "react"
+import theme from "../../style/theme"
 
 function Homepage() {
   return (

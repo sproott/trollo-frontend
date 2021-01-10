@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client/core"
+import gql from "graphql-tag"
 
 export const BoardQueryCard = gql`
   fragment BoardQueryCard on Card {
@@ -7,6 +7,9 @@ export const BoardQueryCard = gql`
     description
     assignee {
       ...UserInfo
+    }
+    flairs {
+      ...FlairInfo
     }
     index
   }

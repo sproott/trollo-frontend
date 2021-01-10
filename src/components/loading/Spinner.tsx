@@ -1,6 +1,6 @@
+import Box from "../common/util/Box"
 import React from "react"
 import { Spin } from "antd"
-import Box from "../common/Box"
 
 const Spinner = () => {
   return (

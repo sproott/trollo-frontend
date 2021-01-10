@@ -1,19 +1,20 @@
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
 import { Col, Form, Row } from "antd"
-import TextInput from "../common/form/TextInput"
-import PasswordInput from "../common/form/PasswordInput"
-import { FormProps } from "antd/es/form"
-import SubmitButton from "../common/form/SubmitButton"
-import { HorizontallyCentered } from "../common/Centered"
 import {
   CurrentUserDocument,
   CurrentUserQuery,
   LoginInput,
   useLoginMutation,
 } from "../../../generated/graphql"
-import { H4 } from "../common/Text"
-import Box from "../common/Box"
+import React, { useState } from "react"
+
+import Box from "../common/util/Box"
+import { FormProps } from "antd/es/form"
+import { H4 } from "../common/util/Text"
+import { HorizontallyCentered } from "../common/util/Centered"
+import PasswordInput from "../common/form/PasswordInput"
+import SubmitButton from "../common/form/SubmitButton"
+import TextInput from "../common/form/TextInput"
+import { useForm } from "react-hook-form"
 
 const layout = {
   layout: "vertical",

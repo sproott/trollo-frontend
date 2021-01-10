@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client/core"
+import gql from "graphql-tag"
 
 export const addUser = gql`
   mutation AddUser($username: String!, $teamId: String!) {

@@ -1,3 +1,4 @@
+import { Card as AntdCard, Button, Col, Modal } from "antd"
 import {
   BoardQueryBoardFragment,
   BoardQueryListFragment,
@@ -5,14 +6,14 @@ import {
   useRenameListMutation,
 } from "../../../generated/graphql"
 import { Draggable, Droppable } from "react-beautiful-dnd"
-import DraggableCard from "./DraggableCard"
 import React, { useState } from "react"
-import { Button, Card as AntdCard, Col, Modal } from "antd"
-import NewCardButton from "./NewCardButton"
-import { DroppableType } from "../../constants/DroppableType"
-import Box from "../common/Box"
-import EditableText from "../common/form/EditableText"
+
+import Box from "../common/util/Box"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
+import DraggableCard from "./DraggableCard"
+import { DroppableType } from "../../constants/DroppableType"
+import EditableText from "../common/form/EditableText"
+import NewCardButton from "./NewCardButton"
 
 const DraggableDroppableList = ({
   board,

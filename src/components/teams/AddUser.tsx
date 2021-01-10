@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
+
 import Avatar from "../common/Avatar"
-import theme from "../../style/theme"
-import Box from "../common/Box"
+import Box from "../common/util/Box"
 import { Form } from "antd"
 import TextInput from "../common/form/TextInput"
-import { useForm } from "react-hook-form"
+import theme from "../../style/theme"
 import { useAddUserMutation } from "../../../generated/graphql"
+import { useForm } from "react-hook-form"
 
 type FormData = {
   username: string

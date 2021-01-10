@@ -19,9 +19,9 @@ import {
 import { Col, Divider, Row } from "antd"
 import React, { useEffect } from "react"
 
-import Box from "../common/Box"
+import Box from "../common/util/Box"
 import { Content } from "../common/page.styled"
-import { H0 } from "../common/Text"
+import { H0 } from "../common/util/Text"
 import NewTeamButton from "./NewTeamButton"
 import TeamsInfo from "./TeamsInfo"
 import produce from "immer"

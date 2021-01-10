@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client/core"
+import gql from "graphql-tag"
 
 export const boardQuery = gql`
   query Board($id: String!) {

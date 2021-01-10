@@ -1,6 +1,7 @@
+import EditableInput, { EditableInputProps } from "./EditableInput"
+
 import React from "react"
 import TextInput from "./TextInput"
-import EditableInput, { EditableInputProps } from "./EditableInput"
 
 function EditableText(props: Omit<EditableInputProps, "children">) {
   return (

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react"
-import Box from "../Box"
 import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons"
-import { Div } from "../Text"
-import { useForm, UseFormMethods } from "react-hook-form"
+import React, { useEffect, useState } from "react"
+import { UseFormMethods, useForm } from "react-hook-form"
+
+import Box from "../util/Box"
+import { Div } from "../util/Text"
 import { Form } from "antd"
 
 type FormData = {
@@ -13,6 +14,7 @@ export type EditableInputProps = {
   text: string
   label?: string
   onConfirm: (text: string) => void
+  onChange?: (text: string) => void
   maxLength?: number
   error?: string
   success?: boolean
@@ -23,10 +25,18 @@ export type EditableInputProps = {
 export type RenderFn = (args: {
   useFormMethods: UseFormMethods<FormData>
   reopened: boolean
-  onSubmit: ({ text }: FormData) => Promise<void>
+  onSubmit: ({ text }: FormData) => void
+  onChange: (text: string) => void
 }) => React.ReactNode
 
-function EditableText({ text, label, onConfirm, success, children }: EditableInputProps) {
+const EditableInput = ({
+  text,
+  label,
+  onConfirm,
+  onChange,
+  success,
+  children,
+}: EditableInputProps) => {
   const [editing, setEditing] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [onSubmitFinished, setOnSubmitFinished] = useState(false)
@@ -38,7 +48,11 @@ function EditableText({ text, label, onConfirm, success, children }: EditableInp
     mode: "onBlur",
     reValidateMode: "onBlur",
   })
-  const { handleSubmit, reset } = useFormMethods
+  const { handleSubmit, reset, watch } = useFormMethods
+  const { text: watchedText } = watch()
+  useEffect(() => {
+    onChange && onChange(watchedText)
+  }, [watchedText])
 
   const edit = () => {
     setReopened(true)
@@ -61,7 +75,7 @@ function EditableText({ text, label, onConfirm, success, children }: EditableInp
 
   if (submitted && onSubmitFinished) {
     setOnSubmitFinished(false)
-    if (!!success) {
+    if (success) {
       setEditing(false)
     } else {
       setSubmitted(false)
@@ -80,7 +94,7 @@ function EditableText({ text, label, onConfirm, success, children }: EditableInp
         ) : (
           <Form onSubmitCapture={handleSubmit(onSubmit)}>
             <Box flex gap="7px" alignItems="center">
-              {children({ useFormMethods, reopened, onSubmit })}
+              {children({ useFormMethods, reopened, onSubmit, onChange })}
               <CheckOutlined onClick={handleSubmit(onSubmit)} />
               <CloseOutlined onClick={cancel} />
             </Box>
@@ -91,4 +105,4 @@ function EditableText({ text, label, onConfirm, success, children }: EditableInp
   )
 }
 
-export default EditableText
+export default EditableInput

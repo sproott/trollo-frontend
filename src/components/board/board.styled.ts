@@ -1,4 +1,5 @@
 import { ArrowLeftOutlined } from "@ant-design/icons"
+import Box from "../common/util/Box"
 import styled from "styled-components"
 import theme from "../../style/theme"
 
@@ -52,4 +53,11 @@ export const ArrowBack = styled(ArrowLeftOutlined)`
   font-size: 24px;
   cursor: pointer;
   width: 30px;
+`
+
+export const FlairBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
 `

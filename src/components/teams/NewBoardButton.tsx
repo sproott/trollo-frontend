@@ -4,7 +4,7 @@ import {
   useCreateBoardMutation,
 } from "../../../generated/graphql"
 
-import { Centered } from "../common/Centered"
+import { Centered } from "../common/util/Centered"
 import { CreateBoardButton } from "./teams.styled"
 import ModalForm from "../common/form/ModalForm"
 import { PlusOutlined } from "@ant-design/icons"

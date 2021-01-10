@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client/core"
+import gql from "graphql-tag"
 
 export const updateCardDescription = gql`
   mutation UpdateCardDescription($description: String!, $cardId: String!) {
@@ -7,7 +7,7 @@ export const updateCardDescription = gql`
 `
 
 export const createCard = gql`
-  mutation createCard($listId: String!, $name: String!, $description: String) {
+  mutation CreateCard($listId: String!, $name: String!, $description: String) {
     createCard(listId: $listId, name: $name, description: $description) {
       card {
         id

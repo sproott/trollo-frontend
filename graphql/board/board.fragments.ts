@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client/core"
+import gql from "graphql-tag"
 
 export const TeamsQueryBoard = gql`
   fragment TeamsQueryBoard on Board {

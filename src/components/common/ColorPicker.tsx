@@ -1,6 +1,7 @@
-import { useEffect, useRef, MouseEvent, useState, CSSProperties } from "react"
-import styled from "styled-components"
+import { CSSProperties, MouseEvent, useEffect, useRef, useState } from "react"
+
 import _ from "lodash"
+import styled from "styled-components"
 
 type CursorProps = { canvasWidth: number; offset: number }
 

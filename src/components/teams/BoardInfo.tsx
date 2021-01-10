@@ -1,8 +1,8 @@
-import React from "react"
 import { BoardButton } from "./teams.styled"
-import { Tooltip } from "antd"
+import { LineClamp } from "../common/util/Text"
 import Link from "next/link"
-import { LineClamp } from "../common/Text"
+import React from "react"
+import { Tooltip } from "antd"
 
 const BoardInfo = ({ id, name }: { id: string; name: string }) => {
   return (

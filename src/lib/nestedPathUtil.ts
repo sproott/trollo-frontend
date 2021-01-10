@@ -1,3 +1,5 @@
+import _ from "lodash"
+
 type GetType<TBase> = TBase extends (infer TObj)[] ? TObj : TBase
 type GetKey<TBase> = keyof GetType<TBase>
 type GetNextBase<TPrevBase, TKey extends GetKey<TPrevBase>> = GetType<TPrevBase>[TKey]
@@ -112,11 +114,12 @@ export function removeNestedValue<
   TKey1 extends GetKey<TBase1>
 >(base: TBase1, keys: [TKey1], findCondition: (obj: TResult) => boolean): void {
   const arr = findParentOfNestedValue(base, keys, findCondition)
-  arr.splice(arr.findIndex(findCondition), 1)
+  _.remove(arr, findCondition)
 }
 
 // @ts-ignore
-export function findNestedValue<TBase1,
+export function findNestedValue<
+  TBase1,
   TResult extends GetNextType<TBase4, TKey4>,
   TKey1 extends GetKey<TBase1>,
   TBase2 extends GetNextBase<TBase1, TKey1>,
@@ -124,29 +127,36 @@ export function findNestedValue<TBase1,
   TBase3 extends GetNextBase<TBase2, TKey2>,
   TKey3 extends GetKey<TBase3>,
   TBase4 extends GetNextBase<TBase3, TKey3>,
-  TKey4 extends GetKey<TBase4>>(
+  TKey4 extends GetKey<TBase4>
+>(
   base: TBase1,
   keys: [TKey1, TKey2, TKey3, TKey4],
   findCondition: (obj: TResult) => boolean
 ): TResult
 // @ts-ignore
-export function findNestedValue<TBase1,
+export function findNestedValue<
+  TBase1,
   TResult extends GetNextType<TBase3, TKey3>,
   TKey1 extends GetKey<TBase1>,
   TBase2 extends GetNextBase<TBase1, TKey1>,
   TKey2 extends GetKey<TBase2>,
   TBase3 extends GetNextBase<TBase2, TKey2>,
-  TKey3 extends GetKey<TBase3>>(base: TBase1, keys: [TKey1, TKey2, TKey3], findCondition: (obj: TResult) => boolean): TResult
+  TKey3 extends GetKey<TBase3>
+>(base: TBase1, keys: [TKey1, TKey2, TKey3], findCondition: (obj: TResult) => boolean): TResult
 // @ts-ignore
-export function findNestedValue<TBase1,
+export function findNestedValue<
+  TBase1,
   TResult extends GetNextType<TBase2, TKey2>,
   TKey1 extends GetKey<TBase1>,
   TBase2 extends GetNextBase<TBase1, TKey1>,
-  TKey2 extends GetKey<TBase2>>(base: TBase1, keys: [TKey1, TKey2], findCondition: (obj: TResult) => boolean): TResult
+  TKey2 extends GetKey<TBase2>
+>(base: TBase1, keys: [TKey1, TKey2], findCondition: (obj: TResult) => boolean): TResult
 // @ts-ignore
-export function findNestedValue<TBase1,
+export function findNestedValue<
+  TBase1,
   TResult extends GetNextType<TBase1, TKey1>,
-  TKey1 extends GetKey<TBase1>>(base: TBase1, keys: [TKey1], findCondition: (obj: TResult) => boolean): TResult
+  TKey1 extends GetKey<TBase1>
+>(base: TBase1, keys: [TKey1], findCondition: (obj: TResult) => boolean): TResult
 export function findNestedValue<TBase, TResult extends GetType<TBase>>(
   base: TBase,
   keys: [],

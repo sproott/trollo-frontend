@@ -1,13 +1,14 @@
-import React from "react"
-import Select from "../common/form/Select"
 import {
   ParticipantUserFragment,
-  useAssignUserMutation,
   UserInfoFragment,
+  useAssignUserMutation,
   useUnassignUserMutation,
 } from "../../../generated/graphql"
-import Box from "../common/Box"
-import { Div } from "../common/Text"
+
+import Box from "../common/util/Box"
+import { Div } from "../common/util/Text"
+import React from "react"
+import Select from "../common/form/Select"
 
 function AssigneeSelect({
   cardId,

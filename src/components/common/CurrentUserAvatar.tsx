@@ -1,4 +1,3 @@
-import React, { useEffect } from "react"
 import { Avatar as AntdAvatar, Popover } from "antd"
 import {
   CurrentUserDocument,
@@ -6,8 +5,10 @@ import {
   useCurrentUserQuery,
   useLogoutMutation,
 } from "../../../generated/graphql"
-import { H3 } from "./Text"
+import React, { useEffect } from "react"
+
 import Avatar from "./Avatar"
+import { H3 } from "./util/Text"
 
 const CurrentUserAvatar = () => {
   const { data } = useCurrentUserQuery()

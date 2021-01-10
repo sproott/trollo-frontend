@@ -1,21 +1,23 @@
-import React, { useState } from "react"
+import { DeepPartial, UnpackNestedValue, UseFormMethods, useForm } from "react-hook-form"
 import { Form, Modal } from "antd"
-import { DeepPartial, UnpackNestedValue, useForm, UseFormMethods } from "react-hook-form"
-import Box from "../Box"
+import React, { useState } from "react"
+
+import Box from "../util/Box"
 
 export type ModalFormProps<TInput, TData> = {
   title: string
   defaultValues: UnpackNestedValue<DeepPartial<TInput>>
-  onSubmit: (formData: TInput) => void
+  onSubmit: (formData: UnpackNestedValue<TInput>) => void
   loading: boolean
   data: TData
   error?: boolean
   customSuccessCondition: (data: TData) => boolean
   renderForm: (useFormMethods: UseFormMethods<TInput>, reset: boolean) => React.ReactNode
   renderButton: (showModal: () => void) => React.ReactNode
+  onClose?: () => void
 }
 
-const ModalForm = <TInput extends object, TData extends object>({
+const ModalForm = <TInput extends Record<string, unknown>, TData extends Record<string, unknown>>({
   title,
   defaultValues,
   onSubmit,
@@ -25,6 +27,7 @@ const ModalForm = <TInput extends object, TData extends object>({
   customSuccessCondition,
   renderForm,
   renderButton,
+  onClose,
 }: ModalFormProps<TInput, TData>) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -38,7 +41,7 @@ const ModalForm = <TInput extends object, TData extends object>({
 
   const { handleSubmit, reset: resetForm } = useFormMethods
 
-  const onSubmitOuter = async (formData: TInput) => {
+  const onSubmitOuter = async (formData: UnpackNestedValue<TInput>) => {
     setSubmitted(true)
     await onSubmit(formData)
     setOnSubmitFinished(true)
@@ -50,14 +53,17 @@ const ModalForm = <TInput extends object, TData extends object>({
     setReset(true)
     setModalVisible(true)
   }
-  const closeModal = () => setModalVisible(false)
+  const closeModal = () => {
+    setModalVisible(false)
+    onClose && onClose()
+  }
 
   if (submitted && onSubmitFinished && !loading) {
     setOnSubmitFinished(false)
     if (customSuccessCondition(data)) {
       setSubmitted(false)
       setModalVisible(false)
-    } else if (!!error) {
+    } else if (error) {
       setSubmitted(false)
     }
   }
@@ -68,12 +74,10 @@ const ModalForm = <TInput extends object, TData extends object>({
         title={title}
         visible={modalVisible}
         onCancel={closeModal}
-        // @ts-ignore
         onOk={handleSubmit(onSubmitOuter)}
         confirmLoading={submitted}
         destroyOnClose
       >
-        {/*@ts-ignore*/}
         <Form onSubmitCapture={handleSubmit(onSubmitOuter)}>
           <Box flex flexDirection="column" gap="15px">
             {renderForm(useFormMethods, reset)}

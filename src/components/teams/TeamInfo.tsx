@@ -1,9 +1,6 @@
-import React, { useState } from "react"
-import { CloseOutlined } from "@ant-design/icons"
-import { BoardGrid } from "./teams.styled"
-import BoardInfo from "./BoardInfo"
-import NewBoardButton from "./NewBoardButton"
 import { Button, Card, Col, Modal } from "antd"
+import { Div, H3 } from "../common/util/Text"
+import React, { useState } from "react"
 import {
   TeamInfoFragment,
   useCurrentUserQuery,
@@ -12,13 +9,17 @@ import {
   useRemoveUserMutation,
   useRenameTeamMutation,
 } from "../../../generated/graphql"
-import EditableText from "../common/form/EditableText"
-import Box from "../common/Box"
-import Avatar from "../common/Avatar"
-import { Div, H3 } from "../common/Text"
-import theme from "../../style/theme"
+
 import AddUser from "./AddUser"
+import Avatar from "../common/Avatar"
+import { BoardGrid } from "./teams.styled"
+import BoardInfo from "./BoardInfo"
+import Box from "../common/util/Box"
+import { CloseOutlined } from "@ant-design/icons"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
+import EditableText from "../common/form/EditableText"
+import NewBoardButton from "./NewBoardButton"
+import theme from "../../style/theme"
 
 function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
   const [editModalVisible, setEditModalVisible] = useState(false)

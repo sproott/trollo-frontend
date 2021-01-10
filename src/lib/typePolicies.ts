@@ -1,41 +1,40 @@
 import { TypePolicies } from "@apollo/client"
 
-const acceptIncoming = (existing: any, incoming: any) => {
-  return incoming
-}
-
 const typePolicies: TypePolicies = {
   User: {
     fields: {
       owns: {
-        merge: acceptIncoming,
+        merge: false,
       },
       participatesIn: {
-        merge: acceptIncoming,
+        merge: false,
       },
     },
   },
   Team: {
     fields: {
       boards: {
-        merge: acceptIncoming,
+        merge: false,
       },
       participants: {
-        merge: acceptIncoming,
+        merge: false,
+      },
+      flairs: {
+        merge: false,
       },
     },
   },
   List: {
     fields: {
       cards: {
-        merge: acceptIncoming,
+        merge: false,
       },
     },
   },
   Board: {
     fields: {
       lists: {
-        merge: acceptIncoming,
+        merge: false,
       },
     },
   },

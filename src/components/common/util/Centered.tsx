@@ -1,5 +1,5 @@
-import React, { CSSProperties, ReactChild } from "react"
 import Box, { BoxProps } from "./Box"
+import React, { CSSProperties, ReactChild } from "react"
 
 interface CenteredProps extends BoxProps {
   children: React.ReactNode

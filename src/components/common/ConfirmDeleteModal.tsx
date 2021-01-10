@@ -1,6 +1,7 @@
-import React from "react"
 import { Button, Modal } from "antd"
-import { Div } from "./Text"
+
+import { Div } from "./util/Text"
+import React from "react"
 
 function ConfirmDeleteModal({
   title,
