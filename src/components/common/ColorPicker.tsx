@@ -1,7 +1,14 @@
-import { CSSProperties, MouseEvent, useEffect, useRef, useState } from "react"
+import React, { CSSProperties, MouseEvent, TouchEvent, useEffect, useRef, useState } from "react"
 
 import _ from "lodash"
 import styled from "styled-components"
+
+const insideBox = (
+  [x, y]: [number, number],
+  [x1, y1, x2, y2]: [number, number, number, number]
+) => {
+  return x >= x1 && x <= x2 && y >= y1 && y <= y2
+}
 
 type CursorProps = { canvasWidth: number; offset: number }
 
@@ -36,6 +43,7 @@ const ColorPicker = ({
   style?: CSSProperties
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>()
+  const divRef = useRef<HTMLDivElement>()
   const [canvasWidth, setCanvasWidth] = useState<number>()
   const [dragging, setDragging] = useState(false)
   const [initialized, setInitialized] = useState(false)
@@ -54,6 +62,10 @@ const ColorPicker = ({
     move(e.clientX)
     setDragging(true)
   }
+  const onTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    move(e.changedTouches[0].clientX)
+    setDragging(true)
+  }
   // mouse entering from outside
   const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
     if (e.buttons > 0) setDragging(true)
@@ -62,6 +74,16 @@ const ColorPicker = ({
   const drag = (e: MouseEvent<HTMLDivElement>) => {
     if (dragging) {
       move(e.clientX)
+    }
+  }
+  const touchDrag = (e: TouchEvent<HTMLDivElement>) => {
+    const { clientX, clientY } = e.changedTouches[0]
+    const { left, top, right, bottom } = divRef.current.getBoundingClientRect()
+    if (insideBox([clientX, clientY], [left, top, right, bottom])) {
+      move(e.changedTouches[0].clientX)
+      setDragging(true)
+    } else {
+      setDragging(false)
     }
   }
   // when viewport size changes
@@ -119,10 +141,14 @@ const ColorPicker = ({
         boxSizing: "border-box",
       }}
       onMouseMove={drag}
+      onTouchMove={touchDrag}
       onMouseLeave={setDragging.bind(this, false)}
       onMouseEnter={onMouseEnter}
       onMouseUp={setDragging.bind(this, false)}
+      onTouchEnd={setDragging.bind(this, false)}
       onMouseDown={onClick}
+      onTouchStart={onTouchStart}
+      ref={divRef}
     >
       <canvas
         ref={canvasRef}
