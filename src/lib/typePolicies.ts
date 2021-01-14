@@ -38,6 +38,13 @@ const typePolicies: TypePolicies = {
       },
     },
   },
+  Card: {
+    fields: {
+      flairs: {
+        merge: false,
+      },
+    },
+  },
 }
 
 export default typePolicies

@@ -31,14 +31,14 @@ const getIfContainsTeam = (
   participants: ParticipantTeamFragment[],
   teamId: string
 ): ParticipantTeamFragment[] | undefined => {
-  return !!participants.map((p) => p.team).find((t) => t.id === teamId) ? participants : undefined
+  return participants.map((p) => p.team).find((t) => t.id === teamId) ? participants : undefined
 }
 
 const getIfContainsBoard = (
   participants: ParticipantTeamFragment[],
   boardId: string
 ): ParticipantTeamFragment[] | undefined => {
-  return !!participants.flatMap((p) => p.team.boards).find((b) => b.id === boardId)
+  return participants.flatMap((p) => p.team.boards).find((b) => b.id === boardId)
     ? participants
     : undefined
 }

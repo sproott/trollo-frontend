@@ -23,3 +23,21 @@ export const flairDeleted = gql`
     }
   }
 `
+
+export const flairAssigned = gql`
+  subscription FlairAssigned($teamId: String!) {
+    flairAssigned(teamId: $teamId) {
+      flairId
+      cardId
+    }
+  }
+`
+
+export const flairUnassigned = gql`
+  subscription FlairUnassigned($teamId: String!) {
+    flairUnassigned(teamId: $teamId) {
+      flairId
+      cardId
+    }
+  }
+`

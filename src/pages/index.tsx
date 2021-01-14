@@ -1,10 +1,10 @@
-import React from "react"
-import Navbar from "../components/common/Navbar"
-import { Layout } from "../components/common/page.styled"
-import { useCurrentUserQuery } from "../../generated/graphql"
-import Teams from "../components/teams/Teams"
-import withCurrentUser from "../lib/withCurrentUser"
 import Homepage from "../components/homepage/Homepage"
+import { Layout } from "../components/common/page.styled"
+import Navbar from "../components/common/Navbar"
+import React from "react"
+import Teams from "../components/teams/Teams"
+import { useCurrentUserQuery } from "../../generated/graphql"
+import withCurrentUser from "../lib/withCurrentUser"
 
 const Home = () => {
   const { data } = useCurrentUserQuery()
@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <Layout>
       <Navbar />
-      {!!data?.currentUser ? <Teams /> : <Homepage />}
+      {data?.currentUser ? <Teams /> : <Homepage />}
     </Layout>
   )
 }

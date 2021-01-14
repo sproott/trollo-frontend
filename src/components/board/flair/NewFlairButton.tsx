@@ -1,14 +1,14 @@
-import { useContext, useState } from "react"
+import React, { useContext, useState } from "react"
 
-import { BoardContext } from "./Board"
-import Box from "../common/util/Box"
-import ColorPicker from "../common/ColorPicker"
-import { Flair } from "../common/Flair"
-import { Form } from "antd"
-import ModalForm from "../common/form/ModalForm"
+import { BoardContext } from "../Board"
+import Box from "../../common/util/Box"
+import ColorPicker from "../../common/ColorPicker"
+import { Div } from "../../common/util/Text"
+import { Flair } from "../../common/Flair"
+import ModalForm from "../../common/form/ModalForm"
 import { PlusOutlined } from "@ant-design/icons"
-import TextInput from "../common/form/TextInput"
-import { useCreateFlairMutation } from "../../../generated/graphql"
+import TextInput from "../../common/form/TextInput"
+import { useCreateFlairMutation } from "../../../../generated/graphql"
 
 type FormData = {
   name: string
@@ -17,12 +17,15 @@ type FormData = {
 export const NewFlairButton = () => {
   const [createFlair, { data, loading }] = useCreateFlairMutation()
   const [hue, setHue] = useState(0)
-  const { id: teamId, name: teamName } = useContext(BoardContext)
+  const {
+    team: { id: teamId, name: teamName },
+  } = useContext(BoardContext)
 
   const onSubmit = async (formData: FormData) => {
     await createFlair({
       variables: { teamId, ...formData, hue },
     })
+    setHue(0)
   }
 
   return (
@@ -55,9 +58,10 @@ export const NewFlairButton = () => {
               maxLength={20}
               useFormMethods={useFormMethods}
             />
-            <Form.Item label="Hue" style={{ alignItems: "center" }}>
+            <Box flex alignItems="center" gap="7px">
+              <Div>Hue: </Div>
               <ColorPicker value={hue} onChange={setHue} />
-            </Form.Item>
+            </Box>
           </>
         )
       }}

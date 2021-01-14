@@ -31,3 +31,15 @@ export const deleteFlair = gql`
     deleteFlair(flairId: $flairId)
   }
 `
+
+export const assignFlair = gql`
+  mutation AssignFlair($cardId: String!, $flairId: String!) {
+    assignFlair(cardId: $cardId, flairId: $flairId)
+  }
+`
+
+export const unassignFlair = gql`
+  mutation UnassignFlair($cardId: String!, $flairId: String!) {
+    unassignFlair(cardId: $cardId, flairId: $flairId)
+  }
+`

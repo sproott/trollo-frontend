@@ -1,6 +1,5 @@
-import * as Apollo from '@apollo/client';
-
 import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -148,6 +147,13 @@ export type FlairIdTeamIdPayload = {
   teamId: Scalars['String'];
 };
 
+export type FlairIdCardIdTeamIdPayload = {
+  __typename?: 'FlairIdCardIdTeamIdPayload';
+  flairId: Scalars['String'];
+  cardId: Scalars['String'];
+  teamId: Scalars['String'];
+};
+
 export type CreateListResponse = {
   __typename?: 'CreateListResponse';
   list?: Maybe<List>;
@@ -250,6 +256,8 @@ export type Mutation = {
   changeFlairHue: Scalars['Boolean'];
   renameFlair: RenameResponse;
   deleteFlair: Scalars['Boolean'];
+  assignFlair: Scalars['Boolean'];
+  unassignFlair: Scalars['Boolean'];
   createList: CreateListResponse;
   moveList: Scalars['Boolean'];
   renameList: RenameResponse;
@@ -350,6 +358,18 @@ export type MutationDeleteFlairArgs = {
 };
 
 
+export type MutationAssignFlairArgs = {
+  flairId: Scalars['String'];
+  cardId: Scalars['String'];
+};
+
+
+export type MutationUnassignFlairArgs = {
+  flairId: Scalars['String'];
+  cardId: Scalars['String'];
+};
+
+
 export type MutationCreateListArgs = {
   boardId: Scalars['String'];
   name: Scalars['String'];
@@ -434,6 +454,8 @@ export type Subscription = {
   flairCreated: Flair;
   flairUpdated: Flair;
   flairDeleted: FlairIdTeamIdPayload;
+  flairAssigned: FlairIdCardIdTeamIdPayload;
+  flairUnassigned: FlairIdCardIdTeamIdPayload;
   listCreated: List;
   listMoved: ListMovedPayload;
   listRenamed: List;
@@ -496,6 +518,16 @@ export type SubscriptionFlairUpdatedArgs = {
 
 
 export type SubscriptionFlairDeletedArgs = {
+  teamId: Scalars['String'];
+};
+
+
+export type SubscriptionFlairAssignedArgs = {
+  teamId: Scalars['String'];
+};
+
+
+export type SubscriptionFlairUnassignedArgs = {
   teamId: Scalars['String'];
 };
 
@@ -887,6 +919,28 @@ export type DeleteFlairMutation = (
   & Pick<Mutation, 'deleteFlair'>
 );
 
+export type AssignFlairMutationVariables = Exact<{
+  cardId: Scalars['String'];
+  flairId: Scalars['String'];
+}>;
+
+
+export type AssignFlairMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'assignFlair'>
+);
+
+export type UnassignFlairMutationVariables = Exact<{
+  cardId: Scalars['String'];
+  flairId: Scalars['String'];
+}>;
+
+
+export type UnassignFlairMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'unassignFlair'>
+);
+
 export type FlairCreatedSubscriptionVariables = Exact<{
   teamId: Scalars['String'];
 }>;
@@ -923,6 +977,32 @@ export type FlairDeletedSubscription = (
   & { flairDeleted: (
     { __typename?: 'FlairIdTeamIdPayload' }
     & Pick<FlairIdTeamIdPayload, 'flairId'>
+  ) }
+);
+
+export type FlairAssignedSubscriptionVariables = Exact<{
+  teamId: Scalars['String'];
+}>;
+
+
+export type FlairAssignedSubscription = (
+  { __typename?: 'Subscription' }
+  & { flairAssigned: (
+    { __typename?: 'FlairIdCardIdTeamIdPayload' }
+    & Pick<FlairIdCardIdTeamIdPayload, 'flairId' | 'cardId'>
+  ) }
+);
+
+export type FlairUnassignedSubscriptionVariables = Exact<{
+  teamId: Scalars['String'];
+}>;
+
+
+export type FlairUnassignedSubscription = (
+  { __typename?: 'Subscription' }
+  & { flairUnassigned: (
+    { __typename?: 'FlairIdCardIdTeamIdPayload' }
+    & Pick<FlairIdCardIdTeamIdPayload, 'flairId' | 'cardId'>
   ) }
 );
 
@@ -2172,6 +2252,68 @@ export function useDeleteFlairMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteFlairMutationHookResult = ReturnType<typeof useDeleteFlairMutation>;
 export type DeleteFlairMutationResult = Apollo.MutationResult<DeleteFlairMutation>;
 export type DeleteFlairMutationOptions = Apollo.BaseMutationOptions<DeleteFlairMutation, DeleteFlairMutationVariables>;
+export const AssignFlairDocument = gql`
+    mutation AssignFlair($cardId: String!, $flairId: String!) {
+  assignFlair(cardId: $cardId, flairId: $flairId)
+}
+    `;
+export type AssignFlairMutationFn = Apollo.MutationFunction<AssignFlairMutation, AssignFlairMutationVariables>;
+
+/**
+ * __useAssignFlairMutation__
+ *
+ * To run a mutation, you first call `useAssignFlairMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssignFlairMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assignFlairMutation, { data, loading, error }] = useAssignFlairMutation({
+ *   variables: {
+ *      cardId: // value for 'cardId'
+ *      flairId: // value for 'flairId'
+ *   },
+ * });
+ */
+export function useAssignFlairMutation(baseOptions?: Apollo.MutationHookOptions<AssignFlairMutation, AssignFlairMutationVariables>) {
+        return Apollo.useMutation<AssignFlairMutation, AssignFlairMutationVariables>(AssignFlairDocument, baseOptions);
+      }
+export type AssignFlairMutationHookResult = ReturnType<typeof useAssignFlairMutation>;
+export type AssignFlairMutationResult = Apollo.MutationResult<AssignFlairMutation>;
+export type AssignFlairMutationOptions = Apollo.BaseMutationOptions<AssignFlairMutation, AssignFlairMutationVariables>;
+export const UnassignFlairDocument = gql`
+    mutation UnassignFlair($cardId: String!, $flairId: String!) {
+  unassignFlair(cardId: $cardId, flairId: $flairId)
+}
+    `;
+export type UnassignFlairMutationFn = Apollo.MutationFunction<UnassignFlairMutation, UnassignFlairMutationVariables>;
+
+/**
+ * __useUnassignFlairMutation__
+ *
+ * To run a mutation, you first call `useUnassignFlairMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnassignFlairMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unassignFlairMutation, { data, loading, error }] = useUnassignFlairMutation({
+ *   variables: {
+ *      cardId: // value for 'cardId'
+ *      flairId: // value for 'flairId'
+ *   },
+ * });
+ */
+export function useUnassignFlairMutation(baseOptions?: Apollo.MutationHookOptions<UnassignFlairMutation, UnassignFlairMutationVariables>) {
+        return Apollo.useMutation<UnassignFlairMutation, UnassignFlairMutationVariables>(UnassignFlairDocument, baseOptions);
+      }
+export type UnassignFlairMutationHookResult = ReturnType<typeof useUnassignFlairMutation>;
+export type UnassignFlairMutationResult = Apollo.MutationResult<UnassignFlairMutation>;
+export type UnassignFlairMutationOptions = Apollo.BaseMutationOptions<UnassignFlairMutation, UnassignFlairMutationVariables>;
 export const FlairCreatedDocument = gql`
     subscription FlairCreated($teamId: String!) {
   flairCreated(teamId: $teamId) {
@@ -2259,6 +2401,66 @@ export function useFlairDeletedSubscription(baseOptions: Apollo.SubscriptionHook
       }
 export type FlairDeletedSubscriptionHookResult = ReturnType<typeof useFlairDeletedSubscription>;
 export type FlairDeletedSubscriptionResult = Apollo.SubscriptionResult<FlairDeletedSubscription>;
+export const FlairAssignedDocument = gql`
+    subscription FlairAssigned($teamId: String!) {
+  flairAssigned(teamId: $teamId) {
+    flairId
+    cardId
+  }
+}
+    `;
+
+/**
+ * __useFlairAssignedSubscription__
+ *
+ * To run a query within a React component, call `useFlairAssignedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useFlairAssignedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFlairAssignedSubscription({
+ *   variables: {
+ *      teamId: // value for 'teamId'
+ *   },
+ * });
+ */
+export function useFlairAssignedSubscription(baseOptions: Apollo.SubscriptionHookOptions<FlairAssignedSubscription, FlairAssignedSubscriptionVariables>) {
+        return Apollo.useSubscription<FlairAssignedSubscription, FlairAssignedSubscriptionVariables>(FlairAssignedDocument, baseOptions);
+      }
+export type FlairAssignedSubscriptionHookResult = ReturnType<typeof useFlairAssignedSubscription>;
+export type FlairAssignedSubscriptionResult = Apollo.SubscriptionResult<FlairAssignedSubscription>;
+export const FlairUnassignedDocument = gql`
+    subscription FlairUnassigned($teamId: String!) {
+  flairUnassigned(teamId: $teamId) {
+    flairId
+    cardId
+  }
+}
+    `;
+
+/**
+ * __useFlairUnassignedSubscription__
+ *
+ * To run a query within a React component, call `useFlairUnassignedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useFlairUnassignedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFlairUnassignedSubscription({
+ *   variables: {
+ *      teamId: // value for 'teamId'
+ *   },
+ * });
+ */
+export function useFlairUnassignedSubscription(baseOptions: Apollo.SubscriptionHookOptions<FlairUnassignedSubscription, FlairUnassignedSubscriptionVariables>) {
+        return Apollo.useSubscription<FlairUnassignedSubscription, FlairUnassignedSubscriptionVariables>(FlairUnassignedDocument, baseOptions);
+      }
+export type FlairUnassignedSubscriptionHookResult = ReturnType<typeof useFlairUnassignedSubscription>;
+export type FlairUnassignedSubscriptionResult = Apollo.SubscriptionResult<FlairUnassignedSubscription>;
 export const CreateListDocument = gql`
     mutation createList($boardId: String!, $name: String!) {
   createList(boardId: $boardId, name: $name) {

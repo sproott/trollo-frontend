@@ -156,8 +156,6 @@ const ColorPicker = ({
           height: "100%",
           width: "100%",
           borderRadius: "9999px",
-          position: "relative",
-          top: "-1px",
         }}
       />
       {canvasWidth !== undefined && (

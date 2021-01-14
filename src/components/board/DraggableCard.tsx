@@ -15,10 +15,10 @@ import { BoardContext } from "./Board"
 import Box from "../common/util/Box"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
 import { Draggable } from "react-beautiful-dnd"
-import { EditFlairs } from "./EditFlairs"
+import { EditFlairs } from "./flair/EditFlairs"
 import EditableText from "../common/form/EditableText"
 import EditableTextArea from "../common/form/EditableTextArea"
-import { FlairFromFragment } from "./FlairFromFragment"
+import { FlairFromFragment } from "./flair/FlairFromFragment"
 
 const DraggableCard = ({
   card,
@@ -35,7 +35,9 @@ const DraggableCard = ({
     { data: updateDescriptionData },
   ] = useUpdateCardDescriptionMutation()
   const [deleteCardMutate] = useDeleteCardMutation()
-  const { flairs: teamFlairs } = useContext(BoardContext)
+  const {
+    team: { flairs: teamFlairs },
+  } = useContext(BoardContext)
 
   const deleteCard = async () => {
     await deleteCardMutate({
@@ -108,7 +110,7 @@ const DraggableCard = ({
           <AssigneeSelect assignee={card.assignee} cardId={card.id} participants={participants} />
           <Box flex alignItems="center" gap="10px">
             <Div>Flairs: </Div>
-            <EditFlairs cardFlairs={card.flairs} teamFlairs={teamFlairs} />
+            <EditFlairs cardFlairs={card.flairs} teamFlairs={teamFlairs} cardId={card.id} />
           </Box>
           <FlairBox>
             {[...card.flairs]

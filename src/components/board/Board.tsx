@@ -28,12 +28,18 @@ import {
   CardUserUnassignedDocument,
   CardUserUnassignedSubscription,
   CardUserUnassignedSubscriptionVariables,
+  FlairAssignedDocument,
+  FlairAssignedSubscription,
+  FlairAssignedSubscriptionVariables,
   FlairCreatedDocument,
   FlairCreatedSubscription,
   FlairCreatedSubscriptionVariables,
   FlairDeletedDocument,
   FlairDeletedSubscription,
   FlairDeletedSubscriptionVariables,
+  FlairUnassignedDocument,
+  FlairUnassignedSubscription,
+  FlairUnassignedSubscriptionVariables,
   FlairUpdatedDocument,
   FlairUpdatedSubscription,
   FlairUpdatedSubscriptionVariables,
@@ -83,7 +89,9 @@ import _ from "lodash"
 import produce from "immer"
 import { useRouter } from "next/router"
 
-export const BoardContext = createContext<BoardQueryTeamFragment | undefined>(undefined)
+export const BoardContext = createContext<
+  { team: BoardQueryTeamFragment; boardId: string } | undefined
+>(undefined)
 
 const Board = ({ boardId }: { boardId: string }) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -324,6 +332,36 @@ const Board = ({ boardId }: { boardId: string }) => {
         updateQuery: (prev, { subscriptionData: { data } }) => {
           return produce(prev, (x) => {
             _.remove(x.board.team.flairs, (f) => f.id === data.flairDeleted.flairId)
+            x.board.lists
+              .flatMap((l) => l.cards)
+              .forEach((c) => _.remove(c.flairs, (f) => f.id === data.flairDeleted.flairId))
+          })
+        },
+      })
+      subscribeToMore<FlairAssignedSubscription, FlairAssignedSubscriptionVariables>({
+        document: FlairAssignedDocument,
+        variables: { teamId: data.board.team.id },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            findNestedValue(
+              x.board,
+              ["lists", "cards"],
+              (c) => c.id === data.flairAssigned.cardId
+            ).flairs.push(x.board.team.flairs.find((f) => f.id === data.flairAssigned.flairId))
+          })
+        },
+      })
+      subscribeToMore<FlairUnassignedSubscription, FlairUnassignedSubscriptionVariables>({
+        document: FlairUnassignedDocument,
+        variables: { teamId: data.board.team.id },
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          return produce(prev, (x) => {
+            const card = findNestedValue(
+              x.board,
+              ["lists", "cards"],
+              (c) => c.id === data.flairUnassigned.cardId
+            )
+            _.remove(card.flairs, (f) => f.id === data.flairUnassigned.flairId)
           })
         },
       })
@@ -442,7 +480,7 @@ const Board = ({ boardId }: { boardId: string }) => {
   return !data?.board ? (
     <Spinner />
   ) : (
-    <BoardContext.Provider value={data.board.team}>
+    <BoardContext.Provider value={{ team: data.board.team, boardId }}>
       <Content>
         <Box flex justifyContent="space-between" alignItems="center">
           <Box flex justifyContent="space-between" alignItems="center" gap="20px">

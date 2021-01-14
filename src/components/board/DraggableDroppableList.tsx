@@ -46,7 +46,7 @@ const DraggableDroppableList = ({
   return (
     <>
       <Draggable draggableId={list.id} index={list.index}>
-        {(provided, snapshot) => (
+        {(provided, _) => (
           <Col
             ref={provided.innerRef}
             {...provided.draggableProps}

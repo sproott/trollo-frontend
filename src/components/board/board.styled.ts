@@ -57,7 +57,8 @@ export const ArrowBack = styled(ArrowLeftOutlined)`
 
 export const FlairBox = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 5px;
 `
