@@ -66,7 +66,7 @@ const Teams = () => {
           const participants =
             getIfContainsTeam(x.currentUser.owns, data.teamDeleted) ??
             getIfContainsTeam(x.currentUser.participatesIn, data.teamDeleted)
-          participants!.splice(
+          participants.splice(
             participants.findIndex((p) => p.team.id === data.teamDeleted),
             1
           )

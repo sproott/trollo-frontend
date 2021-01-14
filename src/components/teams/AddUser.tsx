@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import Avatar from "../common/Avatar"
 import Box from "../common/util/Box"
 import { Form } from "antd"
+import { PlusOutlined } from "@ant-design/icons"
 import TextInput from "../common/form/TextInput"
 import theme from "../../style/theme"
 import { useAddUserMutation } from "../../../generated/graphql"
@@ -47,7 +48,7 @@ function AddUser({ teamId }: { teamId: string }) {
 
   if (submitted && !loading && !!data) {
     setSubmitted(false)
-    if (!!data.addUser.userId) {
+    if (data.addUser.userId) {
       resetForm()
       setError(undefined)
     } else if (data.addUser.doesNotExist) {
@@ -65,6 +66,7 @@ function AddUser({ teamId }: { teamId: string }) {
       <Box flex alignItems="center" gap="10px">
         <Avatar username="?" backgroundColor={theme.blue.primary} color="white" pointer />
         <TextInput name="username" maxLength={20} useFormMethods={useFormMethods} error={error} />
+        <PlusOutlined onClick={handleSubmit(onSubmit)} />
       </Box>
     </Form>
   )

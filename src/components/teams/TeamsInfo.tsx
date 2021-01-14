@@ -1,6 +1,6 @@
 import React from "react"
-import { TeamInfoFragment } from "../../../generated/graphql"
 import TeamInfo from "./TeamInfo"
+import { TeamInfoFragment } from "../../../generated/graphql"
 
 const TeamsInfo = ({ teams, isOwn }: { teams: TeamInfoFragment[]; isOwn?: boolean }) => {
   return (
