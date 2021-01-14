@@ -1,12 +1,11 @@
 import { DraggedFlair, FLAIR } from "./flair.types"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 
 import { DragDropContext } from "./EditFlairs"
 import { DraggableFlair } from "./DraggableFlair"
 import { FlairBox } from "../board.styled"
 import { FlairInfoFragment } from "../../../../generated/graphql"
 import { generate } from "@ant-design/colors"
-import theme from "../../../style/theme"
 import { useDrop } from "react-dnd"
 
 export const DroppableFlairBox = ({
