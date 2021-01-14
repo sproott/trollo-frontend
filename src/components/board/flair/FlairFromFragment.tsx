@@ -30,7 +30,6 @@ export const FlairFromFragment = forwardRef(
     ref: ForwardedRef<HTMLSpanElement>
   ) => {
     const [internalHue, setInternalHue] = useState(flair.hue)
-    const [internalName, setInternalName] = useState(flair.name)
     const [modalVisible, setModalVisible] = useState(false)
     const [confirmationVisible, setConfirmationVisible] = useState(false)
     const [renameMutate, { data: renameData }] = useRenameFlairMutation()
@@ -50,7 +49,6 @@ export const FlairFromFragment = forwardRef(
     }
     const closeModal = () => {
       setModalVisible(false)
-      setInternalName(flair.name)
       setInternalHue(flair.hue)
     }
 
@@ -76,15 +74,15 @@ export const FlairFromFragment = forwardRef(
         >
           <Box flex flexDirection="column" gap="15px">
             <Box flex justifyContent="flex-start">
-              <Flair label={internalName} hue={internalHue} />
+              <Flair label={flair.name} hue={internalHue} />
             </Box>
             <EditableText
               label="Name"
               text={flair.name}
               maxLength={20}
               onConfirm={rename}
-              onChange={setInternalName}
               error={renameData?.renameFlair.exists && "Flair with this name already exists"}
+              success={renameData?.renameFlair.success}
             />
             <Box flex alignItems="center" gap="7px">
               <Div>Hue: </Div>

@@ -26,17 +26,9 @@ export type RenderFn = (args: {
   useFormMethods: UseFormMethods<FormData>
   reopened: boolean
   onSubmit: ({ text }: FormData) => void
-  onChange: (text: string) => void
 }) => React.ReactNode
 
-const EditableInput = ({
-  text,
-  label,
-  onConfirm,
-  onChange,
-  success,
-  children,
-}: EditableInputProps) => {
+const EditableInput = ({ text, label, onConfirm, success, children }: EditableInputProps) => {
   const [editing, setEditing] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [onSubmitFinished, setOnSubmitFinished] = useState(false)
@@ -48,11 +40,7 @@ const EditableInput = ({
     mode: "onBlur",
     reValidateMode: "onBlur",
   })
-  const { handleSubmit, reset, watch } = useFormMethods
-  const { text: watchedText } = watch()
-  useEffect(() => {
-    onChange && onChange(watchedText)
-  }, [watchedText])
+  const { handleSubmit, reset } = useFormMethods
 
   const edit = () => {
     setReopened(true)
@@ -94,7 +82,7 @@ const EditableInput = ({
         ) : (
           <Form onSubmitCapture={handleSubmit(onSubmit)}>
             <Box flex gap="7px" alignItems="center">
-              {children({ useFormMethods, reopened, onSubmit, onChange })}
+              {children({ useFormMethods, reopened, onSubmit })}
               <CheckOutlined onClick={handleSubmit(onSubmit)} />
               <CloseOutlined onClick={cancel} />
             </Box>

@@ -116,7 +116,7 @@ const DraggableCard = ({
             {[...card.flairs]
               .sort((f1, f2) => f1.name.localeCompare(f2.name))
               .map((f) => (
-                <FlairFromFragment key={f.id} flair={f} nonEditable />
+                <FlairFromFragment key={f.id} flair={f} />
               ))}
           </FlairBox>
         </Box>
