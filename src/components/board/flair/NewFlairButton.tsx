@@ -25,7 +25,6 @@ export const NewFlairButton = () => {
     await createFlair({
       variables: { teamId, ...formData, hue },
     })
-    setHue(0)
   }
 
   return (
@@ -66,7 +65,13 @@ export const NewFlairButton = () => {
         )
       }}
       renderButton={(showModal) => (
-        <PlusOutlined style={{ padding: "6px", cursor: "pointer" }} onClick={showModal} />
+        <PlusOutlined
+          style={{ padding: "6px", cursor: "pointer" }}
+          onClick={() => {
+            setHue(0)
+            showModal()
+          }}
+        />
       )}
     />
   )
