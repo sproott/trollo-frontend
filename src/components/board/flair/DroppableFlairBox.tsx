@@ -1,5 +1,5 @@
 import { DraggedFlair, FLAIR } from "./flair.types"
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 
 import { DragDropContext } from "./EditFlairs"
 import { DraggableFlair } from "./DraggableFlair"
@@ -26,7 +26,13 @@ export const DroppableFlairBox = ({
       item: monitor.getItem() as DraggedFlair,
     }),
   })
-  const colors = item && generate(`hsl(${item.flair.hue}, 100%, 50%)`)
+  const generateColors = () => {
+    return generate(`hsl(${item.flair.hue}, 100%, 50%)`)
+  }
+  const [colors, setColors] = useState(item ? generateColors() : undefined)
+  useEffect(() => {
+    item && setColors(generateColors())
+  }, [item])
 
   return (
     <FlairBox
