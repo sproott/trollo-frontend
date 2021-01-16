@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 
 export const login = gql`
-  mutation Login($input: LoginInput!) {
+  mutation login($input: LoginInput!) {
     login(input: $input) {
       id
       username
@@ -17,7 +17,7 @@ export const logout = gql`
 `
 
 export const register = gql`
-  mutation Register($input: RegisterInput!) {
+  mutation register($input: RegisterInput!) {
     register(input: $input) {
       user {
         id

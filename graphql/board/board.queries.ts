@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 
 export const boardQuery = gql`
-  query Board($id: String!) {
+  query board($id: ID!) {
     board(id: $id) {
       ...BoardQueryBoard
     }

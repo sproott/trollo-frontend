@@ -27,13 +27,13 @@ export const TeamInfo = gql`
 `
 
 export const removeUser = gql`
-  mutation RemoveUser($teamId: String!, $userId: String!) {
+  mutation removeUser($teamId: ID!, $userId: ID!) {
     removeUser(teamId: $teamId, userId: $userId)
   }
 `
 
 export const renameTeam = gql`
-  mutation RenameTeam($name: String!, $teamId: String!) {
+  mutation renameTeam($name: String!, $teamId: ID!) {
     renameTeam(name: $name, teamId: $teamId) {
       success
       exists

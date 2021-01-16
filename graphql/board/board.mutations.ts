@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 
 export const createBoard = gql`
-  mutation CreateBoard($teamId: String!, $name: String!) {
+  mutation createBoard($teamId: ID!, $name: String!) {
     createBoard(teamId: $teamId, name: $name) {
       board {
         id
@@ -13,13 +13,13 @@ export const createBoard = gql`
 `
 
 export const deleteBoard = gql`
-  mutation DeleteBoard($id: String!) {
+  mutation deleteBoard($id: ID!) {
     deleteBoard(id: $id)
   }
 `
 
 export const renameBoard = gql`
-  mutation RenameBoard($name: String!, $boardId: String!) {
+  mutation renameBoard($name: String!, $boardId: ID!) {
     renameBoard(name: $name, boardId: $boardId) {
       success
       exists

@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 
 export const CreateList = gql`
-  mutation createList($boardId: String!, $name: String!) {
+  mutation createList($boardId: ID!, $name: String!) {
     createList(boardId: $boardId, name: $name) {
       list {
         id
@@ -13,19 +13,19 @@ export const CreateList = gql`
 `
 
 export const deleteList = gql`
-  mutation DeleteList($id: String!) {
+  mutation deleteList($id: ID!) {
     deleteList(id: $id)
   }
 `
 
 export const moveList = gql`
-  mutation MoveList($destinationIndex: Int!, $listId: String!) {
+  mutation moveList($destinationIndex: Int!, $listId: ID!) {
     moveList(destinationIndex: $destinationIndex, listId: $listId)
   }
 `
 
 export const renameList = gql`
-  mutation RenameList($name: String!, $listId: String!) {
+  mutation renameList($name: String!, $listId: ID!) {
     renameList(name: $name, listId: $listId) {
       success
       exists

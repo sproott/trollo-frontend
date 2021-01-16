@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 
 export const cardCreated = gql`
-  subscription CardCreated($boardId: String!) {
+  subscription cardCreated($boardId: ID!) {
     cardCreated(boardId: $boardId) {
       card {
         id
@@ -14,7 +14,7 @@ export const cardCreated = gql`
 `
 
 export const cardMoved = gql`
-  subscription CardMoved($boardId: String!) {
+  subscription cardMoved($boardId: ID!) {
     cardMoved(boardId: $boardId) {
       card {
         id
@@ -28,7 +28,7 @@ export const cardMoved = gql`
 `
 
 export const cardUpdated = gql`
-  subscription CardUpdated($boardId: String!) {
+  subscription cardUpdated($boardId: ID!) {
     cardUpdated(boardId: $boardId) {
       id
       name
@@ -38,7 +38,7 @@ export const cardUpdated = gql`
 `
 
 export const cardDeleted = gql`
-  subscription CardDeleted($boardId: String!) {
+  subscription cardDeleted($boardId: ID!) {
     cardDeleted(boardId: $boardId) {
       cardId
     }
@@ -46,7 +46,7 @@ export const cardDeleted = gql`
 `
 
 export const cardUserAssigned = gql`
-  subscription CardUserAssigned($boardId: String!) {
+  subscription cardUserAssigned($boardId: ID!) {
     cardUserAssigned(boardId: $boardId) {
       cardId
       boardId
@@ -58,7 +58,7 @@ export const cardUserAssigned = gql`
 `
 
 export const cardUserUnassigned = gql`
-  subscription CardUserUnassigned($boardId: String!) {
+  subscription cardUserUnassigned($boardId: ID!) {
     cardUserUnassigned(boardId: $boardId) {
       cardId
     }

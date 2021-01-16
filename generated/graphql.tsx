@@ -227,17 +227,17 @@ export type Query = {
 
 
 export type QueryBoardArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
 export type QueryNextIndexArgs = {
-  listId: Scalars['String'];
+  listId: Scalars['ID'];
 };
 
 
 export type QueryUserArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 export type Mutation = {
@@ -277,23 +277,23 @@ export type Mutation = {
 
 export type MutationCreateBoardArgs = {
   name: Scalars['String'];
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type MutationRenameBoardArgs = {
   name: Scalars['String'];
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type MutationDeleteBoardArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
 export type MutationCreateCardArgs = {
-  listId: Scalars['String'];
+  listId: Scalars['ID'];
   description?: Maybe<Scalars['String']>;
   name: Scalars['String'];
 };
@@ -301,95 +301,95 @@ export type MutationCreateCardArgs = {
 
 export type MutationMoveCardArgs = {
   destinationIndex: Scalars['Int'];
-  listId?: Maybe<Scalars['String']>;
-  cardId: Scalars['String'];
+  listId?: Maybe<Scalars['ID']>;
+  cardId: Scalars['ID'];
 };
 
 
 export type MutationRenameCardArgs = {
   name: Scalars['String'];
-  cardId: Scalars['String'];
+  cardId: Scalars['ID'];
 };
 
 
 export type MutationUpdateCardDescriptionArgs = {
   description: Scalars['String'];
-  cardId: Scalars['String'];
+  cardId: Scalars['ID'];
 };
 
 
 export type MutationDeleteCardArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
 export type MutationAssignUserArgs = {
-  userId: Scalars['String'];
-  cardId: Scalars['String'];
+  userId: Scalars['ID'];
+  cardId: Scalars['ID'];
 };
 
 
 export type MutationUnassignUserArgs = {
-  cardId: Scalars['String'];
+  cardId: Scalars['ID'];
 };
 
 
 export type MutationCreateFlairArgs = {
   name: Scalars['String'];
   hue: Scalars['Int'];
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type MutationChangeFlairHueArgs = {
   hue: Scalars['Int'];
-  flairId: Scalars['String'];
+  flairId: Scalars['ID'];
 };
 
 
 export type MutationRenameFlairArgs = {
   name: Scalars['String'];
-  flairId: Scalars['String'];
+  flairId: Scalars['ID'];
 };
 
 
 export type MutationDeleteFlairArgs = {
-  flairId: Scalars['String'];
+  flairId: Scalars['ID'];
 };
 
 
 export type MutationAssignFlairArgs = {
-  flairId: Scalars['String'];
-  cardId: Scalars['String'];
+  flairId: Scalars['ID'];
+  cardId: Scalars['ID'];
 };
 
 
 export type MutationUnassignFlairArgs = {
-  flairId: Scalars['String'];
-  cardId: Scalars['String'];
+  flairId: Scalars['ID'];
+  cardId: Scalars['ID'];
 };
 
 
 export type MutationCreateListArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
   name: Scalars['String'];
 };
 
 
 export type MutationMoveListArgs = {
   destinationIndex: Scalars['Int'];
-  listId: Scalars['String'];
+  listId: Scalars['ID'];
 };
 
 
 export type MutationRenameListArgs = {
   name: Scalars['String'];
-  listId: Scalars['String'];
+  listId: Scalars['ID'];
 };
 
 
 export type MutationDeleteListArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
@@ -399,30 +399,30 @@ export type MutationCreateTeamArgs = {
 
 
 export type MutationDeleteTeamArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
 export type MutationRenameTeamArgs = {
   name: Scalars['String'];
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type MutationAddUserArgs = {
   username: Scalars['String'];
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type MutationRemoveUserArgs = {
-  teamId: Scalars['String'];
-  userId: Scalars['String'];
+  teamId: Scalars['ID'];
+  userId: Scalars['ID'];
 };
 
 
 export type MutationLeaveTeamArgs = {
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
@@ -468,97 +468,97 @@ export type Subscription = {
 
 
 export type SubscriptionBoardRenamedArgs = {
-  boardId?: Maybe<Scalars['String']>;
+  boardId?: Maybe<Scalars['ID']>;
 };
 
 
 export type SubscriptionBoardDeletedArgs = {
-  boardId?: Maybe<Scalars['String']>;
+  boardId?: Maybe<Scalars['ID']>;
 };
 
 
 export type SubscriptionCardCreatedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionCardMovedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionCardUpdatedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionCardDeletedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionCardUserAssignedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionCardUserUnassignedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionFlairCreatedArgs = {
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type SubscriptionFlairUpdatedArgs = {
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type SubscriptionFlairDeletedArgs = {
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type SubscriptionFlairAssignedArgs = {
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type SubscriptionFlairUnassignedArgs = {
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 };
 
 
 export type SubscriptionListCreatedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionListMovedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionListRenamedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionListDeletedArgs = {
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 };
 
 
 export type SubscriptionTeamUserAddedArgs = {
-  teamId?: Maybe<Scalars['String']>;
+  teamId?: Maybe<Scalars['ID']>;
 };
 
 
 export type SubscriptionTeamUserRemovedArgs = {
-  teamId?: Maybe<Scalars['String']>;
+  teamId?: Maybe<Scalars['ID']>;
 };
 
 export type TeamsQueryBoardFragment = (
@@ -579,7 +579,7 @@ export type BoardQueryBoardFragment = (
 );
 
 export type CreateBoardMutationVariables = Exact<{
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
   name: Scalars['String'];
 }>;
 
@@ -597,7 +597,7 @@ export type CreateBoardMutation = (
 );
 
 export type DeleteBoardMutationVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['ID'];
 }>;
 
 
@@ -608,7 +608,7 @@ export type DeleteBoardMutation = (
 
 export type RenameBoardMutationVariables = Exact<{
   name: Scalars['String'];
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -621,7 +621,7 @@ export type RenameBoardMutation = (
 );
 
 export type BoardQueryVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['ID'];
 }>;
 
 
@@ -649,7 +649,7 @@ export type BoardCreatedSubscription = (
 );
 
 export type BoardRenamedSubscriptionVariables = Exact<{
-  boardId?: Maybe<Scalars['String']>;
+  boardId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -662,7 +662,7 @@ export type BoardRenamedSubscription = (
 );
 
 export type BoardDeletedSubscriptionVariables = Exact<{
-  boardId?: Maybe<Scalars['String']>;
+  boardId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -685,7 +685,7 @@ export type BoardQueryCardFragment = (
 
 export type UpdateCardDescriptionMutationVariables = Exact<{
   description: Scalars['String'];
-  cardId: Scalars['String'];
+  cardId: Scalars['ID'];
 }>;
 
 
@@ -695,7 +695,7 @@ export type UpdateCardDescriptionMutation = (
 );
 
 export type CreateCardMutationVariables = Exact<{
-  listId: Scalars['String'];
+  listId: Scalars['ID'];
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
 }>;
@@ -714,7 +714,7 @@ export type CreateCardMutation = (
 );
 
 export type DeleteCardMutationVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['ID'];
 }>;
 
 
@@ -725,8 +725,8 @@ export type DeleteCardMutation = (
 
 export type MoveCardMutationVariables = Exact<{
   destinationIndex: Scalars['Int'];
-  listId?: Maybe<Scalars['String']>;
-  cardId: Scalars['String'];
+  listId?: Maybe<Scalars['ID']>;
+  cardId: Scalars['ID'];
 }>;
 
 
@@ -737,7 +737,7 @@ export type MoveCardMutation = (
 
 export type RenameCardMutationVariables = Exact<{
   name: Scalars['String'];
-  cardId: Scalars['String'];
+  cardId: Scalars['ID'];
 }>;
 
 
@@ -750,8 +750,8 @@ export type RenameCardMutation = (
 );
 
 export type AssignUserMutationVariables = Exact<{
-  userId: Scalars['String'];
-  cardId: Scalars['String'];
+  userId: Scalars['ID'];
+  cardId: Scalars['ID'];
 }>;
 
 
@@ -761,7 +761,7 @@ export type AssignUserMutation = (
 );
 
 export type UnassignUserMutationVariables = Exact<{
-  cardId: Scalars['String'];
+  cardId: Scalars['ID'];
 }>;
 
 
@@ -771,7 +771,7 @@ export type UnassignUserMutation = (
 );
 
 export type CardCreatedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -788,7 +788,7 @@ export type CardCreatedSubscription = (
 );
 
 export type CardMovedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -805,7 +805,7 @@ export type CardMovedSubscription = (
 );
 
 export type CardUpdatedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -818,7 +818,7 @@ export type CardUpdatedSubscription = (
 );
 
 export type CardDeletedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -831,7 +831,7 @@ export type CardDeletedSubscription = (
 );
 
 export type CardUserAssignedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -848,7 +848,7 @@ export type CardUserAssignedSubscription = (
 );
 
 export type CardUserUnassignedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -866,7 +866,7 @@ export type FlairInfoFragment = (
 );
 
 export type CreateFlairMutationVariables = Exact<{
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
   name: Scalars['String'];
   hue: Scalars['Int'];
 }>;
@@ -885,7 +885,7 @@ export type CreateFlairMutation = (
 );
 
 export type ChangeFlairHueMutationVariables = Exact<{
-  flairId: Scalars['String'];
+  flairId: Scalars['ID'];
   hue: Scalars['Int'];
 }>;
 
@@ -896,7 +896,7 @@ export type ChangeFlairHueMutation = (
 );
 
 export type RenameFlairMutationVariables = Exact<{
-  flairId: Scalars['String'];
+  flairId: Scalars['ID'];
   name: Scalars['String'];
 }>;
 
@@ -910,7 +910,7 @@ export type RenameFlairMutation = (
 );
 
 export type DeleteFlairMutationVariables = Exact<{
-  flairId: Scalars['String'];
+  flairId: Scalars['ID'];
 }>;
 
 
@@ -920,8 +920,8 @@ export type DeleteFlairMutation = (
 );
 
 export type AssignFlairMutationVariables = Exact<{
-  cardId: Scalars['String'];
-  flairId: Scalars['String'];
+  cardId: Scalars['ID'];
+  flairId: Scalars['ID'];
 }>;
 
 
@@ -931,8 +931,8 @@ export type AssignFlairMutation = (
 );
 
 export type UnassignFlairMutationVariables = Exact<{
-  cardId: Scalars['String'];
-  flairId: Scalars['String'];
+  cardId: Scalars['ID'];
+  flairId: Scalars['ID'];
 }>;
 
 
@@ -942,7 +942,7 @@ export type UnassignFlairMutation = (
 );
 
 export type FlairCreatedSubscriptionVariables = Exact<{
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 }>;
 
 
@@ -955,7 +955,7 @@ export type FlairCreatedSubscription = (
 );
 
 export type FlairUpdatedSubscriptionVariables = Exact<{
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 }>;
 
 
@@ -968,7 +968,7 @@ export type FlairUpdatedSubscription = (
 );
 
 export type FlairDeletedSubscriptionVariables = Exact<{
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 }>;
 
 
@@ -981,7 +981,7 @@ export type FlairDeletedSubscription = (
 );
 
 export type FlairAssignedSubscriptionVariables = Exact<{
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 }>;
 
 
@@ -994,7 +994,7 @@ export type FlairAssignedSubscription = (
 );
 
 export type FlairUnassignedSubscriptionVariables = Exact<{
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 }>;
 
 
@@ -1016,7 +1016,7 @@ export type BoardQueryListFragment = (
 );
 
 export type CreateListMutationVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
   name: Scalars['String'];
 }>;
 
@@ -1034,7 +1034,7 @@ export type CreateListMutation = (
 );
 
 export type DeleteListMutationVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['ID'];
 }>;
 
 
@@ -1045,7 +1045,7 @@ export type DeleteListMutation = (
 
 export type MoveListMutationVariables = Exact<{
   destinationIndex: Scalars['Int'];
-  listId: Scalars['String'];
+  listId: Scalars['ID'];
 }>;
 
 
@@ -1056,7 +1056,7 @@ export type MoveListMutation = (
 
 export type RenameListMutationVariables = Exact<{
   name: Scalars['String'];
-  listId: Scalars['String'];
+  listId: Scalars['ID'];
 }>;
 
 
@@ -1069,7 +1069,7 @@ export type RenameListMutation = (
 );
 
 export type ListCreatedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -1082,7 +1082,7 @@ export type ListCreatedSubscription = (
 );
 
 export type ListRenamedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -1095,7 +1095,7 @@ export type ListRenamedSubscription = (
 );
 
 export type ListMovedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -1112,7 +1112,7 @@ export type ListMovedSubscription = (
 );
 
 export type ListDeletedSubscriptionVariables = Exact<{
-  boardId: Scalars['String'];
+  boardId: Scalars['ID'];
 }>;
 
 
@@ -1162,8 +1162,8 @@ export type TeamInfoFragment = (
 );
 
 export type RemoveUserMutationVariables = Exact<{
-  teamId: Scalars['String'];
-  userId: Scalars['String'];
+  teamId: Scalars['ID'];
+  userId: Scalars['ID'];
 }>;
 
 
@@ -1174,7 +1174,7 @@ export type RemoveUserMutation = (
 
 export type RenameTeamMutationVariables = Exact<{
   name: Scalars['String'];
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 }>;
 
 
@@ -1188,7 +1188,7 @@ export type RenameTeamMutation = (
 
 export type AddUserMutationVariables = Exact<{
   username: Scalars['String'];
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 }>;
 
 
@@ -1218,7 +1218,7 @@ export type CreateTeamMutation = (
 );
 
 export type DeleteTeamMutationVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['ID'];
 }>;
 
 
@@ -1228,7 +1228,7 @@ export type DeleteTeamMutation = (
 );
 
 export type LeaveTeamMutationVariables = Exact<{
-  teamId: Scalars['String'];
+  teamId: Scalars['ID'];
 }>;
 
 
@@ -1257,7 +1257,7 @@ export type TeamRenamedSubscription = (
 );
 
 export type TeamUserAddedSubscriptionVariables = Exact<{
-  teamId?: Maybe<Scalars['String']>;
+  teamId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -1276,7 +1276,7 @@ export type TeamUserAddedSubscription = (
 );
 
 export type TeamUserRemovedSubscriptionVariables = Exact<{
-  teamId?: Maybe<Scalars['String']>;
+  teamId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -1477,7 +1477,7 @@ export const UserTeamsInfoFragmentDoc = gql`
 }
     ${ParticipantTeamFragmentDoc}`;
 export const CreateBoardDocument = gql`
-    mutation CreateBoard($teamId: String!, $name: String!) {
+    mutation createBoard($teamId: ID!, $name: String!) {
   createBoard(teamId: $teamId, name: $name) {
     board {
       id
@@ -1514,7 +1514,7 @@ export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMuta
 export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
 export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation, CreateBoardMutationVariables>;
 export const DeleteBoardDocument = gql`
-    mutation DeleteBoard($id: String!) {
+    mutation deleteBoard($id: ID!) {
   deleteBoard(id: $id)
 }
     `;
@@ -1544,7 +1544,7 @@ export type DeleteBoardMutationHookResult = ReturnType<typeof useDeleteBoardMuta
 export type DeleteBoardMutationResult = Apollo.MutationResult<DeleteBoardMutation>;
 export type DeleteBoardMutationOptions = Apollo.BaseMutationOptions<DeleteBoardMutation, DeleteBoardMutationVariables>;
 export const RenameBoardDocument = gql`
-    mutation RenameBoard($name: String!, $boardId: String!) {
+    mutation renameBoard($name: String!, $boardId: ID!) {
   renameBoard(name: $name, boardId: $boardId) {
     success
     exists
@@ -1578,7 +1578,7 @@ export type RenameBoardMutationHookResult = ReturnType<typeof useRenameBoardMuta
 export type RenameBoardMutationResult = Apollo.MutationResult<RenameBoardMutation>;
 export type RenameBoardMutationOptions = Apollo.BaseMutationOptions<RenameBoardMutation, RenameBoardMutationVariables>;
 export const BoardDocument = gql`
-    query Board($id: String!) {
+    query board($id: ID!) {
   board(id: $id) {
     ...BoardQueryBoard
   }
@@ -1644,7 +1644,7 @@ export function useBoardCreatedSubscription(baseOptions?: Apollo.SubscriptionHoo
 export type BoardCreatedSubscriptionHookResult = ReturnType<typeof useBoardCreatedSubscription>;
 export type BoardCreatedSubscriptionResult = Apollo.SubscriptionResult<BoardCreatedSubscription>;
 export const BoardRenamedDocument = gql`
-    subscription BoardRenamed($boardId: String) {
+    subscription boardRenamed($boardId: ID) {
   boardRenamed(boardId: $boardId) {
     id
     name
@@ -1675,7 +1675,7 @@ export function useBoardRenamedSubscription(baseOptions?: Apollo.SubscriptionHoo
 export type BoardRenamedSubscriptionHookResult = ReturnType<typeof useBoardRenamedSubscription>;
 export type BoardRenamedSubscriptionResult = Apollo.SubscriptionResult<BoardRenamedSubscription>;
 export const BoardDeletedDocument = gql`
-    subscription BoardDeleted($boardId: String) {
+    subscription boardDeleted($boardId: ID) {
   boardDeleted(boardId: $boardId)
 }
     `;
@@ -1702,7 +1702,7 @@ export function useBoardDeletedSubscription(baseOptions?: Apollo.SubscriptionHoo
 export type BoardDeletedSubscriptionHookResult = ReturnType<typeof useBoardDeletedSubscription>;
 export type BoardDeletedSubscriptionResult = Apollo.SubscriptionResult<BoardDeletedSubscription>;
 export const UpdateCardDescriptionDocument = gql`
-    mutation UpdateCardDescription($description: String!, $cardId: String!) {
+    mutation updateCardDescription($description: String!, $cardId: ID!) {
   updateCardDescription(description: $description, cardId: $cardId)
 }
     `;
@@ -1733,7 +1733,7 @@ export type UpdateCardDescriptionMutationHookResult = ReturnType<typeof useUpdat
 export type UpdateCardDescriptionMutationResult = Apollo.MutationResult<UpdateCardDescriptionMutation>;
 export type UpdateCardDescriptionMutationOptions = Apollo.BaseMutationOptions<UpdateCardDescriptionMutation, UpdateCardDescriptionMutationVariables>;
 export const CreateCardDocument = gql`
-    mutation CreateCard($listId: String!, $name: String!, $description: String) {
+    mutation createCard($listId: ID!, $name: String!, $description: String) {
   createCard(listId: $listId, name: $name, description: $description) {
     card {
       id
@@ -1773,7 +1773,7 @@ export type CreateCardMutationHookResult = ReturnType<typeof useCreateCardMutati
 export type CreateCardMutationResult = Apollo.MutationResult<CreateCardMutation>;
 export type CreateCardMutationOptions = Apollo.BaseMutationOptions<CreateCardMutation, CreateCardMutationVariables>;
 export const DeleteCardDocument = gql`
-    mutation DeleteCard($id: String!) {
+    mutation deleteCard($id: ID!) {
   deleteCard(id: $id)
 }
     `;
@@ -1803,7 +1803,7 @@ export type DeleteCardMutationHookResult = ReturnType<typeof useDeleteCardMutati
 export type DeleteCardMutationResult = Apollo.MutationResult<DeleteCardMutation>;
 export type DeleteCardMutationOptions = Apollo.BaseMutationOptions<DeleteCardMutation, DeleteCardMutationVariables>;
 export const MoveCardDocument = gql`
-    mutation MoveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
+    mutation moveCard($destinationIndex: Int!, $listId: ID, $cardId: ID!) {
   moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
 }
     `;
@@ -1835,7 +1835,7 @@ export type MoveCardMutationHookResult = ReturnType<typeof useMoveCardMutation>;
 export type MoveCardMutationResult = Apollo.MutationResult<MoveCardMutation>;
 export type MoveCardMutationOptions = Apollo.BaseMutationOptions<MoveCardMutation, MoveCardMutationVariables>;
 export const RenameCardDocument = gql`
-    mutation RenameCard($name: String!, $cardId: String!) {
+    mutation renameCard($name: String!, $cardId: ID!) {
   renameCard(name: $name, cardId: $cardId) {
     success
     exists
@@ -1869,7 +1869,7 @@ export type RenameCardMutationHookResult = ReturnType<typeof useRenameCardMutati
 export type RenameCardMutationResult = Apollo.MutationResult<RenameCardMutation>;
 export type RenameCardMutationOptions = Apollo.BaseMutationOptions<RenameCardMutation, RenameCardMutationVariables>;
 export const AssignUserDocument = gql`
-    mutation AssignUser($userId: String!, $cardId: String!) {
+    mutation assignUser($userId: ID!, $cardId: ID!) {
   assignUser(userId: $userId, cardId: $cardId)
 }
     `;
@@ -1900,7 +1900,7 @@ export type AssignUserMutationHookResult = ReturnType<typeof useAssignUserMutati
 export type AssignUserMutationResult = Apollo.MutationResult<AssignUserMutation>;
 export type AssignUserMutationOptions = Apollo.BaseMutationOptions<AssignUserMutation, AssignUserMutationVariables>;
 export const UnassignUserDocument = gql`
-    mutation UnassignUser($cardId: String!) {
+    mutation unassignUser($cardId: ID!) {
   unassignUser(cardId: $cardId)
 }
     `;
@@ -1930,7 +1930,7 @@ export type UnassignUserMutationHookResult = ReturnType<typeof useUnassignUserMu
 export type UnassignUserMutationResult = Apollo.MutationResult<UnassignUserMutation>;
 export type UnassignUserMutationOptions = Apollo.BaseMutationOptions<UnassignUserMutation, UnassignUserMutationVariables>;
 export const CardCreatedDocument = gql`
-    subscription CardCreated($boardId: String!) {
+    subscription cardCreated($boardId: ID!) {
   cardCreated(boardId: $boardId) {
     card {
       id
@@ -1964,7 +1964,7 @@ export function useCardCreatedSubscription(baseOptions: Apollo.SubscriptionHookO
 export type CardCreatedSubscriptionHookResult = ReturnType<typeof useCardCreatedSubscription>;
 export type CardCreatedSubscriptionResult = Apollo.SubscriptionResult<CardCreatedSubscription>;
 export const CardMovedDocument = gql`
-    subscription CardMoved($boardId: String!) {
+    subscription cardMoved($boardId: ID!) {
   cardMoved(boardId: $boardId) {
     card {
       id
@@ -1999,7 +1999,7 @@ export function useCardMovedSubscription(baseOptions: Apollo.SubscriptionHookOpt
 export type CardMovedSubscriptionHookResult = ReturnType<typeof useCardMovedSubscription>;
 export type CardMovedSubscriptionResult = Apollo.SubscriptionResult<CardMovedSubscription>;
 export const CardUpdatedDocument = gql`
-    subscription CardUpdated($boardId: String!) {
+    subscription cardUpdated($boardId: ID!) {
   cardUpdated(boardId: $boardId) {
     id
     name
@@ -2030,7 +2030,7 @@ export function useCardUpdatedSubscription(baseOptions: Apollo.SubscriptionHookO
 export type CardUpdatedSubscriptionHookResult = ReturnType<typeof useCardUpdatedSubscription>;
 export type CardUpdatedSubscriptionResult = Apollo.SubscriptionResult<CardUpdatedSubscription>;
 export const CardDeletedDocument = gql`
-    subscription CardDeleted($boardId: String!) {
+    subscription cardDeleted($boardId: ID!) {
   cardDeleted(boardId: $boardId) {
     cardId
   }
@@ -2059,7 +2059,7 @@ export function useCardDeletedSubscription(baseOptions: Apollo.SubscriptionHookO
 export type CardDeletedSubscriptionHookResult = ReturnType<typeof useCardDeletedSubscription>;
 export type CardDeletedSubscriptionResult = Apollo.SubscriptionResult<CardDeletedSubscription>;
 export const CardUserAssignedDocument = gql`
-    subscription CardUserAssigned($boardId: String!) {
+    subscription cardUserAssigned($boardId: ID!) {
   cardUserAssigned(boardId: $boardId) {
     cardId
     boardId
@@ -2092,7 +2092,7 @@ export function useCardUserAssignedSubscription(baseOptions: Apollo.Subscription
 export type CardUserAssignedSubscriptionHookResult = ReturnType<typeof useCardUserAssignedSubscription>;
 export type CardUserAssignedSubscriptionResult = Apollo.SubscriptionResult<CardUserAssignedSubscription>;
 export const CardUserUnassignedDocument = gql`
-    subscription CardUserUnassigned($boardId: String!) {
+    subscription cardUserUnassigned($boardId: ID!) {
   cardUserUnassigned(boardId: $boardId) {
     cardId
   }
@@ -2121,7 +2121,7 @@ export function useCardUserUnassignedSubscription(baseOptions: Apollo.Subscripti
 export type CardUserUnassignedSubscriptionHookResult = ReturnType<typeof useCardUserUnassignedSubscription>;
 export type CardUserUnassignedSubscriptionResult = Apollo.SubscriptionResult<CardUserUnassignedSubscription>;
 export const CreateFlairDocument = gql`
-    mutation CreateFlair($teamId: String!, $name: String!, $hue: Int!) {
+    mutation createFlair($teamId: ID!, $name: String!, $hue: Int!) {
   createFlair(teamId: $teamId, name: $name, hue: $hue) {
     flair {
       ...FlairInfo
@@ -2158,7 +2158,7 @@ export type CreateFlairMutationHookResult = ReturnType<typeof useCreateFlairMuta
 export type CreateFlairMutationResult = Apollo.MutationResult<CreateFlairMutation>;
 export type CreateFlairMutationOptions = Apollo.BaseMutationOptions<CreateFlairMutation, CreateFlairMutationVariables>;
 export const ChangeFlairHueDocument = gql`
-    mutation ChangeFlairHue($flairId: String!, $hue: Int!) {
+    mutation changeFlairHue($flairId: ID!, $hue: Int!) {
   changeFlairHue(flairId: $flairId, hue: $hue)
 }
     `;
@@ -2189,7 +2189,7 @@ export type ChangeFlairHueMutationHookResult = ReturnType<typeof useChangeFlairH
 export type ChangeFlairHueMutationResult = Apollo.MutationResult<ChangeFlairHueMutation>;
 export type ChangeFlairHueMutationOptions = Apollo.BaseMutationOptions<ChangeFlairHueMutation, ChangeFlairHueMutationVariables>;
 export const RenameFlairDocument = gql`
-    mutation RenameFlair($flairId: String!, $name: String!) {
+    mutation renameFlair($flairId: ID!, $name: String!) {
   renameFlair(flairId: $flairId, name: $name) {
     success
     exists
@@ -2223,7 +2223,7 @@ export type RenameFlairMutationHookResult = ReturnType<typeof useRenameFlairMuta
 export type RenameFlairMutationResult = Apollo.MutationResult<RenameFlairMutation>;
 export type RenameFlairMutationOptions = Apollo.BaseMutationOptions<RenameFlairMutation, RenameFlairMutationVariables>;
 export const DeleteFlairDocument = gql`
-    mutation DeleteFlair($flairId: String!) {
+    mutation deleteFlair($flairId: ID!) {
   deleteFlair(flairId: $flairId)
 }
     `;
@@ -2253,7 +2253,7 @@ export type DeleteFlairMutationHookResult = ReturnType<typeof useDeleteFlairMuta
 export type DeleteFlairMutationResult = Apollo.MutationResult<DeleteFlairMutation>;
 export type DeleteFlairMutationOptions = Apollo.BaseMutationOptions<DeleteFlairMutation, DeleteFlairMutationVariables>;
 export const AssignFlairDocument = gql`
-    mutation AssignFlair($cardId: String!, $flairId: String!) {
+    mutation assignFlair($cardId: ID!, $flairId: ID!) {
   assignFlair(cardId: $cardId, flairId: $flairId)
 }
     `;
@@ -2284,7 +2284,7 @@ export type AssignFlairMutationHookResult = ReturnType<typeof useAssignFlairMuta
 export type AssignFlairMutationResult = Apollo.MutationResult<AssignFlairMutation>;
 export type AssignFlairMutationOptions = Apollo.BaseMutationOptions<AssignFlairMutation, AssignFlairMutationVariables>;
 export const UnassignFlairDocument = gql`
-    mutation UnassignFlair($cardId: String!, $flairId: String!) {
+    mutation unassignFlair($cardId: ID!, $flairId: ID!) {
   unassignFlair(cardId: $cardId, flairId: $flairId)
 }
     `;
@@ -2315,7 +2315,7 @@ export type UnassignFlairMutationHookResult = ReturnType<typeof useUnassignFlair
 export type UnassignFlairMutationResult = Apollo.MutationResult<UnassignFlairMutation>;
 export type UnassignFlairMutationOptions = Apollo.BaseMutationOptions<UnassignFlairMutation, UnassignFlairMutationVariables>;
 export const FlairCreatedDocument = gql`
-    subscription FlairCreated($teamId: String!) {
+    subscription flairCreated($teamId: ID!) {
   flairCreated(teamId: $teamId) {
     ...FlairInfo
   }
@@ -2344,7 +2344,7 @@ export function useFlairCreatedSubscription(baseOptions: Apollo.SubscriptionHook
 export type FlairCreatedSubscriptionHookResult = ReturnType<typeof useFlairCreatedSubscription>;
 export type FlairCreatedSubscriptionResult = Apollo.SubscriptionResult<FlairCreatedSubscription>;
 export const FlairUpdatedDocument = gql`
-    subscription FlairUpdated($teamId: String!) {
+    subscription flairUpdated($teamId: ID!) {
   flairUpdated(teamId: $teamId) {
     ...FlairInfo
   }
@@ -2373,7 +2373,7 @@ export function useFlairUpdatedSubscription(baseOptions: Apollo.SubscriptionHook
 export type FlairUpdatedSubscriptionHookResult = ReturnType<typeof useFlairUpdatedSubscription>;
 export type FlairUpdatedSubscriptionResult = Apollo.SubscriptionResult<FlairUpdatedSubscription>;
 export const FlairDeletedDocument = gql`
-    subscription FlairDeleted($teamId: String!) {
+    subscription flairDeleted($teamId: ID!) {
   flairDeleted(teamId: $teamId) {
     flairId
   }
@@ -2402,7 +2402,7 @@ export function useFlairDeletedSubscription(baseOptions: Apollo.SubscriptionHook
 export type FlairDeletedSubscriptionHookResult = ReturnType<typeof useFlairDeletedSubscription>;
 export type FlairDeletedSubscriptionResult = Apollo.SubscriptionResult<FlairDeletedSubscription>;
 export const FlairAssignedDocument = gql`
-    subscription FlairAssigned($teamId: String!) {
+    subscription flairAssigned($teamId: ID!) {
   flairAssigned(teamId: $teamId) {
     flairId
     cardId
@@ -2432,7 +2432,7 @@ export function useFlairAssignedSubscription(baseOptions: Apollo.SubscriptionHoo
 export type FlairAssignedSubscriptionHookResult = ReturnType<typeof useFlairAssignedSubscription>;
 export type FlairAssignedSubscriptionResult = Apollo.SubscriptionResult<FlairAssignedSubscription>;
 export const FlairUnassignedDocument = gql`
-    subscription FlairUnassigned($teamId: String!) {
+    subscription flairUnassigned($teamId: ID!) {
   flairUnassigned(teamId: $teamId) {
     flairId
     cardId
@@ -2462,7 +2462,7 @@ export function useFlairUnassignedSubscription(baseOptions: Apollo.SubscriptionH
 export type FlairUnassignedSubscriptionHookResult = ReturnType<typeof useFlairUnassignedSubscription>;
 export type FlairUnassignedSubscriptionResult = Apollo.SubscriptionResult<FlairUnassignedSubscription>;
 export const CreateListDocument = gql`
-    mutation createList($boardId: String!, $name: String!) {
+    mutation createList($boardId: ID!, $name: String!) {
   createList(boardId: $boardId, name: $name) {
     list {
       id
@@ -2499,7 +2499,7 @@ export type CreateListMutationHookResult = ReturnType<typeof useCreateListMutati
 export type CreateListMutationResult = Apollo.MutationResult<CreateListMutation>;
 export type CreateListMutationOptions = Apollo.BaseMutationOptions<CreateListMutation, CreateListMutationVariables>;
 export const DeleteListDocument = gql`
-    mutation DeleteList($id: String!) {
+    mutation deleteList($id: ID!) {
   deleteList(id: $id)
 }
     `;
@@ -2529,7 +2529,7 @@ export type DeleteListMutationHookResult = ReturnType<typeof useDeleteListMutati
 export type DeleteListMutationResult = Apollo.MutationResult<DeleteListMutation>;
 export type DeleteListMutationOptions = Apollo.BaseMutationOptions<DeleteListMutation, DeleteListMutationVariables>;
 export const MoveListDocument = gql`
-    mutation MoveList($destinationIndex: Int!, $listId: String!) {
+    mutation moveList($destinationIndex: Int!, $listId: ID!) {
   moveList(destinationIndex: $destinationIndex, listId: $listId)
 }
     `;
@@ -2560,7 +2560,7 @@ export type MoveListMutationHookResult = ReturnType<typeof useMoveListMutation>;
 export type MoveListMutationResult = Apollo.MutationResult<MoveListMutation>;
 export type MoveListMutationOptions = Apollo.BaseMutationOptions<MoveListMutation, MoveListMutationVariables>;
 export const RenameListDocument = gql`
-    mutation RenameList($name: String!, $listId: String!) {
+    mutation renameList($name: String!, $listId: ID!) {
   renameList(name: $name, listId: $listId) {
     success
     exists
@@ -2594,7 +2594,7 @@ export type RenameListMutationHookResult = ReturnType<typeof useRenameListMutati
 export type RenameListMutationResult = Apollo.MutationResult<RenameListMutation>;
 export type RenameListMutationOptions = Apollo.BaseMutationOptions<RenameListMutation, RenameListMutationVariables>;
 export const ListCreatedDocument = gql`
-    subscription ListCreated($boardId: String!) {
+    subscription listCreated($boardId: ID!) {
   listCreated(boardId: $boardId) {
     id
     name
@@ -2625,7 +2625,7 @@ export function useListCreatedSubscription(baseOptions: Apollo.SubscriptionHookO
 export type ListCreatedSubscriptionHookResult = ReturnType<typeof useListCreatedSubscription>;
 export type ListCreatedSubscriptionResult = Apollo.SubscriptionResult<ListCreatedSubscription>;
 export const ListRenamedDocument = gql`
-    subscription ListRenamed($boardId: String!) {
+    subscription listRenamed($boardId: ID!) {
   listRenamed(boardId: $boardId) {
     id
     name
@@ -2655,7 +2655,7 @@ export function useListRenamedSubscription(baseOptions: Apollo.SubscriptionHookO
 export type ListRenamedSubscriptionHookResult = ReturnType<typeof useListRenamedSubscription>;
 export type ListRenamedSubscriptionResult = Apollo.SubscriptionResult<ListRenamedSubscription>;
 export const ListMovedDocument = gql`
-    subscription ListMoved($boardId: String!) {
+    subscription listMoved($boardId: ID!) {
   listMoved(boardId: $boardId) {
     list {
       id
@@ -2689,7 +2689,7 @@ export function useListMovedSubscription(baseOptions: Apollo.SubscriptionHookOpt
 export type ListMovedSubscriptionHookResult = ReturnType<typeof useListMovedSubscription>;
 export type ListMovedSubscriptionResult = Apollo.SubscriptionResult<ListMovedSubscription>;
 export const ListDeletedDocument = gql`
-    subscription ListDeleted($boardId: String!) {
+    subscription listDeleted($boardId: ID!) {
   listDeleted(boardId: $boardId)
 }
     `;
@@ -2716,7 +2716,7 @@ export function useListDeletedSubscription(baseOptions: Apollo.SubscriptionHookO
 export type ListDeletedSubscriptionHookResult = ReturnType<typeof useListDeletedSubscription>;
 export type ListDeletedSubscriptionResult = Apollo.SubscriptionResult<ListDeletedSubscription>;
 export const RemoveUserDocument = gql`
-    mutation RemoveUser($teamId: String!, $userId: String!) {
+    mutation removeUser($teamId: ID!, $userId: ID!) {
   removeUser(teamId: $teamId, userId: $userId)
 }
     `;
@@ -2747,7 +2747,7 @@ export type RemoveUserMutationHookResult = ReturnType<typeof useRemoveUserMutati
 export type RemoveUserMutationResult = Apollo.MutationResult<RemoveUserMutation>;
 export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<RemoveUserMutation, RemoveUserMutationVariables>;
 export const RenameTeamDocument = gql`
-    mutation RenameTeam($name: String!, $teamId: String!) {
+    mutation renameTeam($name: String!, $teamId: ID!) {
   renameTeam(name: $name, teamId: $teamId) {
     success
     exists
@@ -2781,7 +2781,7 @@ export type RenameTeamMutationHookResult = ReturnType<typeof useRenameTeamMutati
 export type RenameTeamMutationResult = Apollo.MutationResult<RenameTeamMutation>;
 export type RenameTeamMutationOptions = Apollo.BaseMutationOptions<RenameTeamMutation, RenameTeamMutationVariables>;
 export const AddUserDocument = gql`
-    mutation AddUser($username: String!, $teamId: String!) {
+    mutation addUser($username: String!, $teamId: ID!) {
   addUser(username: $username, teamId: $teamId) {
     userId
     username
@@ -2817,7 +2817,7 @@ export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>;
 export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>;
 export type AddUserMutationOptions = Apollo.BaseMutationOptions<AddUserMutation, AddUserMutationVariables>;
 export const CreateTeamDocument = gql`
-    mutation CreateTeam($name: String!) {
+    mutation createTeam($name: String!) {
   createTeam(name: $name) {
     team {
       id
@@ -2853,7 +2853,7 @@ export type CreateTeamMutationHookResult = ReturnType<typeof useCreateTeamMutati
 export type CreateTeamMutationResult = Apollo.MutationResult<CreateTeamMutation>;
 export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<CreateTeamMutation, CreateTeamMutationVariables>;
 export const DeleteTeamDocument = gql`
-    mutation DeleteTeam($id: String!) {
+    mutation deleteTeam($id: ID!) {
   deleteTeam(id: $id)
 }
     `;
@@ -2883,7 +2883,7 @@ export type DeleteTeamMutationHookResult = ReturnType<typeof useDeleteTeamMutati
 export type DeleteTeamMutationResult = Apollo.MutationResult<DeleteTeamMutation>;
 export type DeleteTeamMutationOptions = Apollo.BaseMutationOptions<DeleteTeamMutation, DeleteTeamMutationVariables>;
 export const LeaveTeamDocument = gql`
-    mutation LeaveTeam($teamId: String!) {
+    mutation leaveTeam($teamId: ID!) {
   leaveTeam(teamId: $teamId)
 }
     `;
@@ -2968,7 +2968,7 @@ export function useTeamRenamedSubscription(baseOptions?: Apollo.SubscriptionHook
 export type TeamRenamedSubscriptionHookResult = ReturnType<typeof useTeamRenamedSubscription>;
 export type TeamRenamedSubscriptionResult = Apollo.SubscriptionResult<TeamRenamedSubscription>;
 export const TeamUserAddedDocument = gql`
-    subscription TeamUserAdded($teamId: String) {
+    subscription teamUserAdded($teamId: ID) {
   teamUserAdded(teamId: $teamId) {
     team {
       ...TeamInfo
@@ -3003,7 +3003,7 @@ export function useTeamUserAddedSubscription(baseOptions?: Apollo.SubscriptionHo
 export type TeamUserAddedSubscriptionHookResult = ReturnType<typeof useTeamUserAddedSubscription>;
 export type TeamUserAddedSubscriptionResult = Apollo.SubscriptionResult<TeamUserAddedSubscription>;
 export const TeamUserRemovedDocument = gql`
-    subscription TeamUserRemoved($teamId: String) {
+    subscription teamUserRemoved($teamId: ID) {
   teamUserRemoved(teamId: $teamId) {
     teamId
     userId
@@ -3033,7 +3033,7 @@ export function useTeamUserRemovedSubscription(baseOptions?: Apollo.Subscription
 export type TeamUserRemovedSubscriptionHookResult = ReturnType<typeof useTeamUserRemovedSubscription>;
 export type TeamUserRemovedSubscriptionResult = Apollo.SubscriptionResult<TeamUserRemovedSubscription>;
 export const LoginDocument = gql`
-    mutation Login($input: LoginInput!) {
+    mutation login($input: LoginInput!) {
   login(input: $input) {
     id
     username
@@ -3096,7 +3096,7 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const RegisterDocument = gql`
-    mutation Register($input: RegisterInput!) {
+    mutation register($input: RegisterInput!) {
   register(input: $input) {
     user {
       id

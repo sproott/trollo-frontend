@@ -16,7 +16,7 @@ export const teamRenamed = gql`
 `
 
 export const teamUserAdded = gql`
-  subscription TeamUserAdded($teamId: String) {
+  subscription teamUserAdded($teamId: ID) {
     teamUserAdded(teamId: $teamId) {
       team {
         ...TeamInfo
@@ -29,7 +29,7 @@ export const teamUserAdded = gql`
 `
 
 export const teamUserRemoved = gql`
-  subscription TeamUserRemoved($teamId: String) {
+  subscription teamUserRemoved($teamId: ID) {
     teamUserRemoved(teamId: $teamId) {
       teamId
       userId

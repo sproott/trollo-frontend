@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 
 export const listCreated = gql`
-  subscription ListCreated($boardId: String!) {
+  subscription listCreated($boardId: ID!) {
     listCreated(boardId: $boardId) {
       id
       name
@@ -11,7 +11,7 @@ export const listCreated = gql`
 `
 
 export const listRenamed = gql`
-  subscription ListRenamed($boardId: String!) {
+  subscription listRenamed($boardId: ID!) {
     listRenamed(boardId: $boardId) {
       id
       name
@@ -20,7 +20,7 @@ export const listRenamed = gql`
 `
 
 export const listMoved = gql`
-  subscription ListMoved($boardId: String!) {
+  subscription listMoved($boardId: ID!) {
     listMoved(boardId: $boardId) {
       list {
         id
@@ -33,7 +33,7 @@ export const listMoved = gql`
 `
 
 export const listDeleted = gql`
-  subscription ListDeleted($boardId: String!) {
+  subscription listDeleted($boardId: ID!) {
     listDeleted(boardId: $boardId)
   }
 `

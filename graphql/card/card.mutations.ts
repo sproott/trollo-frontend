@@ -1,13 +1,13 @@
 import gql from "graphql-tag"
 
 export const updateCardDescription = gql`
-  mutation UpdateCardDescription($description: String!, $cardId: String!) {
+  mutation updateCardDescription($description: String!, $cardId: ID!) {
     updateCardDescription(description: $description, cardId: $cardId)
   }
 `
 
 export const createCard = gql`
-  mutation CreateCard($listId: String!, $name: String!, $description: String) {
+  mutation createCard($listId: ID!, $name: String!, $description: String) {
     createCard(listId: $listId, name: $name, description: $description) {
       card {
         id
@@ -21,19 +21,19 @@ export const createCard = gql`
 `
 
 export const deleteCard = gql`
-  mutation DeleteCard($id: String!) {
+  mutation deleteCard($id: ID!) {
     deleteCard(id: $id)
   }
 `
 
 export const moveCard = gql`
-  mutation MoveCard($destinationIndex: Int!, $listId: String, $cardId: String!) {
+  mutation moveCard($destinationIndex: Int!, $listId: ID, $cardId: ID!) {
     moveCard(destinationIndex: $destinationIndex, listId: $listId, cardId: $cardId)
   }
 `
 
 export const renameCard = gql`
-  mutation RenameCard($name: String!, $cardId: String!) {
+  mutation renameCard($name: String!, $cardId: ID!) {
     renameCard(name: $name, cardId: $cardId) {
       success
       exists
@@ -42,13 +42,13 @@ export const renameCard = gql`
 `
 
 export const assignUser = gql`
-  mutation AssignUser($userId: String!, $cardId: String!) {
+  mutation assignUser($userId: ID!, $cardId: ID!) {
     assignUser(userId: $userId, cardId: $cardId)
   }
 `
 
 export const unassignUser = gql`
-  mutation UnassignUser($cardId: String!) {
+  mutation unassignUser($cardId: ID!) {
     unassignUser(cardId: $cardId)
   }
 `

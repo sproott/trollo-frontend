@@ -1,7 +1,7 @@
 import gql from "graphql-tag"
 
 export const createFlair = gql`
-  mutation CreateFlair($teamId: String!, $name: String!, $hue: Int!) {
+  mutation createFlair($teamId: ID!, $name: String!, $hue: Int!) {
     createFlair(teamId: $teamId, name: $name, hue: $hue) {
       flair {
         ...FlairInfo
@@ -12,13 +12,13 @@ export const createFlair = gql`
 `
 
 export const changeFlairHue = gql`
-  mutation ChangeFlairHue($flairId: String!, $hue: Int!) {
+  mutation changeFlairHue($flairId: ID!, $hue: Int!) {
     changeFlairHue(flairId: $flairId, hue: $hue)
   }
 `
 
 export const renameFlair = gql`
-  mutation RenameFlair($flairId: String!, $name: String!) {
+  mutation renameFlair($flairId: ID!, $name: String!) {
     renameFlair(flairId: $flairId, name: $name) {
       success
       exists
@@ -27,19 +27,19 @@ export const renameFlair = gql`
 `
 
 export const deleteFlair = gql`
-  mutation DeleteFlair($flairId: String!) {
+  mutation deleteFlair($flairId: ID!) {
     deleteFlair(flairId: $flairId)
   }
 `
 
 export const assignFlair = gql`
-  mutation AssignFlair($cardId: String!, $flairId: String!) {
+  mutation assignFlair($cardId: ID!, $flairId: ID!) {
     assignFlair(cardId: $cardId, flairId: $flairId)
   }
 `
 
 export const unassignFlair = gql`
-  mutation UnassignFlair($cardId: String!, $flairId: String!) {
+  mutation unassignFlair($cardId: ID!, $flairId: ID!) {
     unassignFlair(cardId: $cardId, flairId: $flairId)
   }
 `
