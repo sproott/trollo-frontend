@@ -1,11 +1,4 @@
-import React, {
-  DOMAttributes,
-  ForwardedRef,
-  HTMLAttributes,
-  forwardRef,
-  useEffect,
-  useState,
-} from "react"
+import React, { DOMAttributes, ForwardedRef, HTMLAttributes, forwardRef, useMemo } from "react"
 import styled, { CSSProperties } from "styled-components"
 
 import { Tag } from "antd"
@@ -30,13 +23,7 @@ export type FlairProps = {
 
 export const Flair = forwardRef(
   ({ label, hue, icon, style, ...other }: FlairProps, ref: ForwardedRef<HTMLSpanElement>) => {
-    const generateColors = () => {
-      return generate(`hsl(${hue}, 100%, 50%)`)
-    }
-    const [colors, setColors] = useState(generateColors())
-    useEffect(() => {
-      setColors(generateColors())
-    }, [hue])
+    const colors = useMemo(() => generate(`hsl(${hue}, 100%, 50%)`), [hue])
 
     return (
       <Tag
