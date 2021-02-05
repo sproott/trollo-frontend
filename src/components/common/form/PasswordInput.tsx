@@ -1,9 +1,10 @@
-import React from "react"
 import ControlledFormItem, { ControlledInputProps } from "./ControlledFormItem"
-import { Input } from "antd"
 
-const PasswordInput = <TInput extends object>(
-  props: ControlledInputProps<TInput> & { maxLength?: number }
+import { Input } from "antd"
+import React from "react"
+
+const PasswordInput = <TInput extends Record<string, unknown>>(
+  props: ControlledInputProps<TInput>
 ) => {
   return (
     <ControlledFormItem {...props}>

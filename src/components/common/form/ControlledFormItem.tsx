@@ -11,6 +11,7 @@ export type ControlledInputProps<TInput> = {
   optional?: boolean
   useFormMethods: UseFormMethods<TInput>
   rules?: RegisterOptions
+  maxLength?: number
 }
 
 interface ControlledInputWithReactProps<TInput> extends ControlledInputProps<TInput> {
@@ -27,6 +28,7 @@ const ControlledFormItem = <TInput extends object>({
   optional,
   rules,
   style,
+  maxLength,
 }: ControlledInputWithReactProps<TInput>) => {
   return (
     <Controller
@@ -42,6 +44,10 @@ const ControlledFormItem = <TInput extends object>({
       )}
       control={useFormMethods.control}
       rules={{
+        maxLength: {
+          value: maxLength ?? 50,
+          message: `${label} cannot be longer than ${maxLength}`,
+        },
         required: !optional && `${label} is required`,
         ...rules,
       }}
