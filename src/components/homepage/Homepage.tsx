@@ -35,7 +35,7 @@ function Homepage() {
       </Box>
       <Box fullWidth justifyContent="center">
         <H2 color="white" textAlign="center">
-          David Hrabě, 2021
+          David Hrabě 4. F, 2020/2021
         </H2>
       </Box>
     </Content>

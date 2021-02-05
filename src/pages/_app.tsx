@@ -4,7 +4,6 @@ import "../../styles/antd-custom.less"
 import { AppProps } from "next/app"
 import { Helmet } from "react-helmet"
 import React from "react"
-import { RecoilRoot } from "recoil"
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -18,10 +17,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <title>Trollo</title>
       </Helmet>
-
-      <RecoilRoot>
-        <Component {...pageProps} />
-      </RecoilRoot>
+      <Component {...pageProps} />
     </>
   )
 }
