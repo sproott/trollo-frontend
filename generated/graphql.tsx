@@ -154,6 +154,12 @@ export type FlairIdCardIdTeamIdPayload = {
   teamId: Scalars['String'];
 };
 
+export type JoinUsingInviteResponse = {
+  __typename?: 'JoinUsingInviteResponse';
+  team?: Maybe<Team>;
+  alreadyInTeam?: Maybe<Scalars['Boolean']>;
+};
+
 export type CreateListResponse = {
   __typename?: 'CreateListResponse';
   list?: Maybe<List>;
@@ -220,6 +226,7 @@ export type Query = {
   __typename?: 'Query';
   board: Board;
   nextIndex: Scalars['Int'];
+  inviteIntervals: Array<Scalars['String']>;
   user: User;
   currentUser?: Maybe<User>;
   users: Array<User>;
@@ -258,6 +265,8 @@ export type Mutation = {
   deleteFlair: Scalars['Boolean'];
   assignFlair: Scalars['Boolean'];
   unassignFlair: Scalars['Boolean'];
+  generateInvite: Scalars['String'];
+  joinUsingInvite: JoinUsingInviteResponse;
   createList: CreateListResponse;
   moveList: Scalars['Boolean'];
   renameList: RenameResponse;
@@ -367,6 +376,17 @@ export type MutationAssignFlairArgs = {
 export type MutationUnassignFlairArgs = {
   flairId: Scalars['ID'];
   cardId: Scalars['ID'];
+};
+
+
+export type MutationGenerateInviteArgs = {
+  expiration: Scalars['String'];
+  teamId: Scalars['ID'];
+};
+
+
+export type MutationJoinUsingInviteArgs = {
+  token: Scalars['String'];
 };
 
 
@@ -1004,6 +1024,42 @@ export type FlairUnassignedSubscription = (
     { __typename?: 'FlairIdCardIdTeamIdPayload' }
     & Pick<FlairIdCardIdTeamIdPayload, 'flairId' | 'cardId'>
   ) }
+);
+
+export type GenerateInviteMutationVariables = Exact<{
+  teamId: Scalars['ID'];
+  expiration: Scalars['String'];
+}>;
+
+
+export type GenerateInviteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'generateInvite'>
+);
+
+export type JoinUsingInviteMutationVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type JoinUsingInviteMutation = (
+  { __typename?: 'Mutation' }
+  & { joinUsingInvite: (
+    { __typename?: 'JoinUsingInviteResponse' }
+    & Pick<JoinUsingInviteResponse, 'alreadyInTeam'>
+    & { team?: Maybe<(
+      { __typename?: 'Team' }
+      & TeamInfoFragment
+    )> }
+  ) }
+);
+
+export type InviteIntervalsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type InviteIntervalsQuery = (
+  { __typename?: 'Query' }
+  & Pick<Query, 'inviteIntervals'>
 );
 
 export type BoardQueryListFragment = (
@@ -2461,6 +2517,102 @@ export function useFlairUnassignedSubscription(baseOptions: Apollo.SubscriptionH
       }
 export type FlairUnassignedSubscriptionHookResult = ReturnType<typeof useFlairUnassignedSubscription>;
 export type FlairUnassignedSubscriptionResult = Apollo.SubscriptionResult<FlairUnassignedSubscription>;
+export const GenerateInviteDocument = gql`
+    mutation generateInvite($teamId: ID!, $expiration: String!) {
+  generateInvite(teamId: $teamId, expiration: $expiration)
+}
+    `;
+export type GenerateInviteMutationFn = Apollo.MutationFunction<GenerateInviteMutation, GenerateInviteMutationVariables>;
+
+/**
+ * __useGenerateInviteMutation__
+ *
+ * To run a mutation, you first call `useGenerateInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateInviteMutation, { data, loading, error }] = useGenerateInviteMutation({
+ *   variables: {
+ *      teamId: // value for 'teamId'
+ *      expiration: // value for 'expiration'
+ *   },
+ * });
+ */
+export function useGenerateInviteMutation(baseOptions?: Apollo.MutationHookOptions<GenerateInviteMutation, GenerateInviteMutationVariables>) {
+        return Apollo.useMutation<GenerateInviteMutation, GenerateInviteMutationVariables>(GenerateInviteDocument, baseOptions);
+      }
+export type GenerateInviteMutationHookResult = ReturnType<typeof useGenerateInviteMutation>;
+export type GenerateInviteMutationResult = Apollo.MutationResult<GenerateInviteMutation>;
+export type GenerateInviteMutationOptions = Apollo.BaseMutationOptions<GenerateInviteMutation, GenerateInviteMutationVariables>;
+export const JoinUsingInviteDocument = gql`
+    mutation joinUsingInvite($token: String!) {
+  joinUsingInvite(token: $token) {
+    team {
+      ...TeamInfo
+    }
+    alreadyInTeam
+  }
+}
+    ${TeamInfoFragmentDoc}`;
+export type JoinUsingInviteMutationFn = Apollo.MutationFunction<JoinUsingInviteMutation, JoinUsingInviteMutationVariables>;
+
+/**
+ * __useJoinUsingInviteMutation__
+ *
+ * To run a mutation, you first call `useJoinUsingInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinUsingInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinUsingInviteMutation, { data, loading, error }] = useJoinUsingInviteMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useJoinUsingInviteMutation(baseOptions?: Apollo.MutationHookOptions<JoinUsingInviteMutation, JoinUsingInviteMutationVariables>) {
+        return Apollo.useMutation<JoinUsingInviteMutation, JoinUsingInviteMutationVariables>(JoinUsingInviteDocument, baseOptions);
+      }
+export type JoinUsingInviteMutationHookResult = ReturnType<typeof useJoinUsingInviteMutation>;
+export type JoinUsingInviteMutationResult = Apollo.MutationResult<JoinUsingInviteMutation>;
+export type JoinUsingInviteMutationOptions = Apollo.BaseMutationOptions<JoinUsingInviteMutation, JoinUsingInviteMutationVariables>;
+export const InviteIntervalsDocument = gql`
+    query inviteIntervals {
+  inviteIntervals
+}
+    `;
+
+/**
+ * __useInviteIntervalsQuery__
+ *
+ * To run a query within a React component, call `useInviteIntervalsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInviteIntervalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInviteIntervalsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useInviteIntervalsQuery(baseOptions?: Apollo.QueryHookOptions<InviteIntervalsQuery, InviteIntervalsQueryVariables>) {
+        return Apollo.useQuery<InviteIntervalsQuery, InviteIntervalsQueryVariables>(InviteIntervalsDocument, baseOptions);
+      }
+export function useInviteIntervalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InviteIntervalsQuery, InviteIntervalsQueryVariables>) {
+          return Apollo.useLazyQuery<InviteIntervalsQuery, InviteIntervalsQueryVariables>(InviteIntervalsDocument, baseOptions);
+        }
+export type InviteIntervalsQueryHookResult = ReturnType<typeof useInviteIntervalsQuery>;
+export type InviteIntervalsLazyQueryHookResult = ReturnType<typeof useInviteIntervalsLazyQuery>;
+export type InviteIntervalsQueryResult = Apollo.QueryResult<InviteIntervalsQuery, InviteIntervalsQueryVariables>;
 export const CreateListDocument = gql`
     mutation createList($boardId: ID!, $name: String!) {
   createList(boardId: $boardId, name: $name) {

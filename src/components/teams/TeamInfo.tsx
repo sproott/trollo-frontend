@@ -17,6 +17,7 @@ import BoardInfo from "./BoardInfo"
 import Box from "../common/util/Box"
 import { CloseOutlined } from "@ant-design/icons"
 import ConfirmDeleteModal from "../common/ConfirmDeleteModal"
+import CreateInviteLink from "./CreateInviteLink"
 import EditableText from "../common/form/EditableText"
 import NewBoardButton from "./NewBoardButton"
 import theme from "../../style/theme"
@@ -147,7 +148,12 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
                 </Col>
               </Box>
             )}
-            {isOwn && <AddUser teamId={team.id} />}
+            {isOwn && (
+              <>
+                <AddUser teamId={team.id} />
+                <CreateInviteLink teamId={team.id} />
+              </>
+            )}
           </Box>
         </Box>
       </Modal>

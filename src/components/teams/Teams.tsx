@@ -14,6 +14,7 @@ import {
   TeamUserAddedSubscription,
   TeamUserRemovedDocument,
   TeamUserRemovedSubscription,
+  useInviteIntervalsQuery,
   useTeamsQuery,
 } from "../../../generated/graphql"
 import { Col, Divider, Row } from "antd"
@@ -45,6 +46,7 @@ const getIfContainsBoard = (
 
 const Teams = () => {
   const { data, loading, refetch, subscribeToMore } = useTeamsQuery()
+  const _ = useInviteIntervalsQuery() // load intervals on page load for them to cache
 
   useEffect(() => {
     refetch()
