@@ -24,8 +24,10 @@ const InviteLink = ({ link }: { link: string }) => {
 
   return (
     <Tooltip title="Copied to clipboard!" visible={copied}>
-      <CopyToClipboard text={`${basePath}?invite-token=${link}`} onCopy={onCopy}>
-        <Button type="primary">Copy invitation link</Button>
+      <CopyToClipboard text={link && `${basePath}?invite-token=${link}`} onCopy={onCopy}>
+        <Button type={link ? "primary" : "default"} disabled={!link}>
+          Copy invitation link
+        </Button>
       </CopyToClipboard>
     </Tooltip>
   )
@@ -66,7 +68,7 @@ const CreateInviteLink = ({ teamId }: { teamId: string }) => {
           ))}
         </Select>
       </Form.Item>
-      {inviteData && <InviteLink link={inviteData.generateInvite} />}
+      <InviteLink link={inviteData?.generateInvite} />
     </>
   )
 }
