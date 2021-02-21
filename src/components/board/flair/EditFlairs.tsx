@@ -5,7 +5,7 @@ import {
   useUnassignFlairMutation,
 } from "../../../../generated/graphql"
 import { Button, Divider } from "antd"
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useMemo, useState } from "react"
 import { findNestedValue, removeNestedValue } from "../../../lib/nestedPathUtil"
 
 import { BoardContext } from "../Board"
@@ -37,16 +37,13 @@ export const EditFlairs = ({
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [droppingId, setDroppingId] = useState<string>(null)
-  const [cardFlairsLookup, setCardFlairsLookup] = useState<{ [key: string]: FlairInfoFragment }>({})
-  const { boardId } = useContext(BoardContext)
-  useEffect(() => {
-    setCardFlairsLookup(
-      cardFlairs.reduce(function (map: { [key: string]: FlairInfoFragment }, flair) {
-        map[flair.id] = flair
-        return map
-      }, {})
-    )
+  const cardFlairsLookup = useMemo(() => {
+    return cardFlairs.reduce(function (map: { [key: string]: FlairInfoFragment }, flair) {
+      map[flair.id] = flair
+      return map
+    }, {})
   }, [cardFlairs])
+  const { boardId } = useContext(BoardContext)
   const [assignFlair] = useAssignFlairMutation()
   const [unassignFlair] = useUnassignFlairMutation()
 
