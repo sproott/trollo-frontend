@@ -25,7 +25,7 @@ const InviteLink = ({ link }: { link: string }) => {
   return (
     <Tooltip title="Copied to clipboard!" visible={copied}>
       <CopyToClipboard text={link && `${basePath}?invite-token=${link}`} onCopy={onCopy}>
-        <Button type={link ? "primary" : "default"} disabled={!link}>
+        <Button type="primary" loading={!link}>
           Copy invitation link
         </Button>
       </CopyToClipboard>
