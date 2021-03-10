@@ -4,6 +4,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -64,6 +65,7 @@ export type Participant = {
   __typename?: 'Participant';
   user: User;
   team: Team;
+  owner: Scalars['Boolean'];
 };
 
 export type User = {
@@ -1187,6 +1189,7 @@ export type ParticipantTeamFragment = (
 
 export type ParticipantUserFragment = (
   { __typename?: 'Participant' }
+  & Pick<Participant, 'owner'>
   & { user: (
     { __typename?: 'User' }
     & UserInfoFragment
@@ -1463,6 +1466,7 @@ export const BoardQueryListFragmentDoc = gql`
     ${BoardQueryCardFragmentDoc}`;
 export const ParticipantUserFragmentDoc = gql`
     fragment ParticipantUser on Participant {
+  owner
   user {
     ...UserInfo
   }
@@ -1564,7 +1568,8 @@ export type CreateBoardMutationFn = Apollo.MutationFunction<CreateBoardMutation,
  * });
  */
 export function useCreateBoardMutation(baseOptions?: Apollo.MutationHookOptions<CreateBoardMutation, CreateBoardMutationVariables>) {
-        return Apollo.useMutation<CreateBoardMutation, CreateBoardMutationVariables>(CreateBoardDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateBoardMutation, CreateBoardMutationVariables>(CreateBoardDocument, options);
       }
 export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMutation>;
 export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
@@ -1594,7 +1599,8 @@ export type DeleteBoardMutationFn = Apollo.MutationFunction<DeleteBoardMutation,
  * });
  */
 export function useDeleteBoardMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBoardMutation, DeleteBoardMutationVariables>) {
-        return Apollo.useMutation<DeleteBoardMutation, DeleteBoardMutationVariables>(DeleteBoardDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBoardMutation, DeleteBoardMutationVariables>(DeleteBoardDocument, options);
       }
 export type DeleteBoardMutationHookResult = ReturnType<typeof useDeleteBoardMutation>;
 export type DeleteBoardMutationResult = Apollo.MutationResult<DeleteBoardMutation>;
@@ -1628,7 +1634,8 @@ export type RenameBoardMutationFn = Apollo.MutationFunction<RenameBoardMutation,
  * });
  */
 export function useRenameBoardMutation(baseOptions?: Apollo.MutationHookOptions<RenameBoardMutation, RenameBoardMutationVariables>) {
-        return Apollo.useMutation<RenameBoardMutation, RenameBoardMutationVariables>(RenameBoardDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RenameBoardMutation, RenameBoardMutationVariables>(RenameBoardDocument, options);
       }
 export type RenameBoardMutationHookResult = ReturnType<typeof useRenameBoardMutation>;
 export type RenameBoardMutationResult = Apollo.MutationResult<RenameBoardMutation>;
@@ -1658,10 +1665,12 @@ export const BoardDocument = gql`
  * });
  */
 export function useBoardQuery(baseOptions: Apollo.QueryHookOptions<BoardQuery, BoardQueryVariables>) {
-        return Apollo.useQuery<BoardQuery, BoardQueryVariables>(BoardDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BoardQuery, BoardQueryVariables>(BoardDocument, options);
       }
 export function useBoardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BoardQuery, BoardQueryVariables>) {
-          return Apollo.useLazyQuery<BoardQuery, BoardQueryVariables>(BoardDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BoardQuery, BoardQueryVariables>(BoardDocument, options);
         }
 export type BoardQueryHookResult = ReturnType<typeof useBoardQuery>;
 export type BoardLazyQueryHookResult = ReturnType<typeof useBoardLazyQuery>;
@@ -1695,7 +1704,8 @@ export const BoardCreatedDocument = gql`
  * });
  */
 export function useBoardCreatedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<BoardCreatedSubscription, BoardCreatedSubscriptionVariables>) {
-        return Apollo.useSubscription<BoardCreatedSubscription, BoardCreatedSubscriptionVariables>(BoardCreatedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<BoardCreatedSubscription, BoardCreatedSubscriptionVariables>(BoardCreatedDocument, options);
       }
 export type BoardCreatedSubscriptionHookResult = ReturnType<typeof useBoardCreatedSubscription>;
 export type BoardCreatedSubscriptionResult = Apollo.SubscriptionResult<BoardCreatedSubscription>;
@@ -1726,7 +1736,8 @@ export const BoardRenamedDocument = gql`
  * });
  */
 export function useBoardRenamedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<BoardRenamedSubscription, BoardRenamedSubscriptionVariables>) {
-        return Apollo.useSubscription<BoardRenamedSubscription, BoardRenamedSubscriptionVariables>(BoardRenamedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<BoardRenamedSubscription, BoardRenamedSubscriptionVariables>(BoardRenamedDocument, options);
       }
 export type BoardRenamedSubscriptionHookResult = ReturnType<typeof useBoardRenamedSubscription>;
 export type BoardRenamedSubscriptionResult = Apollo.SubscriptionResult<BoardRenamedSubscription>;
@@ -1753,7 +1764,8 @@ export const BoardDeletedDocument = gql`
  * });
  */
 export function useBoardDeletedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<BoardDeletedSubscription, BoardDeletedSubscriptionVariables>) {
-        return Apollo.useSubscription<BoardDeletedSubscription, BoardDeletedSubscriptionVariables>(BoardDeletedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<BoardDeletedSubscription, BoardDeletedSubscriptionVariables>(BoardDeletedDocument, options);
       }
 export type BoardDeletedSubscriptionHookResult = ReturnType<typeof useBoardDeletedSubscription>;
 export type BoardDeletedSubscriptionResult = Apollo.SubscriptionResult<BoardDeletedSubscription>;
@@ -1783,7 +1795,8 @@ export type UpdateCardDescriptionMutationFn = Apollo.MutationFunction<UpdateCard
  * });
  */
 export function useUpdateCardDescriptionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCardDescriptionMutation, UpdateCardDescriptionMutationVariables>) {
-        return Apollo.useMutation<UpdateCardDescriptionMutation, UpdateCardDescriptionMutationVariables>(UpdateCardDescriptionDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCardDescriptionMutation, UpdateCardDescriptionMutationVariables>(UpdateCardDescriptionDocument, options);
       }
 export type UpdateCardDescriptionMutationHookResult = ReturnType<typeof useUpdateCardDescriptionMutation>;
 export type UpdateCardDescriptionMutationResult = Apollo.MutationResult<UpdateCardDescriptionMutation>;
@@ -1823,7 +1836,8 @@ export type CreateCardMutationFn = Apollo.MutationFunction<CreateCardMutation, C
  * });
  */
 export function useCreateCardMutation(baseOptions?: Apollo.MutationHookOptions<CreateCardMutation, CreateCardMutationVariables>) {
-        return Apollo.useMutation<CreateCardMutation, CreateCardMutationVariables>(CreateCardDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCardMutation, CreateCardMutationVariables>(CreateCardDocument, options);
       }
 export type CreateCardMutationHookResult = ReturnType<typeof useCreateCardMutation>;
 export type CreateCardMutationResult = Apollo.MutationResult<CreateCardMutation>;
@@ -1853,7 +1867,8 @@ export type DeleteCardMutationFn = Apollo.MutationFunction<DeleteCardMutation, D
  * });
  */
 export function useDeleteCardMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCardMutation, DeleteCardMutationVariables>) {
-        return Apollo.useMutation<DeleteCardMutation, DeleteCardMutationVariables>(DeleteCardDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCardMutation, DeleteCardMutationVariables>(DeleteCardDocument, options);
       }
 export type DeleteCardMutationHookResult = ReturnType<typeof useDeleteCardMutation>;
 export type DeleteCardMutationResult = Apollo.MutationResult<DeleteCardMutation>;
@@ -1885,7 +1900,8 @@ export type MoveCardMutationFn = Apollo.MutationFunction<MoveCardMutation, MoveC
  * });
  */
 export function useMoveCardMutation(baseOptions?: Apollo.MutationHookOptions<MoveCardMutation, MoveCardMutationVariables>) {
-        return Apollo.useMutation<MoveCardMutation, MoveCardMutationVariables>(MoveCardDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MoveCardMutation, MoveCardMutationVariables>(MoveCardDocument, options);
       }
 export type MoveCardMutationHookResult = ReturnType<typeof useMoveCardMutation>;
 export type MoveCardMutationResult = Apollo.MutationResult<MoveCardMutation>;
@@ -1919,7 +1935,8 @@ export type RenameCardMutationFn = Apollo.MutationFunction<RenameCardMutation, R
  * });
  */
 export function useRenameCardMutation(baseOptions?: Apollo.MutationHookOptions<RenameCardMutation, RenameCardMutationVariables>) {
-        return Apollo.useMutation<RenameCardMutation, RenameCardMutationVariables>(RenameCardDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RenameCardMutation, RenameCardMutationVariables>(RenameCardDocument, options);
       }
 export type RenameCardMutationHookResult = ReturnType<typeof useRenameCardMutation>;
 export type RenameCardMutationResult = Apollo.MutationResult<RenameCardMutation>;
@@ -1950,7 +1967,8 @@ export type AssignUserMutationFn = Apollo.MutationFunction<AssignUserMutation, A
  * });
  */
 export function useAssignUserMutation(baseOptions?: Apollo.MutationHookOptions<AssignUserMutation, AssignUserMutationVariables>) {
-        return Apollo.useMutation<AssignUserMutation, AssignUserMutationVariables>(AssignUserDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AssignUserMutation, AssignUserMutationVariables>(AssignUserDocument, options);
       }
 export type AssignUserMutationHookResult = ReturnType<typeof useAssignUserMutation>;
 export type AssignUserMutationResult = Apollo.MutationResult<AssignUserMutation>;
@@ -1980,7 +1998,8 @@ export type UnassignUserMutationFn = Apollo.MutationFunction<UnassignUserMutatio
  * });
  */
 export function useUnassignUserMutation(baseOptions?: Apollo.MutationHookOptions<UnassignUserMutation, UnassignUserMutationVariables>) {
-        return Apollo.useMutation<UnassignUserMutation, UnassignUserMutationVariables>(UnassignUserDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnassignUserMutation, UnassignUserMutationVariables>(UnassignUserDocument, options);
       }
 export type UnassignUserMutationHookResult = ReturnType<typeof useUnassignUserMutation>;
 export type UnassignUserMutationResult = Apollo.MutationResult<UnassignUserMutation>;
@@ -2015,7 +2034,8 @@ export const CardCreatedDocument = gql`
  * });
  */
 export function useCardCreatedSubscription(baseOptions: Apollo.SubscriptionHookOptions<CardCreatedSubscription, CardCreatedSubscriptionVariables>) {
-        return Apollo.useSubscription<CardCreatedSubscription, CardCreatedSubscriptionVariables>(CardCreatedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CardCreatedSubscription, CardCreatedSubscriptionVariables>(CardCreatedDocument, options);
       }
 export type CardCreatedSubscriptionHookResult = ReturnType<typeof useCardCreatedSubscription>;
 export type CardCreatedSubscriptionResult = Apollo.SubscriptionResult<CardCreatedSubscription>;
@@ -2050,7 +2070,8 @@ export const CardMovedDocument = gql`
  * });
  */
 export function useCardMovedSubscription(baseOptions: Apollo.SubscriptionHookOptions<CardMovedSubscription, CardMovedSubscriptionVariables>) {
-        return Apollo.useSubscription<CardMovedSubscription, CardMovedSubscriptionVariables>(CardMovedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CardMovedSubscription, CardMovedSubscriptionVariables>(CardMovedDocument, options);
       }
 export type CardMovedSubscriptionHookResult = ReturnType<typeof useCardMovedSubscription>;
 export type CardMovedSubscriptionResult = Apollo.SubscriptionResult<CardMovedSubscription>;
@@ -2081,7 +2102,8 @@ export const CardUpdatedDocument = gql`
  * });
  */
 export function useCardUpdatedSubscription(baseOptions: Apollo.SubscriptionHookOptions<CardUpdatedSubscription, CardUpdatedSubscriptionVariables>) {
-        return Apollo.useSubscription<CardUpdatedSubscription, CardUpdatedSubscriptionVariables>(CardUpdatedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CardUpdatedSubscription, CardUpdatedSubscriptionVariables>(CardUpdatedDocument, options);
       }
 export type CardUpdatedSubscriptionHookResult = ReturnType<typeof useCardUpdatedSubscription>;
 export type CardUpdatedSubscriptionResult = Apollo.SubscriptionResult<CardUpdatedSubscription>;
@@ -2110,7 +2132,8 @@ export const CardDeletedDocument = gql`
  * });
  */
 export function useCardDeletedSubscription(baseOptions: Apollo.SubscriptionHookOptions<CardDeletedSubscription, CardDeletedSubscriptionVariables>) {
-        return Apollo.useSubscription<CardDeletedSubscription, CardDeletedSubscriptionVariables>(CardDeletedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CardDeletedSubscription, CardDeletedSubscriptionVariables>(CardDeletedDocument, options);
       }
 export type CardDeletedSubscriptionHookResult = ReturnType<typeof useCardDeletedSubscription>;
 export type CardDeletedSubscriptionResult = Apollo.SubscriptionResult<CardDeletedSubscription>;
@@ -2143,7 +2166,8 @@ export const CardUserAssignedDocument = gql`
  * });
  */
 export function useCardUserAssignedSubscription(baseOptions: Apollo.SubscriptionHookOptions<CardUserAssignedSubscription, CardUserAssignedSubscriptionVariables>) {
-        return Apollo.useSubscription<CardUserAssignedSubscription, CardUserAssignedSubscriptionVariables>(CardUserAssignedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CardUserAssignedSubscription, CardUserAssignedSubscriptionVariables>(CardUserAssignedDocument, options);
       }
 export type CardUserAssignedSubscriptionHookResult = ReturnType<typeof useCardUserAssignedSubscription>;
 export type CardUserAssignedSubscriptionResult = Apollo.SubscriptionResult<CardUserAssignedSubscription>;
@@ -2172,7 +2196,8 @@ export const CardUserUnassignedDocument = gql`
  * });
  */
 export function useCardUserUnassignedSubscription(baseOptions: Apollo.SubscriptionHookOptions<CardUserUnassignedSubscription, CardUserUnassignedSubscriptionVariables>) {
-        return Apollo.useSubscription<CardUserUnassignedSubscription, CardUserUnassignedSubscriptionVariables>(CardUserUnassignedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CardUserUnassignedSubscription, CardUserUnassignedSubscriptionVariables>(CardUserUnassignedDocument, options);
       }
 export type CardUserUnassignedSubscriptionHookResult = ReturnType<typeof useCardUserUnassignedSubscription>;
 export type CardUserUnassignedSubscriptionResult = Apollo.SubscriptionResult<CardUserUnassignedSubscription>;
@@ -2208,7 +2233,8 @@ export type CreateFlairMutationFn = Apollo.MutationFunction<CreateFlairMutation,
  * });
  */
 export function useCreateFlairMutation(baseOptions?: Apollo.MutationHookOptions<CreateFlairMutation, CreateFlairMutationVariables>) {
-        return Apollo.useMutation<CreateFlairMutation, CreateFlairMutationVariables>(CreateFlairDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateFlairMutation, CreateFlairMutationVariables>(CreateFlairDocument, options);
       }
 export type CreateFlairMutationHookResult = ReturnType<typeof useCreateFlairMutation>;
 export type CreateFlairMutationResult = Apollo.MutationResult<CreateFlairMutation>;
@@ -2239,7 +2265,8 @@ export type ChangeFlairHueMutationFn = Apollo.MutationFunction<ChangeFlairHueMut
  * });
  */
 export function useChangeFlairHueMutation(baseOptions?: Apollo.MutationHookOptions<ChangeFlairHueMutation, ChangeFlairHueMutationVariables>) {
-        return Apollo.useMutation<ChangeFlairHueMutation, ChangeFlairHueMutationVariables>(ChangeFlairHueDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeFlairHueMutation, ChangeFlairHueMutationVariables>(ChangeFlairHueDocument, options);
       }
 export type ChangeFlairHueMutationHookResult = ReturnType<typeof useChangeFlairHueMutation>;
 export type ChangeFlairHueMutationResult = Apollo.MutationResult<ChangeFlairHueMutation>;
@@ -2273,7 +2300,8 @@ export type RenameFlairMutationFn = Apollo.MutationFunction<RenameFlairMutation,
  * });
  */
 export function useRenameFlairMutation(baseOptions?: Apollo.MutationHookOptions<RenameFlairMutation, RenameFlairMutationVariables>) {
-        return Apollo.useMutation<RenameFlairMutation, RenameFlairMutationVariables>(RenameFlairDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RenameFlairMutation, RenameFlairMutationVariables>(RenameFlairDocument, options);
       }
 export type RenameFlairMutationHookResult = ReturnType<typeof useRenameFlairMutation>;
 export type RenameFlairMutationResult = Apollo.MutationResult<RenameFlairMutation>;
@@ -2303,7 +2331,8 @@ export type DeleteFlairMutationFn = Apollo.MutationFunction<DeleteFlairMutation,
  * });
  */
 export function useDeleteFlairMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFlairMutation, DeleteFlairMutationVariables>) {
-        return Apollo.useMutation<DeleteFlairMutation, DeleteFlairMutationVariables>(DeleteFlairDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteFlairMutation, DeleteFlairMutationVariables>(DeleteFlairDocument, options);
       }
 export type DeleteFlairMutationHookResult = ReturnType<typeof useDeleteFlairMutation>;
 export type DeleteFlairMutationResult = Apollo.MutationResult<DeleteFlairMutation>;
@@ -2334,7 +2363,8 @@ export type AssignFlairMutationFn = Apollo.MutationFunction<AssignFlairMutation,
  * });
  */
 export function useAssignFlairMutation(baseOptions?: Apollo.MutationHookOptions<AssignFlairMutation, AssignFlairMutationVariables>) {
-        return Apollo.useMutation<AssignFlairMutation, AssignFlairMutationVariables>(AssignFlairDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AssignFlairMutation, AssignFlairMutationVariables>(AssignFlairDocument, options);
       }
 export type AssignFlairMutationHookResult = ReturnType<typeof useAssignFlairMutation>;
 export type AssignFlairMutationResult = Apollo.MutationResult<AssignFlairMutation>;
@@ -2365,7 +2395,8 @@ export type UnassignFlairMutationFn = Apollo.MutationFunction<UnassignFlairMutat
  * });
  */
 export function useUnassignFlairMutation(baseOptions?: Apollo.MutationHookOptions<UnassignFlairMutation, UnassignFlairMutationVariables>) {
-        return Apollo.useMutation<UnassignFlairMutation, UnassignFlairMutationVariables>(UnassignFlairDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnassignFlairMutation, UnassignFlairMutationVariables>(UnassignFlairDocument, options);
       }
 export type UnassignFlairMutationHookResult = ReturnType<typeof useUnassignFlairMutation>;
 export type UnassignFlairMutationResult = Apollo.MutationResult<UnassignFlairMutation>;
@@ -2395,7 +2426,8 @@ export const FlairCreatedDocument = gql`
  * });
  */
 export function useFlairCreatedSubscription(baseOptions: Apollo.SubscriptionHookOptions<FlairCreatedSubscription, FlairCreatedSubscriptionVariables>) {
-        return Apollo.useSubscription<FlairCreatedSubscription, FlairCreatedSubscriptionVariables>(FlairCreatedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<FlairCreatedSubscription, FlairCreatedSubscriptionVariables>(FlairCreatedDocument, options);
       }
 export type FlairCreatedSubscriptionHookResult = ReturnType<typeof useFlairCreatedSubscription>;
 export type FlairCreatedSubscriptionResult = Apollo.SubscriptionResult<FlairCreatedSubscription>;
@@ -2424,7 +2456,8 @@ export const FlairUpdatedDocument = gql`
  * });
  */
 export function useFlairUpdatedSubscription(baseOptions: Apollo.SubscriptionHookOptions<FlairUpdatedSubscription, FlairUpdatedSubscriptionVariables>) {
-        return Apollo.useSubscription<FlairUpdatedSubscription, FlairUpdatedSubscriptionVariables>(FlairUpdatedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<FlairUpdatedSubscription, FlairUpdatedSubscriptionVariables>(FlairUpdatedDocument, options);
       }
 export type FlairUpdatedSubscriptionHookResult = ReturnType<typeof useFlairUpdatedSubscription>;
 export type FlairUpdatedSubscriptionResult = Apollo.SubscriptionResult<FlairUpdatedSubscription>;
@@ -2453,7 +2486,8 @@ export const FlairDeletedDocument = gql`
  * });
  */
 export function useFlairDeletedSubscription(baseOptions: Apollo.SubscriptionHookOptions<FlairDeletedSubscription, FlairDeletedSubscriptionVariables>) {
-        return Apollo.useSubscription<FlairDeletedSubscription, FlairDeletedSubscriptionVariables>(FlairDeletedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<FlairDeletedSubscription, FlairDeletedSubscriptionVariables>(FlairDeletedDocument, options);
       }
 export type FlairDeletedSubscriptionHookResult = ReturnType<typeof useFlairDeletedSubscription>;
 export type FlairDeletedSubscriptionResult = Apollo.SubscriptionResult<FlairDeletedSubscription>;
@@ -2483,7 +2517,8 @@ export const FlairAssignedDocument = gql`
  * });
  */
 export function useFlairAssignedSubscription(baseOptions: Apollo.SubscriptionHookOptions<FlairAssignedSubscription, FlairAssignedSubscriptionVariables>) {
-        return Apollo.useSubscription<FlairAssignedSubscription, FlairAssignedSubscriptionVariables>(FlairAssignedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<FlairAssignedSubscription, FlairAssignedSubscriptionVariables>(FlairAssignedDocument, options);
       }
 export type FlairAssignedSubscriptionHookResult = ReturnType<typeof useFlairAssignedSubscription>;
 export type FlairAssignedSubscriptionResult = Apollo.SubscriptionResult<FlairAssignedSubscription>;
@@ -2513,7 +2548,8 @@ export const FlairUnassignedDocument = gql`
  * });
  */
 export function useFlairUnassignedSubscription(baseOptions: Apollo.SubscriptionHookOptions<FlairUnassignedSubscription, FlairUnassignedSubscriptionVariables>) {
-        return Apollo.useSubscription<FlairUnassignedSubscription, FlairUnassignedSubscriptionVariables>(FlairUnassignedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<FlairUnassignedSubscription, FlairUnassignedSubscriptionVariables>(FlairUnassignedDocument, options);
       }
 export type FlairUnassignedSubscriptionHookResult = ReturnType<typeof useFlairUnassignedSubscription>;
 export type FlairUnassignedSubscriptionResult = Apollo.SubscriptionResult<FlairUnassignedSubscription>;
@@ -2543,7 +2579,8 @@ export type GenerateInviteMutationFn = Apollo.MutationFunction<GenerateInviteMut
  * });
  */
 export function useGenerateInviteMutation(baseOptions?: Apollo.MutationHookOptions<GenerateInviteMutation, GenerateInviteMutationVariables>) {
-        return Apollo.useMutation<GenerateInviteMutation, GenerateInviteMutationVariables>(GenerateInviteDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateInviteMutation, GenerateInviteMutationVariables>(GenerateInviteDocument, options);
       }
 export type GenerateInviteMutationHookResult = ReturnType<typeof useGenerateInviteMutation>;
 export type GenerateInviteMutationResult = Apollo.MutationResult<GenerateInviteMutation>;
@@ -2578,7 +2615,8 @@ export type JoinUsingInviteMutationFn = Apollo.MutationFunction<JoinUsingInviteM
  * });
  */
 export function useJoinUsingInviteMutation(baseOptions?: Apollo.MutationHookOptions<JoinUsingInviteMutation, JoinUsingInviteMutationVariables>) {
-        return Apollo.useMutation<JoinUsingInviteMutation, JoinUsingInviteMutationVariables>(JoinUsingInviteDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<JoinUsingInviteMutation, JoinUsingInviteMutationVariables>(JoinUsingInviteDocument, options);
       }
 export type JoinUsingInviteMutationHookResult = ReturnType<typeof useJoinUsingInviteMutation>;
 export type JoinUsingInviteMutationResult = Apollo.MutationResult<JoinUsingInviteMutation>;
@@ -2605,10 +2643,12 @@ export const InviteIntervalsDocument = gql`
  * });
  */
 export function useInviteIntervalsQuery(baseOptions?: Apollo.QueryHookOptions<InviteIntervalsQuery, InviteIntervalsQueryVariables>) {
-        return Apollo.useQuery<InviteIntervalsQuery, InviteIntervalsQueryVariables>(InviteIntervalsDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InviteIntervalsQuery, InviteIntervalsQueryVariables>(InviteIntervalsDocument, options);
       }
 export function useInviteIntervalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InviteIntervalsQuery, InviteIntervalsQueryVariables>) {
-          return Apollo.useLazyQuery<InviteIntervalsQuery, InviteIntervalsQueryVariables>(InviteIntervalsDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InviteIntervalsQuery, InviteIntervalsQueryVariables>(InviteIntervalsDocument, options);
         }
 export type InviteIntervalsQueryHookResult = ReturnType<typeof useInviteIntervalsQuery>;
 export type InviteIntervalsLazyQueryHookResult = ReturnType<typeof useInviteIntervalsLazyQuery>;
@@ -2645,7 +2685,8 @@ export type CreateListMutationFn = Apollo.MutationFunction<CreateListMutation, C
  * });
  */
 export function useCreateListMutation(baseOptions?: Apollo.MutationHookOptions<CreateListMutation, CreateListMutationVariables>) {
-        return Apollo.useMutation<CreateListMutation, CreateListMutationVariables>(CreateListDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateListMutation, CreateListMutationVariables>(CreateListDocument, options);
       }
 export type CreateListMutationHookResult = ReturnType<typeof useCreateListMutation>;
 export type CreateListMutationResult = Apollo.MutationResult<CreateListMutation>;
@@ -2675,7 +2716,8 @@ export type DeleteListMutationFn = Apollo.MutationFunction<DeleteListMutation, D
  * });
  */
 export function useDeleteListMutation(baseOptions?: Apollo.MutationHookOptions<DeleteListMutation, DeleteListMutationVariables>) {
-        return Apollo.useMutation<DeleteListMutation, DeleteListMutationVariables>(DeleteListDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteListMutation, DeleteListMutationVariables>(DeleteListDocument, options);
       }
 export type DeleteListMutationHookResult = ReturnType<typeof useDeleteListMutation>;
 export type DeleteListMutationResult = Apollo.MutationResult<DeleteListMutation>;
@@ -2706,7 +2748,8 @@ export type MoveListMutationFn = Apollo.MutationFunction<MoveListMutation, MoveL
  * });
  */
 export function useMoveListMutation(baseOptions?: Apollo.MutationHookOptions<MoveListMutation, MoveListMutationVariables>) {
-        return Apollo.useMutation<MoveListMutation, MoveListMutationVariables>(MoveListDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MoveListMutation, MoveListMutationVariables>(MoveListDocument, options);
       }
 export type MoveListMutationHookResult = ReturnType<typeof useMoveListMutation>;
 export type MoveListMutationResult = Apollo.MutationResult<MoveListMutation>;
@@ -2740,7 +2783,8 @@ export type RenameListMutationFn = Apollo.MutationFunction<RenameListMutation, R
  * });
  */
 export function useRenameListMutation(baseOptions?: Apollo.MutationHookOptions<RenameListMutation, RenameListMutationVariables>) {
-        return Apollo.useMutation<RenameListMutation, RenameListMutationVariables>(RenameListDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RenameListMutation, RenameListMutationVariables>(RenameListDocument, options);
       }
 export type RenameListMutationHookResult = ReturnType<typeof useRenameListMutation>;
 export type RenameListMutationResult = Apollo.MutationResult<RenameListMutation>;
@@ -2772,7 +2816,8 @@ export const ListCreatedDocument = gql`
  * });
  */
 export function useListCreatedSubscription(baseOptions: Apollo.SubscriptionHookOptions<ListCreatedSubscription, ListCreatedSubscriptionVariables>) {
-        return Apollo.useSubscription<ListCreatedSubscription, ListCreatedSubscriptionVariables>(ListCreatedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ListCreatedSubscription, ListCreatedSubscriptionVariables>(ListCreatedDocument, options);
       }
 export type ListCreatedSubscriptionHookResult = ReturnType<typeof useListCreatedSubscription>;
 export type ListCreatedSubscriptionResult = Apollo.SubscriptionResult<ListCreatedSubscription>;
@@ -2802,7 +2847,8 @@ export const ListRenamedDocument = gql`
  * });
  */
 export function useListRenamedSubscription(baseOptions: Apollo.SubscriptionHookOptions<ListRenamedSubscription, ListRenamedSubscriptionVariables>) {
-        return Apollo.useSubscription<ListRenamedSubscription, ListRenamedSubscriptionVariables>(ListRenamedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ListRenamedSubscription, ListRenamedSubscriptionVariables>(ListRenamedDocument, options);
       }
 export type ListRenamedSubscriptionHookResult = ReturnType<typeof useListRenamedSubscription>;
 export type ListRenamedSubscriptionResult = Apollo.SubscriptionResult<ListRenamedSubscription>;
@@ -2836,7 +2882,8 @@ export const ListMovedDocument = gql`
  * });
  */
 export function useListMovedSubscription(baseOptions: Apollo.SubscriptionHookOptions<ListMovedSubscription, ListMovedSubscriptionVariables>) {
-        return Apollo.useSubscription<ListMovedSubscription, ListMovedSubscriptionVariables>(ListMovedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ListMovedSubscription, ListMovedSubscriptionVariables>(ListMovedDocument, options);
       }
 export type ListMovedSubscriptionHookResult = ReturnType<typeof useListMovedSubscription>;
 export type ListMovedSubscriptionResult = Apollo.SubscriptionResult<ListMovedSubscription>;
@@ -2863,7 +2910,8 @@ export const ListDeletedDocument = gql`
  * });
  */
 export function useListDeletedSubscription(baseOptions: Apollo.SubscriptionHookOptions<ListDeletedSubscription, ListDeletedSubscriptionVariables>) {
-        return Apollo.useSubscription<ListDeletedSubscription, ListDeletedSubscriptionVariables>(ListDeletedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ListDeletedSubscription, ListDeletedSubscriptionVariables>(ListDeletedDocument, options);
       }
 export type ListDeletedSubscriptionHookResult = ReturnType<typeof useListDeletedSubscription>;
 export type ListDeletedSubscriptionResult = Apollo.SubscriptionResult<ListDeletedSubscription>;
@@ -2893,7 +2941,8 @@ export type RemoveUserMutationFn = Apollo.MutationFunction<RemoveUserMutation, R
  * });
  */
 export function useRemoveUserMutation(baseOptions?: Apollo.MutationHookOptions<RemoveUserMutation, RemoveUserMutationVariables>) {
-        return Apollo.useMutation<RemoveUserMutation, RemoveUserMutationVariables>(RemoveUserDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveUserMutation, RemoveUserMutationVariables>(RemoveUserDocument, options);
       }
 export type RemoveUserMutationHookResult = ReturnType<typeof useRemoveUserMutation>;
 export type RemoveUserMutationResult = Apollo.MutationResult<RemoveUserMutation>;
@@ -2927,7 +2976,8 @@ export type RenameTeamMutationFn = Apollo.MutationFunction<RenameTeamMutation, R
  * });
  */
 export function useRenameTeamMutation(baseOptions?: Apollo.MutationHookOptions<RenameTeamMutation, RenameTeamMutationVariables>) {
-        return Apollo.useMutation<RenameTeamMutation, RenameTeamMutationVariables>(RenameTeamDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RenameTeamMutation, RenameTeamMutationVariables>(RenameTeamDocument, options);
       }
 export type RenameTeamMutationHookResult = ReturnType<typeof useRenameTeamMutation>;
 export type RenameTeamMutationResult = Apollo.MutationResult<RenameTeamMutation>;
@@ -2963,7 +3013,8 @@ export type AddUserMutationFn = Apollo.MutationFunction<AddUserMutation, AddUser
  * });
  */
 export function useAddUserMutation(baseOptions?: Apollo.MutationHookOptions<AddUserMutation, AddUserMutationVariables>) {
-        return Apollo.useMutation<AddUserMutation, AddUserMutationVariables>(AddUserDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddUserMutation, AddUserMutationVariables>(AddUserDocument, options);
       }
 export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>;
 export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>;
@@ -2999,7 +3050,8 @@ export type CreateTeamMutationFn = Apollo.MutationFunction<CreateTeamMutation, C
  * });
  */
 export function useCreateTeamMutation(baseOptions?: Apollo.MutationHookOptions<CreateTeamMutation, CreateTeamMutationVariables>) {
-        return Apollo.useMutation<CreateTeamMutation, CreateTeamMutationVariables>(CreateTeamDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTeamMutation, CreateTeamMutationVariables>(CreateTeamDocument, options);
       }
 export type CreateTeamMutationHookResult = ReturnType<typeof useCreateTeamMutation>;
 export type CreateTeamMutationResult = Apollo.MutationResult<CreateTeamMutation>;
@@ -3029,7 +3081,8 @@ export type DeleteTeamMutationFn = Apollo.MutationFunction<DeleteTeamMutation, D
  * });
  */
 export function useDeleteTeamMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTeamMutation, DeleteTeamMutationVariables>) {
-        return Apollo.useMutation<DeleteTeamMutation, DeleteTeamMutationVariables>(DeleteTeamDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTeamMutation, DeleteTeamMutationVariables>(DeleteTeamDocument, options);
       }
 export type DeleteTeamMutationHookResult = ReturnType<typeof useDeleteTeamMutation>;
 export type DeleteTeamMutationResult = Apollo.MutationResult<DeleteTeamMutation>;
@@ -3059,7 +3112,8 @@ export type LeaveTeamMutationFn = Apollo.MutationFunction<LeaveTeamMutation, Lea
  * });
  */
 export function useLeaveTeamMutation(baseOptions?: Apollo.MutationHookOptions<LeaveTeamMutation, LeaveTeamMutationVariables>) {
-        return Apollo.useMutation<LeaveTeamMutation, LeaveTeamMutationVariables>(LeaveTeamDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LeaveTeamMutation, LeaveTeamMutationVariables>(LeaveTeamDocument, options);
       }
 export type LeaveTeamMutationHookResult = ReturnType<typeof useLeaveTeamMutation>;
 export type LeaveTeamMutationResult = Apollo.MutationResult<LeaveTeamMutation>;
@@ -3086,7 +3140,8 @@ export const TeamDeletedDocument = gql`
  * });
  */
 export function useTeamDeletedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<TeamDeletedSubscription, TeamDeletedSubscriptionVariables>) {
-        return Apollo.useSubscription<TeamDeletedSubscription, TeamDeletedSubscriptionVariables>(TeamDeletedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<TeamDeletedSubscription, TeamDeletedSubscriptionVariables>(TeamDeletedDocument, options);
       }
 export type TeamDeletedSubscriptionHookResult = ReturnType<typeof useTeamDeletedSubscription>;
 export type TeamDeletedSubscriptionResult = Apollo.SubscriptionResult<TeamDeletedSubscription>;
@@ -3115,7 +3170,8 @@ export const TeamRenamedDocument = gql`
  * });
  */
 export function useTeamRenamedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<TeamRenamedSubscription, TeamRenamedSubscriptionVariables>) {
-        return Apollo.useSubscription<TeamRenamedSubscription, TeamRenamedSubscriptionVariables>(TeamRenamedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<TeamRenamedSubscription, TeamRenamedSubscriptionVariables>(TeamRenamedDocument, options);
       }
 export type TeamRenamedSubscriptionHookResult = ReturnType<typeof useTeamRenamedSubscription>;
 export type TeamRenamedSubscriptionResult = Apollo.SubscriptionResult<TeamRenamedSubscription>;
@@ -3150,7 +3206,8 @@ ${UserInfoFragmentDoc}`;
  * });
  */
 export function useTeamUserAddedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<TeamUserAddedSubscription, TeamUserAddedSubscriptionVariables>) {
-        return Apollo.useSubscription<TeamUserAddedSubscription, TeamUserAddedSubscriptionVariables>(TeamUserAddedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<TeamUserAddedSubscription, TeamUserAddedSubscriptionVariables>(TeamUserAddedDocument, options);
       }
 export type TeamUserAddedSubscriptionHookResult = ReturnType<typeof useTeamUserAddedSubscription>;
 export type TeamUserAddedSubscriptionResult = Apollo.SubscriptionResult<TeamUserAddedSubscription>;
@@ -3180,7 +3237,8 @@ export const TeamUserRemovedDocument = gql`
  * });
  */
 export function useTeamUserRemovedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<TeamUserRemovedSubscription, TeamUserRemovedSubscriptionVariables>) {
-        return Apollo.useSubscription<TeamUserRemovedSubscription, TeamUserRemovedSubscriptionVariables>(TeamUserRemovedDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<TeamUserRemovedSubscription, TeamUserRemovedSubscriptionVariables>(TeamUserRemovedDocument, options);
       }
 export type TeamUserRemovedSubscriptionHookResult = ReturnType<typeof useTeamUserRemovedSubscription>;
 export type TeamUserRemovedSubscriptionResult = Apollo.SubscriptionResult<TeamUserRemovedSubscription>;
@@ -3213,7 +3271,8 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * });
  */
 export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
       }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
@@ -3242,7 +3301,8 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  * });
  */
 export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
       }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
@@ -3282,7 +3342,8 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * });
  */
 export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
       }
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
@@ -3312,10 +3373,12 @@ export const CurrentUserDocument = gql`
  * });
  */
 export function useCurrentUserQuery(baseOptions?: Apollo.QueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>) {
-        return Apollo.useQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, options);
       }
 export function useCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>) {
-          return Apollo.useLazyQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, options);
         }
 export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
 export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
@@ -3344,10 +3407,12 @@ export const TeamsDocument = gql`
  * });
  */
 export function useTeamsQuery(baseOptions?: Apollo.QueryHookOptions<TeamsQuery, TeamsQueryVariables>) {
-        return Apollo.useQuery<TeamsQuery, TeamsQueryVariables>(TeamsDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TeamsQuery, TeamsQueryVariables>(TeamsDocument, options);
       }
 export function useTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TeamsQuery, TeamsQueryVariables>) {
-          return Apollo.useLazyQuery<TeamsQuery, TeamsQueryVariables>(TeamsDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TeamsQuery, TeamsQueryVariables>(TeamsDocument, options);
         }
 export type TeamsQueryHookResult = ReturnType<typeof useTeamsQuery>;
 export type TeamsLazyQueryHookResult = ReturnType<typeof useTeamsLazyQuery>;

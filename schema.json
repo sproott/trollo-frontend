@@ -632,6 +632,22 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "owner",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -4882,9 +4898,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2021-02-21T14:54:36.113Z",
-      "endTime": "2021-02-21T14:54:36.157Z",
-      "duration": 44099399,
+      "startTime": "2021-03-10T13:55:22.758Z",
+      "endTime": "2021-03-10T13:55:22.792Z",
+      "duration": 33561300,
       "execution": {
         "resolvers": []
       }

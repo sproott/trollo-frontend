@@ -10,6 +10,7 @@ export const ParticipantTeam = gql`
 
 export const ParticipantUser = gql`
   fragment ParticipantUser on Participant {
+    owner
     user {
       ...UserInfo
     }

@@ -1,7 +1,7 @@
 import { Button, Card, Col, Modal } from "antd"
 import { Div, H3 } from "../common/util/Text"
-import React, { useState } from "react"
 import {
+  ParticipantUserFragment,
   TeamInfoFragment,
   useCurrentUserQuery,
   useDeleteTeamMutation,
@@ -9,6 +9,7 @@ import {
   useRemoveUserMutation,
   useRenameTeamMutation,
 } from "../../../generated/graphql"
+import React, { useState } from "react"
 
 import AddUser from "./AddUser"
 import Avatar from "../common/Avatar"
@@ -65,6 +66,31 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
     setConfirmationVisible(false)
     setEditModalVisible(false)
   }
+  const generateUserList = (participants: ParticipantUserFragment[]) =>
+    participants
+      .flatMap((p) => p.user)
+      .sort((u1, u2) => u1.username.localeCompare(u2.username))
+      .map((user) => {
+        return (
+          <Box flex justifyContent="space-between" alignItems="center" key={user.id}>
+            <Box flex alignItems="center" gap="10px">
+              <Avatar
+                username={user.username}
+                backgroundColor={theme.blue.primary}
+                color="white"
+                pointer
+              />
+              <Box flex gap="5px">
+                <Div>{user.username}</Div>
+                {userId === user.id && <Div color="grey">(you)</Div>}
+              </Box>
+            </Box>
+            {isOwn && userId !== user.id && (
+              <CloseOutlined onClick={removeUser.bind(this, user.id)} />
+            )}
+          </Box>
+        )
+      })
 
   return (
     <>
@@ -113,41 +139,22 @@ function TeamInfo({ team, isOwn }: { team: TeamInfoFragment; isOwn: boolean }) {
             />
           )}
           <Box flex flexDirection="column" gap="5px">
+            <H3>Admin:</H3>
+            <Box flex flexDirection="column" gap="5px">
+              <Col span={12}>
+                <Box flex flexDirection="column" gap="5px">
+                  {generateUserList(team.participants.filter((p) => p.owner))}
+                </Box>
+              </Col>
+            </Box>
             <H3>Users:</H3>
-            {team.participants.length > 1 && (
-              <Box flex flexDirection="column" gap="5px">
-                <Col span={12}>
-                  <Box flex flexDirection="column" gap="5px">
-                    {team.participants
-                      .flatMap((p) => p.user)
-                      .sort((u1, u2) => u1.username.localeCompare(u2.username))
-                      .map((user) => {
-                        return (
-                          user.id !== userId && (
-                            <Box
-                              flex
-                              justifyContent="space-between"
-                              alignItems="center"
-                              key={user.id}
-                            >
-                              <Box flex alignItems="center" gap="10px">
-                                <Avatar
-                                  username={user.username}
-                                  backgroundColor={theme.blue.primary}
-                                  color="white"
-                                  pointer
-                                />
-                                <Div>{user.username}</Div>
-                              </Box>
-                              {isOwn && <CloseOutlined onClick={removeUser.bind(this, user.id)} />}
-                            </Box>
-                          )
-                        )
-                      })}
-                  </Box>
-                </Col>
-              </Box>
-            )}
+            <Box flex flexDirection="column" gap="5px">
+              <Col span={12}>
+                <Box flex flexDirection="column" gap="5px">
+                  {generateUserList(team.participants.filter((p) => !p.owner))}
+                </Box>
+              </Col>
+            </Box>
             {isOwn && (
               <>
                 <AddUser teamId={team.id} />
