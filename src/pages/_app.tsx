@@ -9,6 +9,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Helmet>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
           rel="stylesheet"
