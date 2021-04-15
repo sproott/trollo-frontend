@@ -4,7 +4,7 @@ import { Input } from "antd"
 
 const { TextArea: _TextArea } = Input
 
-const TextInput = <TInput extends object>(
+const TextArea = <TInput extends object>(
   props: ControlledInputProps<TInput> & {
     maxLength?: number
     onPressEnter?: () => void
@@ -18,4 +18,4 @@ const TextInput = <TInput extends object>(
   )
 }
 
-export default TextInput
+export default TextArea
